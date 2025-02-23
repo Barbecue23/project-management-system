@@ -1,0 +1,31 @@
+<aside class="font-poppins w-64 bg-white shadow-md flex flex-col justify-between h-screen">
+
+<div class="p-4 border-b flex items-center justify-center">
+  <%= image_tag "logo.svg", class: "h-10" %>
+</div>
+
+  <!-- Navigation -->
+  <nav class="mt-4">
+    <ul>
+      <li class="px-6 py-3 flex items-center space-x-2 text-blue-700 bg-blue-100">
+        📢 <%= link_to "ข่าวสาร", "#", class: "font-medium" %>
+      </li>
+      <li class="px-6 py-3 flex items-center space-x-2 text-gray-700 hover:bg-gray-100">
+        ⏳ <%= link_to "อาจารย์ที่ปรึกษา", "#", class: "font-medium" %>
+      </li>
+      <li class="px-6 py-3 flex items-center space-x-2 text-gray-700 hover:bg-gray-100">
+        📧 <%= link_to "รูปแบบรายงาน", "#", class: "font-medium" %>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- User Profile -->
+  <div class="p-4 bg-blue-100 flex items-center space-x-3 border-t">
+    <%# <%= image_tag "avatar.png", class: "w-10 h-10 rounded-full", alt: "User" %>
+    <div>
+      <p class="text-sm font-semibold">Mock User</p>
+      <p class="text-xs text-gray-500">Mock role</p>
+    </div>
+    <%= link_to "↗", "#", class: "text-blue-600" %>
+  </div>
+</aside>
