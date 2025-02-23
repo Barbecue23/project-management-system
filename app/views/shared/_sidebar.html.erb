@@ -1,13 +1,14 @@
 <aside class="font-poppins w-64 bg-white shadow-md flex flex-col justify-between h-screen">
+<div class="container">
+  <div class="p-4 flex  justify-center ">
+    <%= image_tag "logo.svg", class: "h-10"%>
+    <%= image_tag "title.svg", class: "h-8" %>
+  </div>
 
-<div class="p-4 border-b flex items-center justify-center">
-  <%= image_tag "logo.svg", class: "h-10" %>
-</div>
-
-  <!-- Navigation -->
+    <!-- Navigation -->
   <nav class="mt-4">
-    <ul>
-      <li class="px-6 py-3 flex items-center space-x-2 text-blue-700 bg-blue-100">
+    <ul class="flex flex-col ">
+      <li class="px-6 py-3 flex items-start space-x-2 text-gray-700 hover:bg-gray-100">
         📢 <%= link_to "ข่าวสาร", "#", class: "font-medium" %>
       </li>
       <li class="px-6 py-3 flex items-center space-x-2 text-gray-700 hover:bg-gray-100">
@@ -18,6 +19,7 @@
       </li>
     </ul>
   </nav>
+</div>
 
   <!-- User Profile -->
   <div class="p-4 bg-blue-100 flex items-center space-x-3 border-t">
