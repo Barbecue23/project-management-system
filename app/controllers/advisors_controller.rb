@@ -46,8 +46,8 @@ class AdvisorsController < ApplicationController
         specialty_details: "ดูเพิ่มเติม",
         email: "waijanya_s@silpakorn.edu",
         alternate_email: "saijaporn.w@gmail.com",
-        current_students: 3,
-        max_students: 6,
+        current_students: 6,
+        max_students: 10,
         status: "active"
       },
       {
@@ -58,7 +58,7 @@ class AdvisorsController < ApplicationController
         specialty_details: "ดูเพิ่มเติม",
         email: "waijanya_s@silpakorn.edu",
         alternate_email: "saijaporn.w@gmail.com",
-        current_students: 6,
+        current_students: 7,
         max_students: 10,
         status: "active"
       },
