@@ -8,15 +8,21 @@
     <!-- Navigation -->
   <nav class="mt-4">
     <ul class="flex flex-col ">
-      <li class="px-6 py-3 flex items-start space-x-2 text-gray-700 hover:bg-gray-100">
-        📢 <div class="ml-2"><%= link_to "ข่าวสาร", "/", class: "font-medium" %></div>
-      </li>
-      <li class="px-6 py-3 flex items-center space-x-2 text-gray-700 hover:bg-gray-100">
-        ⏳ <div class="ml-2"><%= link_to "อาจารย์ที่ปรึกษา", "/advisors/index", class: "font-medium" %></div>
-      </li>
-      <li class="px-6 py-3 flex items-center space-x-2 text-gray-700 hover:bg-gray-100">
-        📧 <div class="ml-2"><%= link_to "รูปแบบรายงาน", "#", class: "font-medium" %> </div>
-      </li>
+       <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
+          <%= link_to "/", class: "font-medium flex items-center space-x-2" do %>
+            📢 <span class="ml-2">ข่าวสาร</span>
+          <% end %>
+        </li>
+        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
+          <%= link_to "/advisors/index", class: "font-medium flex items-center space-x-2" do %>
+            ⏳ <span class="ml-2">อาจารย์ที่ปรึกษา</span>
+          <% end %>
+        </li>
+        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
+          <%= link_to "#", class: "font-medium flex items-center space-x-2" do %>
+            📧 <span class="ml-2">รูปแบบรายงาน</span>
+          <% end %>
+        </li>
     </ul>
   </nav>
 </div>
