@@ -3,6 +3,11 @@
 ```
 ./bin/dev
 ```
+or
+
+```
+rails server
+```
 
 Things you may want to cover:
 
