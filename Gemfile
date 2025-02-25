@@ -4,8 +4,8 @@ source "https://rubygems.org"
 gem 'kaminari'
 gem 'bootstrap', '~> 5.3.0'
 gem 'sassc-rails'
-gem 'bulma-rails', '~> 0.9.4'
-gem "tailwindcss-rails", "~> 2.0"
+gem "bulma-rails", "~> 0.9.4"
+gem "tailwindcss-rails", "~> 4.1"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]

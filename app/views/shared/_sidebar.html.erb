@@ -2,15 +2,15 @@
 <div class="container">
   <div class="p-4 flex  justify-center ">
     <%= image_tag "logo.svg", class: "h-10"%>
-    <%= image_tag "title.svg", class: "h-8" %>
+    <%= image_tag "title.svg", class: "h-8 ml-2 mt-1 " %>
   </div>
 
     <!-- Navigation -->
   <nav class="mt-4">
     <ul class="flex flex-col ">
-       <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
+        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
           <%= link_to "/", class: "font-medium flex items-center space-x-2" do %>
-            📢 <span class="ml-2">ข่าวสาร</span>
+            <%= image_tag "news.svg", class: "h-5"%> <span class="ml-2">ข่าวสาร</span>
           <% end %>
         </li>
         <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
@@ -20,7 +20,7 @@
         </li>
         <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
           <%= link_to "#", class: "font-medium flex items-center space-x-2" do %>
-            📧 <span class="ml-2">รูปแบบรายงาน</span>
+            <%= image_tag "report.svg", class: "h-5 w-6"%> <span class="ml-2">รูปแบบรายงาน</span>
           <% end %>
         </li>
         <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
