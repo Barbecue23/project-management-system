@@ -1,7 +1,8 @@
-# README
+# how to run dev 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```
+./bin/dev
+```
 
 Things you may want to cover:
 
