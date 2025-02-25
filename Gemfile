@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 # UI framework
+gem 'kaminari'
 gem 'bootstrap', '~> 5.3.0'
 gem 'sassc-rails'
 gem 'bulma-rails', '~> 0.9.4'

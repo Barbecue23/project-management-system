@@ -96,21 +96,29 @@
     </table>
   </div>
   
-  <div class="mt-4 flex justify-end">
-    <nav class="inline-flex rounded-md shadow">
-      <a href="#" class="px-3 py-2 border rounded-l-md bg-white text-gray-500 hover:bg-gray-50">
-        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-        </svg>
-      </a>
-      <a href="#" class="px-4 py-2 border-t border-b border-r bg-white text-gray-700">
-        Page 1 of 12
-      </a>
-      <a href="#" class="px-3 py-2 border rounded-r-md bg-white text-gray-500 hover:bg-gray-50">
-        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-        </svg>
-      </a>
-    </nav>
-  </div>
+  <% if @advisors.total_pages > 1 %>
+    <div class="mt-6 flex justify-between items-center">
+      <div class="text-sm text-gray-500">
+        Showing <%= @advisors.offset_value + 1 %> to <%= [@advisors.offset_value + @advisors.length, @advisors.total_count].min %> of <%= @advisors.total_count %> advisors
+      </div>
+      
+      <nav class="inline-flex items-center rounded-md shadow">
+        <%= link_to url_for(page: @advisors.prev_page), class: "px-3 py-2 border rounded-l-md bg-white text-gray-500 hover:bg-gray-50 #{@advisors.first_page? ? 'opacity-50 cursor-not-allowed' : ''}", disabled: @advisors.first_page? do %>
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+
+        <span class="px-4 py-2 text-gray-700">
+          Page <%= @advisors.current_page %> of <%= @advisors.total_pages %>
+        </span>
+
+        <%= link_to url_for(page: @advisors.next_page), class: "px-3 py-2 border rounded-r-md bg-white text-gray-500 hover:bg-gray-50 #{@advisors.last_page? ? 'opacity-50 cursor-not-allowed' : ''}", disabled: @advisors.last_page? do %>
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+      </nav>
+    </div>
+  <% end %>
 </div>
