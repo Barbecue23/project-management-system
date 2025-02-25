@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # UI framework
 gem 'bootstrap', '~> 5.3.0'
 gem 'sassc-rails'
-gem 'bulma-rails', '~> 0.9.4'
+gem 'bulma-rails', '~> 1.0.3'
 gem "tailwindcss-rails", "~> 2.0"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.1"
