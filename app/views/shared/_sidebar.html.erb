@@ -8,24 +8,27 @@
     <!-- Navigation -->
   <nav class="mt-4">
     <ul class="flex flex-col ">
-        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
+        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100 ">
           <%= link_to "/", class: "font-medium flex items-center space-x-2" do %>
-            <%= image_tag "news.svg", class: "h-5"%> <span class="ml-2">ข่าวสาร</span>
-          <% end %>
+          <%= image_tag "news.svg", class: "h-5"%> <span class="ml-2">ข่าวสาร</span>
+        <% end %>
         </li>
         <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
           <%= link_to "/advisors/index", class: "font-medium flex items-center space-x-2" do %>
-            ⏳ <span class="ml-2">อาจารย์ที่ปรึกษา</span>
+            ⏳ 
+            <span class="ml-2">อาจารย์ที่ปรึกษา</span>
           <% end %>
         </li>
         <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
           <%= link_to "#", class: "font-medium flex items-center space-x-2" do %>
-            <%= image_tag "report.svg", class: "h-5 w-6"%> <span class="ml-2">รูปแบบรายงาน</span>
+            <%= image_tag "report.svg", class: "h-5 w-6"%> 
+            <span class="ml-2">รูปแบบรายงาน</span>
           <% end %>
         </li>
-        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
+        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100 ">
           <%= link_to "/students/index", class: "font-medium flex items-center space-x-2" do %>
-            📧 <span class="ml-2">นักเรียน</span>
+            📧 
+            <span class="ml-2">นักเรียน</span>
           <% end %>
         </li>
     </ul>
