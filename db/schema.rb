@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_28_034449) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_28_110822) do
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "created_by"
@@ -20,6 +20,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_034449) do
   end
 
 # Could not dump table "users" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+#   Unknown type '' for column 'id'
 
+
+  add_foreign_key "users", "roles"
 end
