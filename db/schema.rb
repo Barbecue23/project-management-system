@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_02_060545) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_02_070448) do
+  create_table "advisor_group_members", force: :cascade do |t|
+    t.integer "group_id", null: false
+    t.integer "user_id", null: false
+    t.boolean "is_owner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_advisor_group_members_on_group_id"
+    t.index ["user_id"], name: "index_advisor_group_members_on_user_id"
+  end
+
+  create_table "advisor_groups", force: :cascade do |t|
+    t.string "group_name"
+    t.integer "owner_id_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id_id"], name: "index_advisor_groups_on_owner_id_id"
+  end
+
   create_table "map_permissions", force: :cascade do |t|
     t.integer "role_id", null: false
     t.integer "permission_id", null: false
@@ -48,6 +66,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_060545) do
 #   Unknown type '' for column 'id'
 
 
+  add_foreign_key "advisor_group_members", "groups"
+  add_foreign_key "advisor_group_members", "users"
+  add_foreign_key "advisor_groups", "owner_ids"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
   add_foreign_key "users", "roles"
