@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_02_070448) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_04_154753) do
   create_table "advisor_group_members", force: :cascade do |t|
     t.integer "group_id", null: false
     t.integer "user_id", null: false
@@ -62,6 +62,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_070448) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "seasons", force: :cascade do |t|
+    t.json "seasons_detail", default: {}, null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "student_group_members", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "season_id", null: false
+    t.integer "year_term"
+    t.integer "advisor_group_member_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advisor_group_member_id"], name: "index_student_group_members_on_advisor_group_member_id"
+    t.index ["season_id"], name: "index_student_group_members_on_season_id"
+    t.index ["user_id"], name: "index_student_group_members_on_user_id"
+  end
+
 # Could not dump table "users" because of following StandardError
 #   Unknown type '' for column 'id'
 
@@ -71,5 +91,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_070448) do
   add_foreign_key "advisor_groups", "owner_ids"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
+  add_foreign_key "student_group_members", "advisor_group_members"
+  add_foreign_key "student_group_members", "seasons"
+  add_foreign_key "student_group_members", "users"
   add_foreign_key "users", "roles"
 end
