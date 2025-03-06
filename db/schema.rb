@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_04_154753) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_06_064706) do
   create_table "advisor_group_members", force: :cascade do |t|
     t.integer "group_id", null: false
     t.integer "user_id", null: false
@@ -27,6 +27,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_04_154753) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id_id"], name: "index_advisor_groups_on_owner_id_id"
+  end
+
+  create_table "advisor_requests", force: :cascade do |t|
+    t.integer "student_id", null: false
+    t.integer "advisor_group_member_id", null: false
+    t.string "status"
+    t.string "season_year_term"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advisor_group_member_id"], name: "index_advisor_requests_on_advisor_group_member_id"
+    t.index ["student_id"], name: "index_advisor_requests_on_student_id"
   end
 
   create_table "map_permissions", force: :cascade do |t|
@@ -89,6 +101,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_04_154753) do
   add_foreign_key "advisor_group_members", "groups"
   add_foreign_key "advisor_group_members", "users"
   add_foreign_key "advisor_groups", "owner_ids"
+  add_foreign_key "advisor_requests", "advisor_group_members"
+  add_foreign_key "advisor_requests", "users", column: "student_id"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
   add_foreign_key "student_group_members", "advisor_group_members"
