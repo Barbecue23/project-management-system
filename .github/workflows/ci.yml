@@ -5,6 +5,9 @@ on:
   push:
     branches: [ dev ]
 
+env: 
+  IMAGE_NAME: barbecue23/project-management-system
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
@@ -115,5 +118,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
-
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
