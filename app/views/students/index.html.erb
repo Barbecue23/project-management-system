@@ -1,0 +1,94 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">นักเรียน</h1>
+  
+  <div class="flex justify-between mb-6">
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <input type="text" placeholder="Search" class="pl-10 pr-4 py-2 border rounded-md w-80 focus:outline-none focus:ring-2 focus:ring-blue-300">
+    </div>
+    <%= button("Filters", type: :secondary, icon: raw('<svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>')) %>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white">
+      <thead class="bg-gray-100 text-gray-600 text-sm">
+        <tr class="bg-[F3F6F9]">
+          <th class="px-6 py-3 text-left">นักเรียน</th>
+          <th class="px-6 py-3 text-left">สาขาที่เชี่ยวชาญ</th>
+          <th class="px-6 py-3 text-left">อีเมลล์</th>
+          <th class="px-6 py-3 text-left">เบอร์โทรศัพท์</th>
+          <th class="px-6 py-3 text-center">action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <% @students.each do |student| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <div class="h-12 w-12 rounded-full bg-gray-300 flex-shrink-0 mr-4">
+                  <!-- Profile picture would go here -->
+                </div>
+                <div>
+                  <div class="font-semibold"><%= student[:name] %> <%= student[:last_name] %></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div><%= student[:specialty] %></div>
+            </td>
+            <td class="px-6 py-4">
+              <div><%= student[:email] %></div>
+              <% if student[:alternate_email].present? %>
+                <div class="text-gray-500 text-sm"><%= student[:alternate_email] %></div>
+              <% else %>
+                <div class="text-gray-500 text-sm">-</div>
+              <% end %>
+            </td>
+             <td class="px-6 py-4">
+             <% if student[:phone_number].present? %>
+                <div class="text-gray-500 text-sm"><%= student[:phone_number] %></div>
+              <% else %>
+                <div class="text-gray-500 text-sm">-</div>
+              <% end %>
+              <div>
+            </td>
+            <td class="px-6 py-4 flex justify-center text-center">
+              <span class="mr-2"><%= button("ยกเลิก", type: :secondary) %></span>
+              <%= button("เลือก", type: :primary) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+<% if @students.any? && @students.size > 0 %>
+  <div class="mt-6 flex justify-between items-center">
+    <div class="text-sm text-gray-500">
+      Showing <%= @students.offset_value + 1 %> to <%= [@students.offset_value + @students.length, @students.total_count].min %> of <%= @students.total_count %> students
+    </div>
+    
+    <nav class="inline-flex items-center rounded-md shadow">
+      <%= link_to url_for(page: @students.prev_page), class: "px-3 py-2 border rounded-l-md bg-white text-gray-500 hover:bg-gray-50 #{@students.first_page? ? 'opacity-50 cursor-not-allowed' : ''}", disabled: @students.first_page? do %>
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      <% end %>
+
+      <span class="px-4 py-2 text-gray-700">
+        Page <%= @students.current_page %> of <%= @students.total_pages %>
+      </span>
+
+      <%= link_to url_for(page: @students.next_page), class: "px-3 py-2 border rounded-r-md bg-white text-gray-500 hover:bg-gray-50 #{@students.last_page? ? 'opacity-50 cursor-not-allowed' : ''}", disabled: @students.last_page? do %>
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+      <% end %>
+    </nav>
+  </div>
+<% end %>
+</div>

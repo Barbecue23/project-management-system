@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,9 +23,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+  <body class="bg-white">
+    <div class="flex h-screen">
+      <%= render "shared/sidebar" %> <!-- Include Sidebar -->
+      
+      <!-- Main Content -->
+      <main class="flex-1 p-6">
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>
