@@ -8,6 +8,9 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ @import "sidebar";
+
  body {
     font-family: 'Poppins', sans-serif;
   }

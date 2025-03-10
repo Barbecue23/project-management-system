@@ -1,48 +1,48 @@
-<aside class="font-poppins w-64 bg-white shadow-md flex flex-col justify-between h-screen">
-<div class="container">
-  <div class="p-4 flex  justify-center ">
-    <%= image_tag "logo.svg", class: "h-10"%>
-    <%= image_tag "title.svg", class: "h-8 ml-2 mt-1 " %>
-  </div>
+<aside class="sidebar">
+  <div class="sidebar-container">
+    <div class="logo-container">
+      <%= image_tag "logo.svg", class: "logo"%>
+      <%= image_tag "title.svg", class: "title" %>
+    </div>
 
     <!-- Navigation -->
-  <nav class="mt-4">
-    <ul class="flex flex-col ">
-        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100 ">
-          <%= link_to "/", class: "font-medium flex items-center space-x-2" do %>
-          <%= image_tag "news.svg", class: "h-5"%> 
-          <span class="ml-2">ข่าวสาร</span>
-        <% end %>
+    <nav class="nav-menu">
+      <ul>
+        <li class="nav-item">
+          <%= link_to "/", class: "nav-link" do %>
+            <%= image_tag "news.svg", class: "icon"%> 
+            <span>ข่าวสาร</span>
+          <% end %>
         </li>
-        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
-          <%= link_to "/advisors/index", class: "font-medium flex items-center space-x-2" do %>
+        <li class="nav-item">
+          <%= link_to "/advisors/index", class: "nav-link" do %>
             ⏳ 
-            <span class="ml-2">อาจารย์ที่ปรึกษา</span>
+            <span>อาจารย์ที่ปรึกษา</span>
           <% end %>
         </li>
-        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100">
-          <%= link_to "#", class: "font-medium flex items-center space-x-2" do %>
-            <%= image_tag "report.svg", class: "h-5 w-6"%> 
-            <span class="ml-2">รูปแบบรายงาน</span>
+        <li class="nav-item">
+          <%= link_to "#", class: "nav-link" do %>
+            <%= image_tag "report.svg", class: "icon"%> 
+            <span>รูปแบบรายงาน</span>
           <% end %>
         </li>
-        <li class="px-6 py-3 text-gray-700 hover:bg-gray-100 ">
-          <%= link_to "/students/index", class: "font-medium flex items-center space-x-2" do %>
+        <li class="nav-item">
+          <%= link_to "/students/index", class: "nav-link" do %>
             📧 
-            <span class="ml-2">นักเรียน</span>
+            <span>นักเรียน</span>
           <% end %>
         </li>
-    </ul>
-  </nav>
-</div>
+      </ul>
+    </nav>
+  </div>
 
   <!-- User Profile -->
-  <div class="p-4 bg-blue-100 flex items-center space-x-3 border-t">
-    <%# <%= image_tag "avatar.png", class: "w-10 h-10 rounded-full", alt: "User" %>
-    <div>
-      <p class="text-sm font-semibold">Mock User</p>
-      <p class="text-xs text-gray-500">Mock role</p>
+  <div class="user-profile">
+    <%# <%= image_tag "avatar.png", class: "avatar", alt: "User" %>
+    <div class="user-info">
+      <p class="user-name">Mock User</p>
+      <p class="user-role">Mock role</p>
     </div>
-    <%= link_to "↗", "#", class: "text-blue-600" %>
+    <%= link_to "↗", "#", class: "profile-link" %>
   </div>
 </aside>
