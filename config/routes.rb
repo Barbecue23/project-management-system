@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "students/index"
   get "advisors/index"
   get "home/index"
+  get "news/index"
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
