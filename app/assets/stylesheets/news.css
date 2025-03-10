@@ -111,7 +111,7 @@
 
 .loading-icon {
   width: 48px;
-  height: 48px;
+  height: 160px;
   fill: #ccc;
   animation: spin 1s linear infinite;
 }

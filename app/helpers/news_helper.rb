@@ -3,7 +3,7 @@ module NewsHelper
         if image.present? && File.exist?(Rails.root.join("app/assets/images", image))
           asset_path(image) # ✅ Use `asset_path` to ensure the correct path
         else
-          asset_path("loading.svg") # ✅ Fallback to a loading icon if the image is missing
+            nil
         end
       end
       
