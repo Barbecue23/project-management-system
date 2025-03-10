@@ -24,11 +24,11 @@
   </head>
 
   <body class="bg-white">
-    <div class="flex h-screen">
+    <div class="layout-container">
       <%= render "shared/sidebar" %> <!-- Include Sidebar -->
       
       <!-- Main Content -->
-      <main class="flex-1 p-6">
+      <main class="main-content">
         <%= yield %>
       </main>
     </div>
