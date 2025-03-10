@@ -12,6 +12,9 @@
  @import "advisors";
  @import "sidebar";
  @import "layout";
+ @import "students";
+
+ 
 
  body {
     font-family: 'Poppins', sans-serif;
