@@ -9,7 +9,7 @@
   /* Main Content */
   .main-content {
     flex: 1;
-    padding: 24px;
+    padding-inline: 16px;
     overflow-y: auto;
   }
   
