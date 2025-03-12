@@ -1,0 +1,177 @@
+/* Main Container */
+.news-form {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Section */
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .page-title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .btn-create-news {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .btn-create-news:hover {
+    background: #0056b3;
+  }
+  
+  /* Form Inputs */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .textarea {
+    height: 100px;
+  }
+  
+  /* Grid Layout */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+  }
+  
+  /* Dropdown Styling */
+  .select-dropdown {
+    appearance: none;
+    background: white;
+    cursor: pointer;
+  }
+  
+  /* Announcer */
+  .announcer-container {
+    position: relative;
+  }
+  
+  .announcer-box {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .announcer-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: gray;
+  }
+  
+  .announcer-box input {
+    padding-left: 30px;
+  }
+  
+  /* Date Picker */
+  .date-picker {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+  
+  /* Image Upload Section */
+  .image-upload-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .banner-upload {
+    flex: 2;
+  }
+  
+  .gallery-upload {
+    flex: 3;
+  }
+  
+  .upload-box {
+    width: 100%;
+    padding: 30px;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    text-align: center;
+    background: #f9f9f9;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .upload-box:hover {
+    border-color: #007bff;
+  }
+  
+  .upload-icon {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 10px;
+  }
+  
+  .upload-text {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .upload-info {
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  /* Small Upload Boxes for Gallery */
+  .gallery-grid {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .upload-box.small {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Note for More Images */
+  .gallery-note {
+    font-size: 12px;
+    color: #888;
+  }
+  

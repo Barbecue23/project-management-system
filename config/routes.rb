@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get "advisors/index"
   get "home/index"
   get "news/index"
+  get "news/new", to: "news#new"  # Route to show the create news page
+  post "news/create", to: "news#create"  # Route to handle form submission
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

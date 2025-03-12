@@ -6,8 +6,8 @@
     <% featured_news = @news.first %>
     <div class="featured-news-card">
       <div class="image-placeholder">
-        <% if news_image_path(featured_news[:image]) %>
-          <img src="<%= news_image_path(featured_news[:image]) %>" 
+        <% if news_image_path(featured_news[:banner_image]) %>
+          <img src="<%= news_image_path(featured_news[:banner_image]) %>" 
                alt="<%= featured_news[:title] %>" 
                class="featured-news-image">
         <% else %>
@@ -18,8 +18,8 @@
       </div>
       <div class="featured-news-content">
         <h2 class="featured-news-title"><%= featured_news[:title] %></h2>
-        <p class="featured-news-info"><%= featured_news[:info] %></p>
-        <p class="featured-news-meta"><%= featured_news[:createAt] %> | <%= featured_news[:createBy] %></p>
+        <p class="featured-news-info"><%= featured_news[:content] %></p>
+        <p class="featured-news-meta"><%= featured_news[:publish_date] %> | <%= featured_news[:announcer] %></p>
       </div>
     </div>
   </div>
@@ -30,8 +30,8 @@
     <% @news[1..-1].each do |news| %>
       <div class="news-card">
         <div class="image-placeholder">
-          <% if news_image_path(news[:image]) %>
-            <img src="<%= news_image_path(news[:image]) %>" 
+          <% if news_image_path(news[:banner_image]) %>
+            <img src="<%= news_image_path(news[:banner_image]) %>" 
                  alt="<%= news[:title] %>" 
                  class="news-image">
           <% else %>
@@ -43,7 +43,7 @@
         <div class="news-content">
           <h3 class="news-title"><%= news[:title] %></h3>
           <p class="news-info"><%= news[:info] %></p>
-          <p class="news-meta"><%= news[:createAt] %> | <%= news[:createBy] %></p>
+          <p class="news-meta"><%= news[:publish_date] %> | <%= news[:announcer] %></p>
         </div>
       </div>
     <% end %>
