@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "reports/index"
   get "students/index"
   get "advisors/index"
   get "home/index"

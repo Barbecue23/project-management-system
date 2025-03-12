@@ -1,0 +1,67 @@
+<div class="container">
+  <h1 class="page-title">รูปแบบรายงาน</h1>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <a href="#" class="tab active">รายงาน</a>
+    <a href="#" class="tab">โครงการที่ผ่านมา</a>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="search-filter">
+    <div class="search-wrapper">
+      <svg class="search-report-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#7a7a7a" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      <input type="text" placeholder="Search" class="search-input">
+    </div>
+     <%= button("Filters", type: :secondary , icon: raw(
+      '<svg style="width: 1rem; height: 1rem; margin-right: 0.75rem; xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+        stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 
+        01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      </svg>'))  %>
+  </div>
+
+  <!-- Table -->
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ชื่อไฟล์</th>
+        <th>โดย</th>
+        <th>วันที่อัปโหลด</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reports.each do |report| %>
+        <tr>
+          <td>
+            <span class="file-icon">
+              <% if report[:name].end_with?(".jpg", ".jpeg", ".png", ".gif") %>
+                📷
+              <% elsif report[:name].end_with?(".mp4", ".mov", ".avi") %>
+                🎥
+              <% elsif report[:name].end_with?(".pdf") %>
+                📄
+              <% elsif report[:name].end_with?(".doc", ".docx") %>
+                📝
+              <% else %>
+                📁
+              <% end %>
+            </span>
+            <%= report[:name] %>
+          </td>
+          <td><%= report[:uploader] %></td>
+          <td><%= report[:date] %></td>
+          <td class="col-btn">
+            <%= button("ดู", type: :secondary) %>
+            <%= button("ดาวน์โหลด", type: :primary) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+</div>
