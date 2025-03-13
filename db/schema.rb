@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_06_070856) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_13_022332) do
   create_table "advisor_group_members", force: :cascade do |t|
     t.integer "group_id", null: false
     t.integer "user_id", null: false
@@ -117,7 +117,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_070856) do
 #   Unknown type '' for column 'id'
 
 
-  add_foreign_key "advisor_group_members", "groups"
+  add_foreign_key "advisor_group_members", "advisor_groups", column: "group_id"
   add_foreign_key "advisor_group_members", "users"
   add_foreign_key "advisor_groups", "owner_ids"
   add_foreign_key "advisor_requests", "advisor_group_members"
