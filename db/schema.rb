@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_13_074931) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_14_090314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "map_permissions", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.bigint "permission_id", null: false
+    t.boolean "can_view", default: false
+    t.boolean "can_create", default: false
+    t.boolean "can_edit", default: false
+    t.boolean "can_delete", default: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_map_permissions_on_permission_id"
+    t.index ["role_id"], name: "index_map_permissions_on_role_id"
+  end
 
   create_table "permissions", force: :cascade do |t|
     t.string "name", null: false
@@ -44,5 +59,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_13_074931) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "map_permissions", "permissions"
+  add_foreign_key "map_permissions", "roles"
   add_foreign_key "users", "roles"
 end
