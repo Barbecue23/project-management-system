@@ -11,6 +11,8 @@ services:
       - .env
     ports:
       - 3000:3000
+    depends_on:
+      - POSTGRES_DBdoc
     # restart: always  # ✅ รีสตาร์ทตลอดจนกว่ามันจะเชื่อม DB ได้
   POSTGRES_DBdoc:
     image: postgres:15
