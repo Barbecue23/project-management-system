@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_13_073512) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_13_074931) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
+  create_table "permissions", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "default_view", default: false
+    t.boolean "default_create", default: false
+    t.boolean "default_edit", default: false
+    t.boolean "default_delete", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "created_by"
