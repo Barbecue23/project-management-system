@@ -3,13 +3,9 @@
 one:
   name: MyString
   student_id: MyString
-  faculty: MyString
-  major: MyString
   email: MyString
 
 two:
   name: MyString
   student_id: MyString
-  faculty: MyString
-  major: MyString
   email: MyString

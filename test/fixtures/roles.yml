@@ -2,10 +2,6 @@
 
 one:
   name: MyString
-  created_at: MyString
-  updated_at: MyString
 
 two:
   name: MyString
-  created_at: MyString
-  updated_at: MyString
