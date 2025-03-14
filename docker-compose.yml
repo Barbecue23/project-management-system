@@ -1,0 +1,47 @@
+services:
+  web:
+    image: test:latest
+    container_name: web
+    networks:
+      - management_system_network
+    environment: 
+      db_host: db:5432
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    # restart: always  # ✅ รีสตาร์ทตลอดจนกว่ามันจะเชื่อม DB ได้
+  POSTGRES_DBdoc:
+    image: postgres:15
+    container_name: POSTGRES_DB
+    networks:
+      - management_system_network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: management_system
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+      
+  minio:
+    image: minio/minio:RELEASE.2025-02-28T09-55-16Z
+    container_name: minio
+    networks:
+      - management_system_network
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+
+
+networks:
+  management_system_network:
+    driver: bridge
+
+volumes:
+  minio_data:
+  postgres_data:
