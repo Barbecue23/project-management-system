@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_16_151922) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_16_152355) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_151922) do
     t.datetime "updated_at", null: false
     t.index ["permission_id"], name: "index_map_permissions_on_permission_id"
     t.index ["role_id"], name: "index_map_permissions_on_role_id"
+  end
+
+  create_table "news", force: :cascade do |t|
+    t.string "title"
+    t.string "content"
+    t.boolean "is_public"
+    t.string "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "news_groups", force: :cascade do |t|
+    t.bigint "news_id", null: false
+    t.bigint "advisor_group_id", null: false
+    t.string "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advisor_group_id"], name: "index_news_groups_on_advisor_group_id"
+    t.index ["news_id"], name: "index_news_groups_on_news_id"
   end
 
   create_table "permissions", force: :cascade do |t|
@@ -114,6 +133,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_151922) do
   add_foreign_key "advisor_requests", "users", column: "student_id"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
+  add_foreign_key "news_groups", "advisor_groups"
+  add_foreign_key "news_groups", "news"
   add_foreign_key "student_group_members", "advisor_group_members"
   add_foreign_key "student_group_members", "seasons"
   add_foreign_key "student_group_members", "users"
