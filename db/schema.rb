@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_16_041827) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_16_151604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,6 +72,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_041827) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "student_group_members", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "season_id", null: false
+    t.integer "year_term", null: false
+    t.bigint "advisor_group_member_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advisor_group_member_id"], name: "index_student_group_members_on_advisor_group_member_id"
+    t.index ["season_id"], name: "index_student_group_members_on_season_id"
+    t.index ["user_id"], name: "index_student_group_members_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "student_id"
@@ -88,5 +100,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_041827) do
   add_foreign_key "advisor_group_members", "users"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
+  add_foreign_key "student_group_members", "advisor_group_members"
+  add_foreign_key "student_group_members", "seasons"
+  add_foreign_key "student_group_members", "users"
   add_foreign_key "users", "roles"
 end
