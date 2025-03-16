@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_16_151604) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_16_151922) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,6 +29,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_151604) do
     t.integer "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "advisor_requests", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "advisor_group_member_id", null: false
+    t.string "status", null: false
+    t.string "season_year_term", null: false
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advisor_group_member_id"], name: "index_advisor_requests_on_advisor_group_member_id"
+    t.index ["student_id"], name: "index_advisor_requests_on_student_id"
   end
 
   create_table "map_permissions", force: :cascade do |t|
@@ -98,6 +110,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_151604) do
 
   add_foreign_key "advisor_group_members", "advisor_groups", column: "advisor_groups_id"
   add_foreign_key "advisor_group_members", "users"
+  add_foreign_key "advisor_requests", "advisor_group_members"
+  add_foreign_key "advisor_requests", "users", column: "student_id"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
   add_foreign_key "student_group_members", "advisor_group_members"
