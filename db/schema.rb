@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_14_090314) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_16_041827) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "advisor_group_members", force: :cascade do |t|
+    t.bigint "advisor_groups_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "is_owner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advisor_groups_id"], name: "index_advisor_group_members_on_advisor_groups_id"
+    t.index ["user_id"], name: "index_advisor_group_members_on_user_id"
+  end
+
+  create_table "advisor_groups", force: :cascade do |t|
+    t.string "group_name"
+    t.integer "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "map_permissions", force: :cascade do |t|
     t.bigint "role_id", null: false
@@ -47,6 +64,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_14_090314) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "seasons", force: :cascade do |t|
+    t.jsonb "seasons_detail", default: {}, null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "student_id"
@@ -59,6 +84,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_14_090314) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "advisor_group_members", "advisor_groups", column: "advisor_groups_id"
+  add_foreign_key "advisor_group_members", "users"
   add_foreign_key "map_permissions", "permissions"
   add_foreign_key "map_permissions", "roles"
   add_foreign_key "users", "roles"

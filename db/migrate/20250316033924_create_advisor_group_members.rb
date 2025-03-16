@@ -1,0 +1,11 @@
+class CreateAdvisorGroupMembers < ActiveRecord::Migration[8.0]
+  def change
+    create_table :advisor_group_members do |t|
+      t.references :advisor_groups, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: true
+      t.boolean :is_owner
+
+      t.timestamps
+    end
+  end
+end
