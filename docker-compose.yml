@@ -1,6 +1,6 @@
 services:
   web:
-    image: test:latest
+    image: ghcr.io/barbecue23/project-management-system:latest
     container_name: web
     networks:
       - management_system_network
@@ -13,7 +13,7 @@ services:
       - 3000:3000
     depends_on:
       - POSTGRES_DBdoc
-    # restart: always  # ✅ รีสตาร์ทตลอดจนกว่ามันจะเชื่อม DB ได้
+    restart: unless-stopped
   POSTGRES_DBdoc:
     image: postgres:15
     container_name: POSTGRES_DB
