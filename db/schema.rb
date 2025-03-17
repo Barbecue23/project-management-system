@@ -15,12 +15,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_152355) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "advisor_group_members", force: :cascade do |t|
-    t.bigint "advisor_groups_id", null: false
+    t.bigint "advisor_group_id", null: false
     t.bigint "user_id", null: false
     t.boolean "is_owner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["advisor_groups_id"], name: "index_advisor_group_members_on_advisor_groups_id"
+    t.index ["advisor_group_id"], name: "index_advisor_group_members_on_advisor_group_id"
     t.index ["user_id"], name: "index_advisor_group_members_on_user_id"
   end
 
@@ -127,7 +127,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_16_152355) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  add_foreign_key "advisor_group_members", "advisor_groups", column: "advisor_groups_id"
+  add_foreign_key "advisor_group_members", "advisor_groups"
   add_foreign_key "advisor_group_members", "users"
   add_foreign_key "advisor_requests", "advisor_group_members"
   add_foreign_key "advisor_requests", "users", column: "student_id"
