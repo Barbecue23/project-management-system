@@ -1,7 +1,8 @@
 # how to run dev 
 
 ```
-./bin/dev
+make image or docker-compose build 
+make up or docker-compose up
 ```
 or
 
