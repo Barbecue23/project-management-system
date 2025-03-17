@@ -6,15 +6,14 @@ module NewsHelper
             nil
         end
       end
-      
-    # def news_image_path(image)
-    #     if image.present? # If image is stored in the database 
-    #       image # Directly return the image URL
-    #     elsif Rails.public_path.join("assets", image).exist?
-    #       asset_path(image) # Use local asset
-    #     else
-    #       asset_path("placeholder.png") # Use placeholder if nothing is found
-    #     end
-    #   end
-  end
-  
+
+  # def news_image_path(image)
+  #     if image.present? # If image is stored in the database
+  #       image # Directly return the image URL
+  #     elsif Rails.public_path.join("assets", image).exist?
+  #       asset_path(image) # Use local asset
+  #     else
+  #       asset_path("placeholder.png") # Use placeholder if nothing is found
+  #     end
+  #   end
+end
