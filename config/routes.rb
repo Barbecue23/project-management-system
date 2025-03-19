@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :roles, only: [:edit, :update , :index, :new, :create]
+
   get "reports/index"
   get "students/index"
   get "advisors/index"

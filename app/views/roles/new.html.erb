@@ -1,0 +1,50 @@
+<h1>Roles#new</h1>
+
+<%= form_with(model: @role, url: roles_path, method: :post) do |f| %>
+
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+ <h2>Users</h2>
+  <% User.all.each do |user| %>
+    <p>
+      <%= check_box_tag 'user_ids[]', user.id %> <%= user.name %>
+    </p>
+  <% end %>
+  <h2>Permissions</h2>
+  <% Permission.all.each do |perm| %>
+    <% map_perm = @role.map_permissions.find_by(permission_id: perm.id) if @role.persisted? %>
+
+    <p><strong><%= perm.name %></strong></p>
+
+    <% if perm.default_view %>
+      <label>
+        <%= check_box_tag "permissions[#{perm.id}][can_view]", true, map_perm&.can_view %> View
+      </label>
+    <% end %>
+
+    <% if perm.default_create %>
+      <label>
+        <%= check_box_tag "permissions[#{perm.id}][can_create]", true, map_perm&.can_create %> Create
+      </label>
+    <% end %>
+
+    <% if perm.default_edit %>
+      <label>
+        <%= check_box_tag "permissions[#{perm.id}][can_edit]", true, map_perm&.can_edit %> Edit
+      </label>
+    <% end %>
+
+    <% if perm.default_delete %>
+      <label>
+        <%= check_box_tag "permissions[#{perm.id}][can_delete]", true, map_perm&.can_delete %> Delete
+      </label>
+    <% end %>
+
+    <hr>
+  <% end %>
+  <div>
+    <%= f.submit 'Create User' %>
+  </div>
+<% end %>
