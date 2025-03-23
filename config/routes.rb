@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get "reports/index"
   get "students/index"
   get "advisors/index"
+  get "advisors/new", to: "advisors#new"  # Route to show the create advisor page
+  post "advisors/create", to: "advisors#create"  # Route to handle form submission
   get "home/index"
   get "news/index"
   get "news/new", to: "news#new"  # Route to show the create news page

@@ -15,4 +15,46 @@ class AdvisorsController < ApplicationController
 
     @advisors = Kaminari.paginate_array(advisors).page(params[:page]).per(5) # Paginate 4 per page
   end
+
+  def new 
+    @advisor_group = AdvisorGroup.new
+  end
+
+  def create
+    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: 1))
+    
+    if @advisor_group.save
+      # ตรวจสอบ owner และเพิ่มเข้าไปในกลุ่มถ้ายังไม่มี
+      is_owner = AdvisorGroupMember.find_by(user_id: @advisor_group.owner_id)
+      if is_owner.nil? || !is_owner.is_owner
+        AdvisorGroupMember.create!(advisor_group: @advisor_group, user_id: @advisor_group.owner_id, is_owner: true)
+      end
+  
+      user_ids = params[:user_ids] || []
+      @advisor_group_members = user_ids.map do |user_id|
+        existing_member = AdvisorGroupMember.find_by(user_id: user_id)
+  
+        if existing_member.nil?
+          # ✅ ถ้ายังไม่มีอยู่ในระบบ → สร้างใหม่
+          AdvisorGroupMember.create!(advisor_group: @advisor_group, user_id: user_id, is_owner: false)
+        elsif !existing_member.is_owner && existing_member.advisor_group_id != @advisor_group.id
+          # 🔄 ถ้ามีอยู่แล้วแต่เป็นกลุ่มอื่น และไม่ใช่ owner → อัปเดตให้ย้ายมาอยู่กลุ่มใหม่
+          existing_member.update!(advisor_group: @advisor_group)
+        end
+      end
+  
+      redirect_to advisors_new_path
+    else
+      render :new
+    end
+  end
+  
+  
+  
+
+  private
+
+  def advisor_group_params
+    params.require(:advisor_group).permit(:group_name)
+  end
 end
