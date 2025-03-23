@@ -50,8 +50,46 @@ class AdvisorsController < ApplicationController
   end
   
   
-  
+  def detail_group
+    @advisor_group = AdvisorGroup.all
+  end
 
+  def edit
+    @advisor_group = AdvisorGroup.find(params[:id])
+    @advisor_group_members = @advisor_group.advisor_group_members.pluck(:user_id)
+  end
+
+  def update
+    @advisor_group = AdvisorGroup.find(params[:id])
+  
+    if @advisor_group.update(advisor_group_params)
+      # ✅ อัปเดต Owner ถ้ายังไม่มี
+      owner_member = AdvisorGroupMember.find_or_initialize_by(user_id: @advisor_group.owner_id, advisor_group: @advisor_group)
+      owner_member.update!(is_owner: true)
+  
+      # ✅ อัปเดตสมาชิกกลุ่ม
+      user_ids = params[:user_ids] || []
+      existing_member_ids = @advisor_group.advisor_group_members.pluck(:user_id)
+  
+      # 🔹 เพิ่มหรืออัปเดตสมาชิกที่เลือก
+      user_ids.each do |user_id|
+        member = AdvisorGroupMember.find_or_initialize_by(user_id: user_id, advisor_group: @advisor_group)
+        member.update!(is_owner: false)
+      end
+  
+      # 🔥 ลบสมาชิกที่ไม่ได้ถูกเลือก
+      members_to_remove = existing_member_ids - user_ids.map(&:to_i)
+      @advisor_group.advisor_group_members.where(user_id: members_to_remove).destroy_all
+  
+      # 🎯 สำเร็จ → Redirect
+      redirect_to advisors_detail_group_path, notice: "Advisor Group updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+  
+  
+  
   private
 
   def advisor_group_params

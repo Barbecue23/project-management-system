@@ -1,0 +1,9 @@
+<div>
+    <ul>
+        <% @advisor_group.each do |advisor| %>
+        <li><%= advisor.group_name %></li>
+        <td><%= link_to 'Edit' , advisors_edit_path(id:advisor.id) %></td>       
+         <% end %>
+    </ul
+    
+</div>
