@@ -1,0 +1,16 @@
+<%= form_with(model: @advisor_group, url: advisors_create_path, method: :post) do |f| %>
+    <div>
+        <%= f.label :group_name %>
+        <%= f.text_field :group_name %>
+    </div>
+
+     <h2>Users</h2>
+        <% User.all.each do |user| %>
+            <p>
+            <%= check_box_tag 'user_ids[]', user.id %> <%= user.name %>
+            </p>
+        <% end %>
+    <div>
+        <%= f.submit 'Create User' %>
+    </div>
+<% end %>

@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   get "reports/index"
   get "students/index"
   get "advisors/index"
+  get "advisors/new", to: "advisors#new"  # Route to show the create advisor page
+  post "advisors/create", to: "advisors#create"  # Route to handle form submission
+  get "advisors/detail_group", to: "advisors#detail_group"  # Route to show the detail advisor group page
+  get "advisors/edit"
+  patch "advisors/:id", to: "advisors#update", as: "advisor_update"
   get "home/index"
   get "news/index"
   get "news/new", to: "news#new"  # Route to show the create news page
