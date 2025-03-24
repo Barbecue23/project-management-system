@@ -15,21 +15,14 @@
   <!-- Content -->
   <div class="form-group">
     <label>Content</label>
-    <%= text_area_tag :info, @news[:info], class: "form-control textarea", placeholder: "Enter news content" %>
+    <%= text_area_tag :content, @news[:content], class: "form-control textarea", placeholder: "Enter news content" %>
   </div>
 
   <!-- Category, Announcer, Publish Date -->
   <div class="form-row">
     <div class="form-group">
       <label>Category</label>
-      <%= select_tag :category, options_for_select(["Technology", "Education", "Sports", "Administration"], @news[:category]), { prompt: "Select", class: "form-control select-dropdown" } %>
-    </div>
-    <div class="form-group announcer-container">
-      <label>Announcer</label>
-      <div class="announcer-box">
-        <span class="announcer-icon">🔘</span>
-        <%= text_field_tag :announcer, @news[:announcer], class: "form-control select-dropdown", placeholder: "Select" %>
-      </div>
+      <%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), @news[:category]), { prompt: "Select", class: "form-control select-dropdown" } %>
     </div>
     <div class="form-group">
       <label>Publish Date</label>
