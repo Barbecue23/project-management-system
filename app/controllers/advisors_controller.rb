@@ -16,24 +16,24 @@ class AdvisorsController < ApplicationController
     @advisors = Kaminari.paginate_array(advisors).page(params[:page]).per(5) # Paginate 4 per page
   end
 
-  def new 
+  def new
     @advisor_group = AdvisorGroup.new
   end
 
   def create
     @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: 1))
-    
+
     if @advisor_group.save
       # ตรวจสอบ owner และเพิ่มเข้าไปในกลุ่มถ้ายังไม่มี
       is_owner = AdvisorGroupMember.find_by(user_id: @advisor_group.owner_id)
       if is_owner.nil? || !is_owner.is_owner
         AdvisorGroupMember.create!(advisor_group: @advisor_group, user_id: @advisor_group.owner_id, is_owner: true)
       end
-  
+
       user_ids = params[:user_ids] || []
       @advisor_group_members = user_ids.map do |user_id|
         existing_member = AdvisorGroupMember.find_by(user_id: user_id)
-  
+
         if existing_member.nil?
           # ✅ ถ้ายังไม่มีอยู่ในระบบ → สร้างใหม่
           AdvisorGroupMember.create!(advisor_group: @advisor_group, user_id: user_id, is_owner: false)
@@ -42,14 +42,14 @@ class AdvisorsController < ApplicationController
           existing_member.update!(advisor_group: @advisor_group)
         end
       end
-  
+
       redirect_to advisors_new_path
     else
       render :new
     end
   end
-  
-  
+
+
   def detail_group
     @advisor_group = AdvisorGroup.all
   end
@@ -61,35 +61,35 @@ class AdvisorsController < ApplicationController
 
   def update
     @advisor_group = AdvisorGroup.find(params[:id])
-  
+
     if @advisor_group.update(advisor_group_params)
       # ✅ อัปเดต Owner ถ้ายังไม่มี
       owner_member = AdvisorGroupMember.find_or_initialize_by(user_id: @advisor_group.owner_id, advisor_group: @advisor_group)
       owner_member.update!(is_owner: true)
-  
+
       # ✅ อัปเดตสมาชิกกลุ่ม
       user_ids = params[:user_ids] || []
       existing_member_ids = @advisor_group.advisor_group_members.pluck(:user_id)
-  
+
       # 🔹 เพิ่มหรืออัปเดตสมาชิกที่เลือก
       user_ids.each do |user_id|
         member = AdvisorGroupMember.find_or_initialize_by(user_id: user_id, advisor_group: @advisor_group)
         member.update!(is_owner: false)
       end
-  
+
       # 🔥 ลบสมาชิกที่ไม่ได้ถูกเลือก
       members_to_remove = existing_member_ids - user_ids.map(&:to_i)
       @advisor_group.advisor_group_members.where(user_id: members_to_remove).destroy_all
-  
+
       # 🎯 สำเร็จ → Redirect
       redirect_to advisors_detail_group_path, notice: "Advisor Group updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end
   end
-  
-  
-  
+
+
+
   private
 
   def advisor_group_params

@@ -1,5 +1,5 @@
 class RolesController < ApplicationController
-  before_action :set_users_and_permissions, only: [:new, :create]
+  before_action :set_users_and_permissions, only: [ :new, :create ]
 
   def index
     @roles = Role.includes(:users, :permissions).all
@@ -12,7 +12,7 @@ class RolesController < ApplicationController
 
   def create
     @role = Role.new(role_params.merge(created_by: "system", updated_by: "system"))
-    
+
     return render :new unless @role.save
 
     assign_users_to_role
