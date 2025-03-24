@@ -15,6 +15,9 @@ services:
     depends_on:
       - POSTGRES_DBdoc
     restart: unless-stopped
+    command: >
+      sh -c "bin/rails db:migrate && bundle exec puma -C config/puma.rb"
+
   POSTGRES_DBdoc:
     image: postgres:15
     container_name: POSTGRES_DB

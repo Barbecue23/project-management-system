@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get "news/index"
   get "news/new", to: "news#new"  # Route to show the create news page
   post "news/create", to: "news#create"  # Route to handle form submission
-  root "home#index"
+  root "news#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
