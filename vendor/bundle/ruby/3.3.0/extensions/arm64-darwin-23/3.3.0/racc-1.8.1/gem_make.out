@@ -1,0 +1,18 @@
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+/Users/odds/.rbenv/versions/3.3.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-x71biy sitelibdir\=./.gem.20250324-93977-x71biy clean
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-x71biy sitelibdir\=./.gem.20250324-93977-x71biy
+compiling cparse.c
+linking shared-object racc/cparse.bundle
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-x71biy sitelibdir\=./.gem.20250324-93977-x71biy install
+/usr/bin/install -c -m 0755 cparse.bundle ./.gem.20250324-93977-x71biy/racc
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-x71biy sitelibdir\=./.gem.20250324-93977-x71biy clean

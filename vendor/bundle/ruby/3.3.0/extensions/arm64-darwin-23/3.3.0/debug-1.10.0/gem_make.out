@@ -1,0 +1,19 @@
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/debug-1.10.0/ext/debug
+/Users/odds/.rbenv/versions/3.3.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-fl34ud sitelibdir\=./.gem.20250324-93977-fl34ud clean
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-fl34ud sitelibdir\=./.gem.20250324-93977-fl34ud
+compiling debug.c
+compiling iseq_collector.c
+linking shared-object debug/debug.bundle
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-fl34ud sitelibdir\=./.gem.20250324-93977-fl34ud install
+/usr/bin/install -c -m 0755 debug.bundle ./.gem.20250324-93977-fl34ud/debug
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/debug-1.10.0/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20250324-93977-fl34ud sitelibdir\=./.gem.20250324-93977-fl34ud clean
