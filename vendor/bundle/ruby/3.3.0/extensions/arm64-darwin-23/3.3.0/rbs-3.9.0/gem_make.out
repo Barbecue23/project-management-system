@@ -1,0 +1,28 @@
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.0/ext/rbs_extension
+/Users/odds/.rbenv/versions/3.3.1/bin/ruby extconf.rb
+checking for whether -std=gnu99 is accepted as CFLAGS... yes
+creating Makefile
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.0/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250325-70011-8pzdok sitelibdir\=./.gem.20250325-70011-8pzdok clean
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.0/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250325-70011-8pzdok sitelibdir\=./.gem.20250325-70011-8pzdok
+compiling ./../../src/constants.c
+compiling ./../../src/ruby_objs.c
+compiling ./../../src/util/rbs_constant_pool.c
+compiling lexer.c
+compiling lexstate.c
+compiling location.c
+compiling main.c
+compiling parser.c
+compiling parserstate.c
+compiling unescape.c
+linking shared-object rbs_extension.bundle
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.0/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250325-70011-8pzdok sitelibdir\=./.gem.20250325-70011-8pzdok install
+/usr/bin/install -c -m 0755 rbs_extension.bundle ./.gem.20250325-70011-8pzdok
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.0/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250325-70011-8pzdok sitelibdir\=./.gem.20250325-70011-8pzdok clean
