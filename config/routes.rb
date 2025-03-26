@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :seasons, except: [:show]
+  resources :seasons, except: [ :show ]
 
   resources :roles, only: [ :edit, :update, :index, :new, :create ]
 
