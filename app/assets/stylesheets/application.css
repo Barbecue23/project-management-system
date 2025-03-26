@@ -10,7 +10,7 @@
  */
 
 @import "advisors";
-@import"detail_group";
+@import "detail_group";
 @import "sidebar";
 @import "layout";
 @import "students";
@@ -55,7 +55,11 @@ body {
   background-color: #fcdede;
   color: #c62828;
   border-width: 0px;
+}
 
+.btn-delete:hover {
+  background-color: #f53636;
+  color: #ffffff;
 }
 /* Disabled button */
 .btn-disabled {
