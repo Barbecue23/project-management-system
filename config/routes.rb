@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   post "advisors/accept_request", to: "advisors#accept_request"
   post "advisors/reject_request", to: "advisors#reject_request"
   get "advisors/edit"
-  get 'advisors/detail_group', to: 'advisors#detail_group', as: 'advisors_group_overview'
+  get "advisors/detail_group", to: "advisors#detail_group", as: "advisors_group_overview"
   patch "advisors/:id", to: "advisors#update", as: "advisor_update"
   get "home/index"
   get "news/index"

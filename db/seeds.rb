@@ -75,5 +75,5 @@ AdvisorGroupMember.create!([
     is_owner: true,
     created_at: Time.zone.now,
     updated_at: Time.zone.now
-  },
+  }
 ])
