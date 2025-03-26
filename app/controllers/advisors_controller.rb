@@ -132,7 +132,7 @@ class AdvisorsController < ApplicationController
       redirect_to advisors_requests_path
     end
   end
-  
+
   def reject_request
     @advisor_request = AdvisorRequest.find(params[:id])
     @advisor_request.update(status: "rejected")
