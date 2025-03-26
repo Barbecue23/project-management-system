@@ -50,11 +50,28 @@ class AdvisorsController < ApplicationController
     end
   end
 
-
   def detail_group
-    @advisor_group = AdvisorGroup.all
+    @groups = AdvisorGroup.all
+    @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @groups.first
+  
+    @advisors_in_group = User
+      .joins(:advisor_group_members)
+      .where(advisor_group_members: { advisor_group_id: @selected_group.id })
   end
-
+  
+  def advisor_group_overview
+    @groups = AdvisorGroup.all
+    @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @groups.first
+  
+    if @selected_group
+      @advisors_in_group = User
+        .joins(:advisor_group_members)
+        .where(advisor_group_members: { advisor_group_id: @selected_group.id })
+        .where(role_id: Role.find_by(name: "advisor")&.id)
+    else
+      @advisors_in_group = []
+    end
+  end
   def edit
     @advisor_group = AdvisorGroup.find(params[:id])
     @advisor_group_members = @advisor_group.advisor_group_members.pluck(:user_id)
