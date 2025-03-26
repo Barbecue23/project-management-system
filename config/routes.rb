@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   post "advisors/create", to: "advisors#create"  # Route to handle form submission
   get "advisors/detail_group", to: "advisors#detail_group"  # Route to show the detail advisor group page
   post "advisors/student_requests", to: "advisors#student_requests"  # Route to handle form submission
+  get "advisors/requests"
+  post "advisors/accept_request", to: "advisors#accept_request"
+  post "advisors/reject_request", to: "advisors#reject_request"
   get "advisors/edit"
   get 'advisors/detail_group', to: 'advisors#detail_group', as: 'advisors_group_overview'
   patch "advisors/:id", to: "advisors#update", as: "advisor_update"

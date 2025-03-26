@@ -1,0 +1,14 @@
+<% @advisor_requests.each do |advisor_request| %>
+    <div class="advisor-request">
+        <div class="advisor-request-info">
+            <div class="advisor-request-name"><%= advisor_request.student.name %></div>
+            <div class="advisor-request-major"><%= advisor_request.student.student_id %></div>
+            <div class="advisor-request-email"><%= advisor_request.student.email %></div>
+            <div class="advisor-request-status"><%= advisor_request.status %></div>
+        </div>
+        <div class="advisor-request-actions">
+            <%= button_to "ยอมรับ", advisors_accept_request_path(id: advisor_request.id), method: :post, class: "btn btn-primary" %>
+            <%= button_to "ปฏิเสธ", advisors_reject_request_path(id: advisor_request.id),method: :post, class: "btn btn-danger" %>
+        </div>
+    </div>
+<% end %>

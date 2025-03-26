@@ -115,6 +115,29 @@ class AdvisorsController < ApplicationController
     )
   end
 
+  def requests
+    @advisor_requests = AdvisorRequest.includes(student: :advisor_group_members).all
+  end
+
+  def accept_request
+    @advisor_request = AdvisorRequest.find(params[:id])
+    @student_group_members = StudentGroupMember.create(
+      user_id: @advisor_request.student.id,
+      season_id: 6,
+      year_term: "2567/3",
+      advisor_group_member_id: @advisor_request.advisor_group_member_id
+    )
+    if @student_group_members.save
+      @advisor_request.update(status: "accepted")
+      redirect_to advisors_requests_path
+    end
+  end
+  
+  def reject_request
+    @advisor_request = AdvisorRequest.find(params[:id])
+    @advisor_request.update(status: "rejected")
+    redirect_to advisors_requests_path
+  end
   private
 
   def advisor_group_params
