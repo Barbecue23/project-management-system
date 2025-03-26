@@ -10,6 +10,7 @@
  */
 
 @import "advisors";
+@import"detail_group";
 @import "sidebar";
 @import "layout";
 @import "students";
@@ -50,6 +51,12 @@ body {
   text-decoration: #888888;
 }
 
+.btn-delete {
+  background-color: #fcdede;
+  color: #c62828;
+  border-width: 0px;
+
+}
 /* Disabled button */
 .btn-disabled {
   background-color: #e5e5e5; /* bg-gray-200 */
