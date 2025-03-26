@@ -1,0 +1,35 @@
+<h1>Seasons#index</h1>
+<p>Find me in app/views/seasons/index.html.erb</p>
+
+<label>Season</label>
+<td><%= link_to 'New Season', new_season_path %></td>       
+
+<table border="1">
+  <tr>
+    <th>Season Name</th>
+    <th>Seasons Detail</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th colspan="2">Actions</th>
+  </tr>
+
+  <% @seasons.each do |season| %>
+    <tr>
+        <td><%= season.season_name %></td>
+
+        <!-- แก้ไขการแสดง seasons_detail -->
+        <td>
+            <% season.seasons_detail.each do |detail| %>
+            <% season_info = detail.values.first %>
+            <p>ปี <%= season_info["year"] %> เทอม <%= season_info["term"] %></p>
+            <% end %>
+        </td>
+
+        <td><%= season.start_date %></td>
+        <td><%= season.end_date %></td>
+        <td><%= link_to 'Edit' , edit_season_path(id: season.id)%></td>
+        <td><%= link_to 'Delete', season_path(season),data: { "turbo-method": :delete }%></td>
+    </tr>
+  <% end %>
+</table>
+
