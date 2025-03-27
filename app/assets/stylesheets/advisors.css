@@ -179,32 +179,4 @@
     pointer-events: none;
   }
   
-  .table-container {
-    overflow-x: auto;
-  }
-  
-  .table {
-    width: 100%;
-    background-color: white;
-    border-collapse: collapse;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  
-  .table thead {
-    background-color: #f3f6f9;
-    color: #4b5563;
-    font-size: 0.875rem;
-  }
-  
-  .table th,
-  .table td {
-    padding: 12px 24px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .table tbody tr:hover {
-    background-color: #f9fafb;
-  }
   

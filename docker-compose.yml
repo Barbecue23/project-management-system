@@ -20,6 +20,8 @@ services:
 
   POSTGRES_DBdoc:
     image: postgres:15
+    ports:
+      - "5432:5432" 
     container_name: POSTGRES_DB
     networks:
       - management_system_network
