@@ -52,7 +52,7 @@ class AdvisorsController < ApplicationController
 
   def detail_group
     @advisor_group = AdvisorGroup.all
-    @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @groups.first
+    @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @advisor_group.first
 
     @advisors_in_group = User
       .joins(:advisor_group_members)
