@@ -1,35 +1,41 @@
-<h1>Seasons#index</h1>
-<p>Find me in app/views/seasons/index.html.erb</p>
+<div class="news-form">
+  <div class="form-header">
+    <h1 class="page-title">จัดการรอบการศึกษา</h1>
+    <%= link_to 'สร้างรอบใหม่', new_season_path, class: "btn-create-news" %>
+  </div>
 
-<label>Season</label>
-<td><%= link_to 'New Season', new_season_path %></td>       
-
-<table border="1">
-  <tr>
-    <th>Season Name</th>
-    <th>Seasons Detail</th>
-    <th>Start Date</th>
-    <th>End Date</th>
-    <th colspan="2">Actions</th>
-  </tr>
-
-  <% @seasons.each do |season| %>
-    <tr>
-        <td><%= season.season_name %></td>
-
-        <!-- แก้ไขการแสดง seasons_detail -->
-        <td>
-            <% season.seasons_detail.each do |detail| %>
-            <% season_info = detail.values.first %>
-            <p>ปี <%= season_info["year"] %> เทอม <%= season_info["term"] %></p>
-            <% end %>
-        </td>
-
-        <td><%= season.start_date %></td>
-        <td><%= season.end_date %></td>
-        <td><%= link_to 'Edit' , edit_season_path(id: season.id)%></td>
-        <td><%= link_to 'Delete', season_path(season),data: { "turbo-method": :delete }%></td>
-    </tr>
-  <% end %>
-</table>
-
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ชื่อรอบ</th>
+          <th>รายละเอียด</th>
+          <th>วันที่เริ่ม</th>
+          <th>วันที่สิ้นสุด</th>
+          <th style="display=flex;"colspan="2">การกระทำ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @seasons.each do |season| %>
+          <tr>
+            <td><%= season.season_name %></td>
+            <td>
+              <% season.seasons_detail.each do |detail| %>
+                <% season_info = detail.values.first %>
+                <p>ปี <%= season_info["year"] %> เทอม <%= season_info["term"] %></p>
+              <% end %>
+            </td>
+            <td><%= season.start_date.strftime("%d/%m/%Y") %></td>
+            <td><%= season.end_date.strftime("%d/%m/%Y") %></td>
+            <td>
+              <%= link_to 'แก้ไข', edit_season_path(id: season.id), class: "btn btn-primary" %>
+            </td>
+            <td>
+              <%= link_to 'ลบ', season_path(season), data: { turbo_method: :delete, turbo_confirm: "คุณแน่ใจหรือไม่ว่าต้องการลบ?" }, class: "btn btn-delete" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

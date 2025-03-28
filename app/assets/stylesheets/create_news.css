@@ -54,6 +54,7 @@ label {
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .textarea {
@@ -63,7 +64,7 @@ label {
 /* Grid Layout */
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
 
@@ -213,3 +214,4 @@ label {
 .upload-box.small:hover {
     border-color: #007bff;
 }
+
