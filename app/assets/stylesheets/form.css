@@ -1,5 +1,5 @@
 /* Main Container */
-.news-form {
+.form {
   max-width: 100%;
   padding: 32px;
   background: #fff;
@@ -14,12 +14,14 @@
   margin-bottom: 20px;
 }
 
+/* Page Title */
 .page-title {
-  font-size: 22px;
+  font-size: 1.8rem;
   font-weight: bold;
+  margin-bottom: 24px;
 }
 
-.btn-create-news {
+.btn-create {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +34,7 @@
   color: #587ea0; 
 }
 
-.btn-create-news:hover {
+.btn-create:hover {
   background: #0056b3;
   color: white;
 }

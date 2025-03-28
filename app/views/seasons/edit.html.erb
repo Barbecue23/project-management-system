@@ -1,9 +1,9 @@
-<%= form_with(model: @season, url: seasons_path(@season), method: :patch, class: "news-form") do |f| %>
+<%= form_with(model: @season, url: seasons_path(@season), method: :patch, class: "form") do |f| %>
 
   <!-- Header -->
   <div class="form-header">
     <h1 class="page-title">แก้ไข Seasons</h1>
-    <%= f.submit "อัปเดต", class: "btn-create-news" %>
+    <%= f.submit "อัปเดต", class: "btn-create" %>
   </div>
 
   <!-- Season Name -->

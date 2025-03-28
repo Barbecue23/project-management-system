@@ -6,12 +6,6 @@
   border-radius: 8px;
 }
 
-/* Title */
-.page-title {
-  font-size: 22px;
-  font-weight: bold;
-}
-
 /* Tabs */
 .tabs {
   display: flex;
