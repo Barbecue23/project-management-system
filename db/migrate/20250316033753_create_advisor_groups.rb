@@ -1,4 +1,4 @@
-class CreateAdvisorGroups < ActiveRecord::Migration[8.0]
+class CreateAdvisorGroups < ActiveRecord::Migration[7.0]
   def change
     create_table :advisor_groups do |t|
       t.string :group_name

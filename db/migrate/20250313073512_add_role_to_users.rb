@@ -1,4 +1,4 @@
-class AddRoleToUsers < ActiveRecord::Migration[8.0]
+class AddRoleToUsers < ActiveRecord::Migration[7.0]
   def change
     add_reference :users, :role, null: true, foreign_key: true
   end

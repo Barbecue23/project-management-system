@@ -1,4 +1,4 @@
-class AddPublishDateToNews < ActiveRecord::Migration[8.0]
+class AddPublishDateToNews < ActiveRecord::Migration[7.0]
   def change
     add_column :news, :publish_date, :datetime
   end

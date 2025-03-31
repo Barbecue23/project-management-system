@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_26_084815) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_26_084815) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
+  enable_extension "plpgsql"
 
   create_table "advisor_group_members", force: :cascade do |t|
     t.bigint "advisor_group_id", null: false
@@ -125,7 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_26_084815) do
     t.string "major"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role_id"
+    t.bigint "role_id"
     t.string "expertise"
     t.index ["role_id"], name: "index_users_on_role_id"
   end

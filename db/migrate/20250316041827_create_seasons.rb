@@ -1,4 +1,4 @@
-class CreateSeasons < ActiveRecord::Migration[8.0]
+class CreateSeasons < ActiveRecord::Migration[7.0]
   def change
     create_table :seasons do |t|
       t.jsonb :seasons_detail, default: {}, null: false

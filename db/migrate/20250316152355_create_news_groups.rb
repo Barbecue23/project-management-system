@@ -1,4 +1,4 @@
-class CreateNewsGroups < ActiveRecord::Migration[8.0]
+class CreateNewsGroups < ActiveRecord::Migration[7.0]
   def change
     create_table :news_groups do |t|
       t.references :news, null: false, foreign_key: true
