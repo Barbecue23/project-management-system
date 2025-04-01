@@ -71,5 +71,5 @@ gem "pg", "~> 1.5"
 
 
 gem "devise"
-gem 'omniauth'
-gem 'omniauth-azure-oauth2'
+gem "omniauth"
+gem "omniauth-azure-oauth2"
