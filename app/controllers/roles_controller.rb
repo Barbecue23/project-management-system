@@ -2,7 +2,7 @@ class RolesController < ApplicationController
   before_action :set_users_and_permissions, only: [ :new, :create ]
 
   def index
-    @roles = Role.includes(:users, :permissions).all
+    @roles = Role.includes(:users, :permissions).page(params[:page]).per(5)
   end
 
   def new
