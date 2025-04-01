@@ -95,7 +95,8 @@ production:
     port: 5432
   cache:
     <<: *primary_production
-    database: pg_poc_production_cache
+    database: management_system
+
     # migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
@@ -103,5 +104,5 @@ production:
     # migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: pg_poc_production_cable
+    database: management_system
     # migrations_paths: db/cable_migrate
