@@ -10,7 +10,6 @@
  */
 
 @import "advisors";
-@import "detail_group";
 @import "sidebar";
 @import "layout";
 @import "students";
@@ -50,6 +49,11 @@ body {
 .btn-secondary {
   background-color: #ffffff; /* bg-gray-200 */
   text-decoration: #888888;
+}
+
+.btn-secondary:hover {
+  background-color: #888888;
+  color: #ffffff;
 }
 
 .btn-delete {

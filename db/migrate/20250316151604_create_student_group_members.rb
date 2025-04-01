@@ -1,4 +1,4 @@
-class CreateStudentGroupMembers < ActiveRecord::Migration[8.0]
+class CreateStudentGroupMembers < ActiveRecord::Migration[7.0]
   def change
     create_table :student_group_members do |t|
       t.references :user, null: false, foreign_key: true

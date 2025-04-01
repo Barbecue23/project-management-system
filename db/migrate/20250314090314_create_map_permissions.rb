@@ -1,4 +1,4 @@
-class CreateMapPermissions < ActiveRecord::Migration[8.0]
+class CreateMapPermissions < ActiveRecord::Migration[7.0]
   def change
     create_table :map_permissions do |t|
       t.references :role, null: false, foreign_key: true

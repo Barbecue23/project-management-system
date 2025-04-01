@@ -1,4 +1,4 @@
-class CreateAdvisorGroupMembers < ActiveRecord::Migration[8.0]
+class CreateAdvisorGroupMembers < ActiveRecord::Migration[7.0]
   def change
     create_table :advisor_group_members do |t|
       t.references :advisor_group, null: false, foreign_key: true
