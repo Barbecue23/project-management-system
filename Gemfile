@@ -68,3 +68,8 @@ end
 
 # Use PostgreSQL as the database for Active Record
 gem "pg", "~> 1.5"
+
+
+gem "devise"
+gem 'omniauth'
+gem 'omniauth-azure-oauth2'

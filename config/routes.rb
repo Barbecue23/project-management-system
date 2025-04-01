@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get "news/index"
   get "news/new", to: "news#new"  # Route to show the create news page
   post "news/create", to: "news#create"  # Route to handle form submission
-  root "news#index"
+  # root "news#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -33,4 +33,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root to: "home#index"
+
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions',
+    omniauth_callbacks: 'users/omniauth_callbacks'
+  }
 end
