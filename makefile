@@ -12,3 +12,6 @@ rs:
 
 test:
 	rails test
+
+lint:
+	bundler exec rubocop -A
