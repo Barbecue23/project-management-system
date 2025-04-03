@@ -8,6 +8,7 @@ services:
     environment: 
       db_host: db:5432
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_SERVE_STATIC_FILES: "true"
     env_file:
       - .env
     ports:
@@ -17,7 +18,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     command: >
-      sh -c "bin/rails db:migrate && bundle exec puma -C config/puma.rb"
+      sh -c "bin/rails db:migrate && bundle exec rails assets:precompile && bundle exec puma -C config/puma.rb"
 
   POSTGRES_DBdoc:
     image: postgres:15

@@ -9,13 +9,13 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
-@import "advisors";
-@import "sidebar";
-@import "layout";
-@import "students";
-@import "news";
-@import "form";
-@import "reports";
+@import "advisors.css";
+@import "sidebar.css";
+@import "layout.css";
+@import "students.css";
+@import "news.css";
+@import "form.css";
+@import "reports.css";
 
 body {
   font-family: "Poppins", sans-serif;
