@@ -18,7 +18,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     command: >
-      sh -c "bin/rails db:migrate && bundle exec rails assets:precompile && bundle exec puma -C config/puma.rb"
+      sh -c "bin/rails db:create && bin/rails db:migrate && bundle exec rails assets:precompile && bin/rails server"
 
   POSTGRES_DBdoc:
     image: postgres:15
