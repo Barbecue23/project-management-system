@@ -9,71 +9,41 @@
 #   end
 # db/seeds.rb
 
-AdvisorGroup.create!([
-  {
-    group_name: "กลุ่มที่ 1",
-    owner_id: 1,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  },
-  {
-    group_name: "กลุ่มที่ 2",
-    owner_id: 2,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  },
-  {
-    group_name: "กลุ่มที่ 3",
-    owner_id: 3,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  }
+Permissions.create!([
+  { name: "news", default_view: true, default_create: true, default_edit: true, default_delete: true, created_at: Time.zone.now, updated_at: Time.zone.now },
+  { name: "advisor_group", default_view: true, default_create: true, default_edit: true, default_delete: true, created_at: Time.zone.now, updated_at: Time.zone.now },
+  { name: "seasons", default_view: true, default_create: true, default_edit: true, default_delete: true, created_at: Time.zone.now, updated_at: Time.zone.now },
 ])
 
 Role.create!([
+  { name: "ผู้ดูแลระบบ", created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
   { name: "อาจารย์", created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
-  { name: "นิสิต", created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now }
+  { name: "ผู้ประสารงาน", created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { name: "นักศึกษา", created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now }
+])
+
+MapPermission.create!([
+  { role_id: Role.find_by(name: "ผู้ดูแลระบบ").id, permission_id: Permission.find_by(name: "news").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "ผู้ดูแลระบบ").id, permission_id: Permission.find_by(name: "advisor_group").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "ผู้ดูแลระบบ").id, permission_id: Permission.find_by(name: "seasons").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "อาจารย์").id, permission_id: Permission.find_by(name: "news").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "อาจารย์").id, permission_id: Permission.find_by(name: "advisor_group").id, can_view: true, can_create: false, can_edit: false, can_delete: false, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "ผู้ประสารงาน").id, permission_id: Permission.find_by(name: "news").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "ผู้ประสารงาน").id, permission_id: Permission.find_by(name: "advisor_group").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "ผู้ประสารงาน").id, permission_id: Permission.find_by(name: "seasons").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
+  { role_id: Role.find_by(name: "นักศึกษา").id, permission_id: Permission.find_by(name: "news").id, can_view: true, can_create: false, can_edit: false, can_delete: false, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
 ])
 
 User.create!([
   {
-    name: "อ.ดร. สัจจาภรณ์ ไวยญาณ",
-    student_id: "N/A",
-    email: "sajchaporn@silpakorn.edu",
-    faculty: "วิทยาศาสตร์",
-    major: "วิศวกรรมซอฟต์แวร์",
-    role_id: Role.find_by(name: "อาจารย์").id,
+    name: "Admin",
+    student_id: "",
+    email: "Admin@admin.com",
+    faculty: "",
+    major: "",
+    role_id: Role.find_by(name: "ผู้ดูแลระบบ").id,
     created_at: Time.zone.now,
     updated_at: Time.zone.now
   },
-  {
-    name: "นาย ก้องภพ อินทร์ทอง",
-    student_id: "65303010001",
-    email: "kongpop@student.su.ac.th",
-    faculty: "วิทยาศาสตร์",
-    major: "วิศวกรรมซอฟต์แวร์",
-    role_id: Role.find_by(name: "นิสิต").id,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  },
-  {
-    name: "นางสาว ชญานิศา ศรีสุวรรณ",
-    student_id: "65303010002",
-    email: "chayanisa@student.su.ac.th",
-    faculty: "วิทยาศาสตร์",
-    major: "วิศวกรรมซอฟต์แวร์",
-    role_id: Role.find_by(name: "นิสิต").id,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  }
 ])
 
-AdvisorGroupMember.create!([
-  {
-    advisor_group_id: 1,
-    user_id: User.find_by(email: "sajchaporn@silpakorn.edu")&.id, # อาจารย์
-    is_owner: true,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  }
-])
