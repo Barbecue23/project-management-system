@@ -31,7 +31,17 @@
 #
 #  IndexTags:
 #    enabled: true # Generate a tags file with `ctags` each time HEAD changes
-PrePush:
+PreCommit:
   RuboCop:
     enabled: true
     command: ['bundle', 'exec', 'rubocop']
+    on_warn: fail       # Treat warnings as failures
+    # problem_on_unmodified_line: ignore
+    required_executable: 'rubocop'
+    include: '**/*.rb'  # Only run on Ruby files
+
+# ปิด pre-push ทั้งหมด (กัน error ที่เจอ)
+PrePush:
+  All:
+    enabled: false
+
