@@ -70,7 +70,7 @@ end
 gem "pg", "~> 1.5"
 
 group :development do
-  gem 'overcommit'
+  gem "overcommit"
 end
 
 
