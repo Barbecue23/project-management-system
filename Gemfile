@@ -69,6 +69,10 @@ end
 # Use PostgreSQL as the database for Active Record
 gem "pg", "~> 1.5"
 
+group :development do
+  gem 'overcommit'
+end
+
 
 gem "devise"
 gem "omniauth"
