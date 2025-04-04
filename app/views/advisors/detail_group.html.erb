@@ -1,0 +1,38 @@
+<h1><%= @selected_group&.group_name || "ไม่มีชื่อกลุ่ม" %></h1>
+
+<!-- Tabs -->
+<div class="tabs">
+  <% @advisor_group.each do |group| %>
+    <%= link_to group.group_name, advisors_group_overview_path(group_id: group.id), class: "tab #{'active' if group == @selected_group}" %>
+  <% end %>
+</div>
+
+<!-- Search + Filters -->
+<div class="actions">
+  <%# <input type="text" placeholder="Search" class="search-bar" />
+  <button class="filter-btn">🔍 Filters</button> %>
+</div>
+
+<!-- Table -->
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ชื่อ-สกุล</th>
+        <th>วันที่อัปโหลด</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @advisors_in_group.each do |advisor| %>
+        <tr>
+          <td><%= advisor.name %></td>
+          <td><%= advisor.created_at.strftime("%d/%m/%Y") %></td>
+          <td>
+            <button class="btn btn-delete">ลบ</button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

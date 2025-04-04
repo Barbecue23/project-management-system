@@ -1,0 +1,34 @@
+<%= form_with model: @seasons, url: seasons_path, method: :post, class: "form",local: true do |f| %>
+    <!-- Header Section -->
+    <div class="form-header">
+        <h1 class="page-title">สร้าง Seasons</h1>
+        <%= f.submit "+สร้าง", class: "btn-create" %>
+    </div>
+    <div class="form-group">
+        <label>Seasons Name</label>
+        <%= f.text_field :season_name , class: "form-control"%>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>รอบที่จะเริ่ม</label>
+            <%= f.select :year, (((Time.current.year-1)+543)..((Time.current.year-1)+553)).to_a, { prompt: "เลือกปี พ.ศ." }, name: 'season[year]', class: "form-control" %>
+        </div>
+        <div class="form-group">
+            <label>เทอม</label>
+            <%= f.select :term, [[1, 1], [2, 2], [3, 3]], { prompt: "เลือกเทอม" }, name: 'season[term]', class: "form-control" %>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Start Date</label>
+            <%= f.date_field :start_date, class: "form-control" %>
+        </div>
+        <div class="form-group">
+            <label>End Date</label>
+            <%= f.date_field :end_date, class: "form-control" %>
+        </div>
+    <div>
+    </div>
+<% end %>

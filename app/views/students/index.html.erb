@@ -1,0 +1,78 @@
+<div class="container">
+  <h1 class="page-title">นักเรียน</h1>
+
+  <div class="search-container">
+    <div class="search-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#7a7a7a" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      <input type="text" placeholder="Search" class="search-input">
+    </div>
+    <%= button("Filters", type: :secondary) %>
+  </div>
+
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>นักเรียน</th>
+          <th>สาขาที่เชี่ยวชาญ</th>
+          <th>อีเมลล์</th>
+          <th>เบอร์โทรศัพท์</th>
+          <th class="text-center">action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <td>
+              <div class="profile-container">
+                <div class="profile-pic"></div>
+                <div>
+                  <div class="profile-name"><%= student[:name] %> <%= student[:last_name] %></div>
+                </div>
+              </div>
+            </td>
+            <td><%= student[:specialty] %></td>
+            <td><%= student[:email] %></td>
+            <td>
+              <% if student[:phone_number].present? %>
+                <div class="text-gray-500 text-sm"><%= student[:phone_number] %></div>
+              <% else %>
+                <div class="text-gray-500 text-sm">-</div>
+              <% end %>
+            </td>
+            <td class="button-container">
+              <%= button("ยกเลิก", type: :secondary) %>
+              <%= button("เลือก", type: :primary) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if @students.any? && @students.size > 0 %>
+    <div class="pagination-container">
+      <div class="pagination-text">
+        Showing <%= @students.offset_value + 1 %> to <%= [@students.offset_value + @students.length, @students.total_count].min %> of <%= @students.total_count %> students
+      </div>
+      
+      <nav class="pagination-nav">
+        <%= link_to url_for(page: @students.prev_page), class: "pagination-link #{'pagination-disabled' if @students.first_page?}", disabled: @students.first_page? do %>
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+
+        <span class="px-4 py-2 text-gray-700">
+          Page <%= @students.current_page %> of <%= @students.total_pages %>
+        </span>
+
+        <%= link_to url_for(page: @students.next_page), class: "pagination-link #{'pagination-disabled' if @students.last_page?}", disabled: @students.last_page? do %>
+           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+      </nav>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,51 @@
+<div class="container">
+  <h1 class="page-title">ข่าวสาร</h1>
+
+  <!-- Featured News -->
+  <div class="featured-news">
+    <% featured_news = @news.first %>
+    <div class="featured-news-card">
+      <div class="image-placeholder">
+        <% if news_image_path(featured_news[:banner_image]) %>
+          <img src="<%= news_image_path(featured_news[:banner_image]) %>" 
+               alt="<%= featured_news[:title] %>" 
+               class="featured-news-image">
+        <% else %>
+          <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/>
+          </svg>
+        <% end %>
+      </div>
+      <div class="featured-news-content">
+        <h2 class="featured-news-title"><%= featured_news[:title] %></h2>
+        <p class="featured-news-info"><%= featured_news[:content] %></p>
+        <p class="featured-news-meta"><%= featured_news[:publish_date] %> | <%= featured_news[:announcer] %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest News -->
+  <h2 class="latest-news-title">ข่าวสารล่าสุด</h2>
+  <div class="latest-news">
+    <% @news[1..-1].each do |news| %>
+      <div class="news-card">
+        <div class="image-placeholder">
+          <% if news_image_path(news[:banner_image]) %>
+            <img src="<%= news_image_path(news[:banner_image]) %>" 
+                 alt="<%= news[:title] %>" 
+                 class="news-image">
+          <% else %>
+            <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/>
+            </svg>
+          <% end %>
+        </div>
+        <div class="news-content">
+          <h3 class="news-title"><%= news[:title] %></h3>
+          <p class="news-info"><%= news[:info] %></p>
+          <p class="news-meta"><%= news[:publish_date] %> | <%= news[:announcer] %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

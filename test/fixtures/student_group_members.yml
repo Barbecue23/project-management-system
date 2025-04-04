@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  season: one
+  year_term: 1
+  advisor_group_member: one
+
+two:
+  user: two
+  season: two
+  year_term: 1
+  advisor_group_member: two

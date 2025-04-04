@@ -1,0 +1,67 @@
+<div class="form">
+  <div class="form-header">
+    <h1 class="page-title">สร้าง Role ใหม่</h1>
+    <%= link_to '← กลับ', roles_path, class: "btn-create" %>
+  </div>
+
+  <%= form_with(model: @role, url: roles_path, method: :post, local: true) do |f| %>
+    <div class="form-group">
+      <%= f.label :name, "ชื่อ Role" %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <h2 class="section-title">เลือกผู้ใช้</h2>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>เลือก</th>
+              <th>ชื่อ</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% User.all.each do |user| %>
+              <tr>
+                <td><%= check_box_tag 'user_ids[]', user.id %></td>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h2 class="section-title">สิทธิ์การเข้าถึง</h2>
+      <% Permission.all.each do |perm| %>
+        <% map_perm = @role.map_permissions.find_by(permission_id: perm.id) if @role.persisted? %>
+
+        <div class="form-group">
+          <strong><%= perm.name %></strong>
+          <div class="checkbox-group">
+            <% if perm.default_view %>
+              <%= check_box_tag "permissions[#{perm.id}][can_view]", true, map_perm&.can_view %> View
+            <% end %>
+            <% if perm.default_create %>
+              <%= check_box_tag "permissions[#{perm.id}][can_create]", true, map_perm&.can_create %> Create
+            <% end %>
+            <% if perm.default_edit %>
+              <%= check_box_tag "permissions[#{perm.id}][can_edit]", true, map_perm&.can_edit %> Edit
+            <% end %>
+            <% if perm.default_delete %>
+              <%= check_box_tag "permissions[#{perm.id}][can_delete]", true, map_perm&.can_delete %> Delete
+            <% end %>
+          </div>
+        </div>
+        <hr>
+      <% end %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "สร้าง Role", class: "btn-create" %>
+    </div>
+  <% end %>
+</div>

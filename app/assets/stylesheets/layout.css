@@ -1,0 +1,15 @@
+/* Layout Base */
+.layout-container {
+    display: flex;
+    height: 100vh;
+    background-color: #ffffff;
+  }
+  
+  
+  /* Main Content */
+  .main-content {
+    flex: 1;
+    padding-inline: 16px;
+    overflow-y: auto;
+  }
+  

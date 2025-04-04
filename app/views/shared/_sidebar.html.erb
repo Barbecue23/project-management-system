@@ -1,0 +1,60 @@
+<aside class="sidebar">
+  <div class="sidebar-container">
+    <div class="logo-container">
+      <%= image_tag "logo.svg", class: "logo"%>
+      <%= image_tag "title.svg", class: "title" %>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-menu">
+      <ul>
+        <li class="nav-item">
+          <%= link_to "/news/index", class: "nav-link" do %>
+            <%= image_tag "news.svg", class: "icon"%> 
+            <span>ข่าวสาร</span>
+          <% end %>
+        </li>
+         <li class="nav-item">
+          <%= link_to "/news/new", class: "nav-link" do %>
+            📧 
+            <span>สร้างข่าวสาร</span>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "/advisors/index", class: "nav-link" do %>
+            ⏳ 
+            <span>อาจารย์ที่ปรึกษา</span>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "/reports/index", class: "nav-link" do %>
+            <%= image_tag "report.svg", class: "icon"%> 
+            <span>รูปแบบรายงาน</span>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "/students/index", class: "nav-link" do %>
+            📧 
+            <span>นักเรียน</span>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "/roles", class: "nav-link" do %>
+            📧 
+            <span>roles</span>
+          <% end %>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- User Profile -->
+  <div class="user-profile">
+    <%# <%= image_tag "avatar.png", class: "avatar", alt: "User" %>
+    <div class="user-info">
+      <p class="user-name">Mock User</p>
+      <p class="user-role">Mock role</p>
+    </div>
+    <%= link_to "↗", "#", class: "profile-link" %>
+  </div>
+</aside>

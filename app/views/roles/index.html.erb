@@ -1,0 +1,58 @@
+<div class="form">
+  <!-- Header -->
+  <div class="form-header">
+    <h1 class="page-title">สิทธิ์การใช้งาน (Roles)</h1>
+    <%= link_to '+ เพิ่ม Role ใหม่', new_role_path, class: "btn-create" %>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ชื่อสิทธิ์</th>
+          <th>จำนวนผู้ใช้</th>
+          <th>Permissions</th>
+          <th>การจัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @roles.each do |role| %>
+          <tr>
+            <td><%= role.name %></td>
+            <td><%= role.users.count %></td>
+            <td><%= role.permissions.count %></td>
+            <td>
+              <%= link_to 'แก้ไข', edit_role_path(role), class: "btn btn-primary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @roles.any? && @roles.size > 0 %>
+    <div class="pagination-container">
+      <div class="pagination-text">
+        Showing <%= @roles.offset_value + 1 %> to <%= [@roles.offset_value + @roles.length, @roles.total_count].min %> of <%= @roles.total_count %> roles
+      </div>
+      
+      <nav class="pagination-nav">
+        <%= link_to url_for(page: @roles.prev_page), class: "pagination-link #{'pagination-disabled' if @roles.first_page?}", disabled: @roles.first_page? do %>
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+
+        <span class="px-4 py-2 text-gray-700">
+          Page <%= @roles.current_page %> of <%= @roles.total_pages %>
+        </span>
+
+        <%= link_to url_for(page: @roles.next_page), class: "pagination-link #{'pagination-disabled' if @roles.last_page?}", disabled: @roles.last_page? do %>
+           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+      </nav>
+    </div>
+  <% end %>
+  </div>
+</div>

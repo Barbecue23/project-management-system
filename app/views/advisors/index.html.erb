@@ -1,0 +1,89 @@
+<div class="container">
+  <h1 class="page-title">อาจารย์ที่ปรึกษาโครงการ</h1>
+
+  <div class="search-container">
+    <div class="search-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#7a7a7a" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      <input type="text" placeholder="Search" class="search-input">
+    </div>
+    
+    <%= button("Filters", type: :secondary , icon: raw(
+      '<svg style="width: 1rem; height: 1rem; margin-right: 0.75rem; xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+        stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 
+        01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      </svg>'))  %>
+  </div>
+
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>อาจารย์ที่ปรึกษา</th>
+          <th>สาขาที่เชี่ยวชาญ</th>
+          <th>อีเมลล์</th>
+          <th>สถานะ:นิสิต</th>
+          <th class="text-center">แนบอาจารย์</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @advisors_group_members.each do |advisor| %>
+          <tr>
+            <td>
+              <div class="profile-container">
+                <div class="profile-pic"></div>
+                <div class="profile-info">
+                  <div class="profile-name"><%= advisor.user.name %></div>
+                </div>
+              </div>
+            </td>
+            <% if advisor.user.expertise.present? %>
+              <td><%= advisor.user.expertise %></td>
+            <% else %>
+              <td> - </td>
+            <% end %>
+            <td>
+              <div><%= advisor.user.email %></div>
+            </td>
+            <td >
+            <div class="student-status">
+            </td>
+            <td class="text-center">
+              <%= button_to "เลือก", advisors_student_requests_path(advisor_group_member_id: advisor.id), method: :post, class: "btn btn-primary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%
+=begin%>
+ <% if @advisors.total_pages > 1 %>
+    <div class="pagination-container">
+      <div class="pagination-text">
+        Showing <%= @advisors.offset_value + 1 %> to <%= [@advisors.offset_value + @advisors.length, @advisors.total_count].min %> of <%= @advisors.total_count %> advisors
+      </div>
+      
+      <nav class="pagination-nav">
+        <%= link_to url_for(page: @advisors.prev_page), class: "pagination-link #{'pagination-disabled' if @advisors.first_page?}", disabled: @advisors.first_page? do %>
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+
+        <span class="px-4 py-2 text-gray-700">
+          Page <%= @advisors.current_page %> of <%= @advisors.total_pages %>
+        </span>
+
+        <%= link_to url_for(page: @advisors.next_page), class: "pagination-link #{'pagination-disabled' if @advisors.last_page?}", disabled: @advisors.last_page? do %>
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        <% end %>
+      </nav>
+    </div>
+  <% end %> 
+<%
+=end%>
+</div>

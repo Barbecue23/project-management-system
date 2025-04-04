@@ -1,0 +1,48 @@
+services:
+  web:
+    # image: ghcr.io/barbecue23/project-management-system:latest
+    image: test:latest
+    container_name: web
+    networks:
+      - management_system_network
+    environment: 
+      db_host: db:5432
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_SERVE_STATIC_FILES: "true"
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    depends_on:
+      POSTGRES_DBdoc:
+        condition: service_healthy
+    restart: unless-stopped
+    command: >
+      sh -c "bin/rails db:create && bin/rails db:migrate && bundle exec rails assets:precompile && bin/rails server"
+
+  POSTGRES_DBdoc:
+    image: postgres:15
+    ports:
+      - "5432:5432" 
+    container_name: POSTGRES_DB
+    networks:
+      - management_system_network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: management_system
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+networks:
+  management_system_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

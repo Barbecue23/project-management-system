@@ -3,7 +3,10 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ dev ]
+
+env: 
+  IMAGE_NAME: barbecue23/project-management-system
 
 jobs:
   scan_ruby:
@@ -93,4 +96,26 @@ jobs:
       #     if (( $(echo "$COVERAGE < 40.0" | bc -l) )); then
       #       echo "Code coverage ($COVERAGE%) is below the required threshold of 40%"
       #       exit 1
-      #     fi
+      #     fi  
+
+  build_and_push:  # ✅ อยู่ใน jobs ถูกต้องแล้ว
+    runs-on: ubuntu-latest
+    needs: test  # ✅ ทำงานหลังจาก job `test` เสร็จแล้ว
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:latest

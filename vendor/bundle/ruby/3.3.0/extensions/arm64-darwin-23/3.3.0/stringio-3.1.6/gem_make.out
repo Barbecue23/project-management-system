@@ -1,0 +1,18 @@
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/stringio-3.1.6/ext/stringio
+/Users/odds/.rbenv/versions/3.3.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/stringio-3.1.6/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20250401-12566-kkhwd8 sitelibdir\=./.gem.20250401-12566-kkhwd8 clean
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/stringio-3.1.6/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20250401-12566-kkhwd8 sitelibdir\=./.gem.20250401-12566-kkhwd8
+compiling stringio.c
+linking shared-object stringio.bundle
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/stringio-3.1.6/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20250401-12566-kkhwd8 sitelibdir\=./.gem.20250401-12566-kkhwd8 install
+/usr/bin/install -c -m 0755 stringio.bundle ./.gem.20250401-12566-kkhwd8
+
+current directory: /Users/odds/odds/Project/Project-MS/vendor/bundle/ruby/3.3.0/gems/stringio-3.1.6/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20250401-12566-kkhwd8 sitelibdir\=./.gem.20250401-12566-kkhwd8 clean

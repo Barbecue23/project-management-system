@@ -1,0 +1,49 @@
+<%= form_with(model: @season, url: seasons_path(@season), method: :patch, class: "form") do |f| %>
+
+  <!-- Header -->
+  <div class="form-header">
+    <h1 class="page-title">แก้ไข Seasons</h1>
+    <%= f.submit "อัปเดต", class: "btn-create" %>
+  </div>
+
+  <!-- Season Name -->
+  <div class="form-group">
+    <label>Seasons Name</label>
+    <%= f.text_field :season_name, class: "form-control" %>
+  </div>
+
+  <!-- Year / Term -->
+  <% if @season.seasons_detail.present? && @season.seasons_detail.is_a?(Array) %>
+    <% first_item = @season.seasons_detail.first.values.first %>
+  <% else %>
+    <% first_item = { "term" => nil, "year" => nil } %>
+  <% end %>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>รอบที่จะเริ่ม</label>
+      <%= f.select :year, (((Time.current.year - 1) + 543)..((Time.current.year - 1) + 553)).to_a,
+          { prompt: "เลือกปี พ.ศ.", selected: first_item["year"] },
+          name: 'season[year]', class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>เทอม</label>
+      <%= f.select :term, [[1, 1], [2, 2], [3, 3]],
+          { prompt: "เลือกเทอม", selected: first_item["term"] },
+          name: 'season[term]', class: "form-control" %>
+    </div>
+  </div>
+
+  <!-- Dates -->
+  <div class="form-row">
+    <div class="form-group">
+      <label>Start Date</label>
+      <%= f.date_field :start_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>End Date</label>
+      <%= f.date_field :end_date, class: "form-control" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,70 @@
+<%= form_with url: news_create_path, method: :post, local: true, html: { class: "form", multipart: true } do %>
+
+  <!-- Header Section -->
+  <div class="form-header">
+    <h1 class="page-title">สร้างข่าวสาร</h1>
+    <%= submit_tag "+สร้างข่าวสาร", class: "btn-create" %>
+  </div>
+
+  <!-- Title -->
+  <div class="form-group">
+    <label>Title</label>
+    <%= text_field_tag :title, @news[:title], class: "form-control", placeholder: "Enter news title" %>
+  </div>
+
+  <!-- Content -->
+  <div class="form-group">
+    <label>Content</label>
+    <%= text_area_tag :content, @news[:content], class: "form-control textarea", placeholder: "Enter news content" %>
+  </div>
+
+  <!-- Category, Announcer, Publish Date -->
+  <div class="form-row">
+    <div class="form-group">
+      <label>Category</label>
+      <%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), @news[:category]), { prompt: "Select", class: "form-control select-dropdown" } %>
+    </div>
+    <div class="form-group">
+      <label>Publish Date</label>
+      <%= date_field_tag :publish_date, @news[:publish_date], class: "form-control date-picker" %>
+    </div>
+  </div>
+
+  <!-- Image Upload Section -->
+  <div class="form-group">
+    <h3>Images</h3>
+    <div class="image-upload-container">
+      
+      <!-- Banner Upload (Large) -->
+      <div class="banner-upload">
+        <label>Banner Image</label>
+        <div class="upload-box large">
+          <span class="upload-icon">📤</span>
+          <span class="upload-text">Click or drag file to this area to upload</span>
+          <span class="upload-info">Recommend size 851 x 315 px</span>
+          <%= file_field_tag :banner_image, class: "file-input" %>
+        </div>
+      </div>
+
+      <!-- More Images (Gallery) -->
+      <div class="gallery-upload">
+        <div class="gallery-header">
+          <label>More Images</label>
+          <span class="gallery-note">(show as gallery)</span>
+        </div>
+        <div class="gallery-grid">
+          <% 5.times do %>
+            <div class="upload-box small">
+              <span class="upload-icon">+</span>
+              <span class="upload-text">Upload</span>
+              <%= file_field_tag :more_images, multiple: true, class: "file-input" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+<% end %>
