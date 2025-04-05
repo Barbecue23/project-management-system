@@ -275,10 +275,9 @@ Devise.setup do |config|
     config.omniauth :oauth2, ENV["AZURE_CLIENT_ID"], ENV["AZURE_CLIENT_SECRET"],
       client_options: {
         site: "https://nidp.su.ac.th/nidp/oauth/nam",
-        authorize_url: "/authz",
-        token_url: "/token"
+        authorize_url: "https://nidp.su.ac.th/nidp/oauth/nam/authz",
+        token_url: "https://nidp.su.ac.th/nidp/oauth/nam/token"
       }
-
 
 
   # ==> Warden configuration

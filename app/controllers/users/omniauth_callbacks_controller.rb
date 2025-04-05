@@ -27,15 +27,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # def after_omniauth_failure_path_for(scope)
   #   super(scope)
   # end
-  def oauth2
+  def azure_su
     auth = request.env["omniauth.auth"]
     user = User.from_omniauth(auth)
 
     if user.persisted?
-      sign_in_and_redirect user, event: :authentication
-      set_flash_message(:notice, :success, kind: "Azure") if is_navigational_format?
+      sign_in_and_redirect user
     else
-      redirect_to new_user_registration_url, alert: "Authentication failed"
+      redirect_to root_path, alert: "Login failed"
     end
   end
 
