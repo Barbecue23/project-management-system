@@ -24,7 +24,7 @@ scan_ruby:
         bundler-cache: true
 
     - name: Install latest Brakeman
-      run: gem install brakeman
+      run: gem install brakeman #ลงติดตั้ง Brakeman เวอร์ชันล่าสุด
 
     - name: Scan for common Rails security vulnerabilities using static analysis
       run: brakeman --no-pager
