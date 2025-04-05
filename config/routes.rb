@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get "advisors/new", to: "advisors#new"  # Route to show the create advisor page
   post "advisors/create", to: "advisors#create"  # Route to handle form submission
   get "advisors/detail_group", to: "advisors#detail_group"  # Route to show the detail advisor group page
-  post "advisors/student_requests", to: "advisors#student_requests"  # Route to handle form submission
+  post "students/student_requests", to: "students#student_requests"  # Route to handle form submission
   get "advisors/requests"
   post "advisors/accept_request", to: "advisors#accept_request"
   post "advisors/reject_request", to: "advisors#reject_request"

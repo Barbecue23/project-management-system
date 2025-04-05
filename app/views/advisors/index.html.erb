@@ -49,7 +49,7 @@
             <div class="student-status">
             </td>
             <td class="text-center">
-              <%= button_to "เลือก", advisors_student_requests_path(advisor_group_member_id: advisor.id), method: :post, class: "btn btn-primary" %>
+              <%= button_to "เลือก", students_student_requests_path(advisor_group_member_id: advisor.id), method: :post, class: "btn btn-primary" %>
             </td>
           </tr>
         <% end %>

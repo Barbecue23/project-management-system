@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="page-title">นักเรียน</h1>
+  <h1 class="page-title">คำข้อร้องจากนักศึกษา</h1>
 
   <div class="search-container">
     <div class="search-wrapper">
@@ -13,37 +13,39 @@
     <table class="table">
       <thead>
         <tr>
-          <th>นักเรียน</th>
-          <th>สาขาที่เชี่ยวชาญ</th>
+          <th>นักศึกษา</th>
+          <th>รหัสนักศึกษา</th>
           <th>อีเมลล์</th>
-          <th>เบอร์โทรศัพท์</th>
+          <th>สถานะ</th>
+          <th>วันที่อัพเดต</th>
           <th class="text-center">action</th>
         </tr>
       </thead>
       <tbody>
-        <% @students.each do |student| %>
+        <% @students.each do |students| %>
           <tr>
             <td>
               <div class="profile-container">
                 <div class="profile-pic"></div>
                 <div>
-                  <div class="profile-name"><%= student[:name] %> <%= student[:last_name] %></div>
+                  <div class="profile-name"><%= students.student.name %></div>
                 </div>
               </div>
             </td>
-            <td><%= student[:specialty] %></td>
-            <td><%= student[:email] %></td>
+            <td><%= students.student.student_id %></td>
+            <td><%= students.student.email %></td>
             <td>
-              <% if student[:phone_number].present? %>
-                <div class="text-gray-500 text-sm"><%= student[:phone_number] %></div>
-              <% else %>
-                <div class="text-gray-500 text-sm">-</div>
-              <% end %>
+              <div class="status-container">
+                <span class="status-label"><%= students.status %></span>
+              </div>
             </td>
-            <td class="button-container">
-              <%= button("ยกเลิก", type: :secondary) %>
-              <%= button("เลือก", type: :primary) %>
-            </td>
+            <td><%= students.updated_at.in_time_zone("Bangkok").strftime("%d/%m/%Y  %H:%M") %></td>
+            <% if students.status == "pending" %>
+              <td class="button-container">
+                <%= button_to "ยอมรับ", advisors_accept_request_path(id: students.id), method: :post, class: "btn btn-primary" %>
+                <%= button_to "ปฏิเสธ", advisors_reject_request_path(id: students.id),method: :post, class: "btn btn-danger" %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
