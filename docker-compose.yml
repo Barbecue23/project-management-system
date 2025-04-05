@@ -18,7 +18,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     command: >
-      sh -c "bin/rails db:create && bin/rails db:migrate && bundle exec rails assets:precompile && bin/rails server"
+      sh -c "bin/rails db:create && bin/rails db:migrate && bin/rails db:seed && bundle exec rails assets:precompile && bin/rails server"
 
   POSTGRES_DBdoc:
     image: postgres:15
