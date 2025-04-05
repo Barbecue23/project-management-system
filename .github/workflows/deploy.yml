@@ -1,0 +1,23 @@
+name: Auto Deploy
+
+on:
+  push:
+    branches:
+      - dev  # หรือเปลี่ยนเป็น branch ที่คุณใช้
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Pull latest code
+      run: |
+        cd /home/nc-user/Project/Dev
+        git pull origin dev  # หรือเปลี่ยนเป็น branch ที่คุณใช้
+
+    - name: Restart with Docker Compose
+      run: |
+        cd /home/nc-user/Project/Dev
+        docker-compose -f docker-compose.dev.yml down
+        docker-compose -f docker-compose.dev.yml pull
+        docker-compose -f docker-compose.dev.yml -d
