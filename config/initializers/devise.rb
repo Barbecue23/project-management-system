@@ -272,14 +272,12 @@ Devise.setup do |config|
     # Add a new OmniAuth provider. Check the wiki for more information on setting
     # up on your models and hooks.
     # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-    config.omniauth :oauth2, ENV["OAUTH_CLIENT_ID"], ENV["OAUTH_CLIENT_SECRET"],
+    config.omniauth :oauth2, ENV["AZURE_CLIENT_ID"], ENV["AZURE_CLIENT_SECRET"],
       client_options: {
         site: "https://nidp.su.ac.th/nidp/oauth/nam",
         authorize_url: "/authz",
-        token_url: "/token",
-        user_info_url: "/userinfo"
+        token_url: "/token"
       }
-
 
 
 
