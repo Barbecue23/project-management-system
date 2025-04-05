@@ -268,15 +268,19 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
-  # ==> OmniAuth
-  # Add a new OmniAuth provider. Check the wiki for more information on setting
-  # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  config.omniauth :azure_oauth2,
-  client_id: ENV["AZURE_CLIENT_ID"],
-  client_secret: ENV["AZURE_CLIENT_SECRET"],
-  tenant_id: ENV["AZURE_TENANT_ID"]
-  
+    # ==> OmniAuth
+    # Add a new OmniAuth provider. Check the wiki for more information on setting
+    # up on your models and hooks.
+    # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+    config.omniauth :oauth2, ENV["OAUTH_CLIENT_ID"], ENV["OAUTH_CLIENT_SECRET"],
+      client_options: {
+        site: "https://nidp.su.ac.th/nidp/oauth/nam",
+        authorize_url: "/authz",
+        token_url: "/token",
+        user_info_url: "/userinfo"
+      }
+
+
 
 
   # ==> Warden configuration

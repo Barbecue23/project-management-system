@@ -485,6 +485,7 @@ DEPENDENCIES
   kaminari
   omniauth
   omniauth-azure-oauth2
+  omniauth-oauth2
   omniauth-rails_csrf_protection
   overcommit
   pg (~> 1.5)
