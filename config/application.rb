@@ -28,6 +28,6 @@ module ProjectMs
     config.assets.paths << Rails.root.join("app", "assets", "javascripts")
 
     config.time_zone = "Bangkok"
-    config.active_record.default_timezone = :local    
+    config.active_record.default_timezone = :local
   end
 end

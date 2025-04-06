@@ -2,7 +2,7 @@ class PermissionService
     def initialize(user)
       @user = user
     end
-  
+
     def can_view?(permission_name)
       @user.role.map_permissions.joins(:permission)
            .where(permissions: { name: permission_name }, can_view: true)
@@ -27,4 +27,3 @@ class PermissionService
              .exists?
     end
 end
-  
