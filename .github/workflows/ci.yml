@@ -142,18 +142,17 @@ jobs:
     steps:
       - name: Send Discord notification on failure
         if: failure()  # จะทำงานถ้าเกิดความล้มเหลว
-        uses: Ilshidur/action-discord@master
+        uses: peter-evans/discord-webhook@v1
         with:
-          entryPoint: "discord-notify"
-          args: |
-            --webhook-url ${{ secrets.DISCORD_WEBHOOK_URL }}
-            --message "❌ A job failed on ${{ github.ref }} by ${{ github.actor }}. **Failure reason**: ${{ job.status }}. Please check the logs for more details."
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
+            ❌ A job failed on ${{ github.ref }} by ${{ github.actor }}.
+            **Failure reason**: ${{ job.status }}. Please check the logs for more details.
 
       - name: Send Discord notification on success
         if: success()  # จะทำงานถ้าทุกอย่างสำเร็จ
-        uses: Ilshidur/action-discord@master
+        uses: peter-evans/discord-webhook@v1
         with:
-          entryPoint: "discord-notify"
-          args: |
-            --webhook-url ${{ secrets.DISCORD_WEBHOOK_URL }}
-            --message "✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}."
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
+            ✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}.
