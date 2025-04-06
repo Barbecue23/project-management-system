@@ -141,18 +141,15 @@ jobs:
     needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]  # ตรวจสอบ jobs ทั้งหมด
     steps:
       - name: Send Discord notification on failure
-        if: failure()  # จะทำงานถ้าเกิดความล้มเหลว
-        uses: peter-evans/discord-webhook@v1
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: |
-            ❌ A job failed on ${{ github.ref }} by ${{ github.actor }}.
-            **Failure reason**: ${{ job.status }}. Please check the logs for more details.
+        if: failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"content": "❌ A job failed on ${{ github.ref }} by ${{ github.actor }}. **Failure reason**: ${{ job.status }}. Please check the logs for more details."}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Send Discord notification on success
-        if: success()  # จะทำงานถ้าทุกอย่างสำเร็จ
-        uses: peter-evans/discord-webhook@v1
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: |
-            ✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}.
+        if: success()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"content": "✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}."}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
