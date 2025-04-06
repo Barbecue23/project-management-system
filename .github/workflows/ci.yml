@@ -3,7 +3,7 @@ name: CI and Auto Deploy
 on:
   pull_request:
   push:
-    branches: [ dev ]
+    branches: [dev]
 
 env:
   IMAGE_NAME: barbecue23/project-management-system
@@ -24,7 +24,7 @@ jobs:
           bundler-cache: true
 
       - name: Install latest Brakeman
-        run: gem install brakeman 
+        run: gem install brakeman
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: brakeman --no-pager
@@ -94,7 +94,7 @@ jobs:
   # Build and Push Docker Image
   build_and_push:
     runs-on: ubuntu-latest
-    needs: test  # รันหลังจาก job test เสร็จสิ้น
+    needs: test # รันหลังจาก job test เสร็จสิ้น
 
     steps:
       - name: Checkout code
@@ -116,8 +116,8 @@ jobs:
 
   # Auto Deploy Job
   deploy:
-    runs-on: self-hosted  # ใช้ self-hosted runner บนเซิร์ฟเวอร์ของคุณ
-    needs: build_and_push  # รอให้ build_and_push เสร็จสิ้นก่อน
+    runs-on: self-hosted # ใช้ self-hosted runner บนเซิร์ฟเวอร์ของคุณ
+    needs: build_and_push # รอให้ build_and_push เสร็จสิ้นก่อน
 
     steps:
       - name: Checkout code
@@ -136,18 +136,23 @@ jobs:
 
   # Notify on failure
   notify:
-  if: always()  # ✅ ทำงานเมื่อ job เสร็จสิ้นไม่ว่าจะสำเร็จหรือไม่
-  runs-on: ubuntu-latest
-  needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]  # ตรวจสอบ jobs ทั้งหมด
-  steps:
-    - name: Send Discord notification
-      uses: Ilshidur/action-discord@v2
-      with:
-        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        message: |
-          {% if failure() %}
+    if: always()  # ทำงานเมื่อ job เสร็จสิ้นไม่ว่าจะสำเร็จหรือไม่
+    runs-on: ubuntu-latest
+    needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]  # ตรวจสอบ jobs ทั้งหมด
+    steps:
+      - name: Send Discord notification on failure
+        if: failure()  # จะทำงานถ้าเกิดความล้มเหลว
+        uses: Ilshidur/action-discord@v2
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
             ❌ A job failed on ${{ github.ref }} by ${{ github.actor }}.
             **Failure reason**: ${{ job.status }}. Please check the logs for more details.
-          {% else %}
+      
+      - name: Send Discord notification on success
+        if: success()  # จะทำงานถ้าทุกอย่างสำเร็จ
+        uses: Ilshidur/action-discord@v2
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
             ✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}.
-          {% endif %}
