@@ -27,16 +27,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # def after_omniauth_failure_path_for(scope)
   #   super(scope)
   # end
-  def azure_su
-    auth = request.env["omniauth.auth"]
-    user = User.from_omniauth(auth)
+  # app/controllers/users/omniauth_callbacks_controller.rb
+def oauth2
+  auth = request.env["omniauth.auth"]
+  user = User.from_omniauth(auth)
 
-    if user.persisted?
-      sign_in_and_redirect user
-    else
-      redirect_to root_path, alert: "Login failed"
-    end
+  if user.persisted?
+    sign_in_and_redirect user
+  else
+    redirect_to root_path, alert: "Login failed: #{user.errors.full_messages.join(", ")}"
   end
+end
+
 
   def failure
     redirect_to root_path

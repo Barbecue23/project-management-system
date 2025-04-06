@@ -11,4 +11,8 @@ class StudentsController < ApplicationController
       season_year_term: "-"
     )
   end
+
+  def my_student_group
+    @student = StudentGroupMember.all
+  end
 end

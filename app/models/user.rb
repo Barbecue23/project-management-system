@@ -9,10 +9,24 @@ class User < ApplicationRecord
     has_many :advisor_group_members
     has_many :advisor_groups, through: :advisor_group_members
 
-    def self.from_omniauth(auth)
-      where(email: auth.info.email).first_or_create do |user|
-        user.name = auth.info.name
-        user.password = Devise.friendly_token[0, 20] # ตั้งรหัสผ่านแบบสุ่ม
+  # app/models/user.rb
+  def self.from_omniauth(auth)
+    user = where(email: auth.info.email.downcase).first_or_initialize
+
+    user.name = auth.info.name
+
+    if user.new_record?
+      user.password = Devise.friendly_token[0, 20]
+    end
+
+    if user.changed? || user.new_record?
+      unless user.save
+        Rails.logger.debug "User save failed: #{user.errors.full_messages}"
       end
     end
-end
+
+    user
+  end
+  
+
+end    

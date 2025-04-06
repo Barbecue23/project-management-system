@@ -4,28 +4,43 @@
       <%= image_tag "logo.svg", class: "logo"%>
       <%= image_tag "title.svg", class: "title" %>
     </div>
-
+    <% perm_service = PermissionService.new(current_user) %>
     <!-- Navigation -->
     <nav class="nav-menu">
       <ul>
-        <li class="nav-item">
-          <%= link_to "/news/index", class: "nav-link" do %>
-            <%= image_tag "news.svg", class: "icon"%> 
-            <span>ข่าวสาร</span>
+        <% if perm_service.can_view?("news") %>
+          <li class="nav-item">
+            <%= link_to "/news/index", class: "nav-link" do %>
+              <%= image_tag "news.svg", class: "icon"%> 
+              <span>ข่าวสาร</span>
+            <% end %>
+          </li>
+          <% if perm_service.can_create?("news") %>
+            <li class="nav-item">
+              <%= link_to "/news/new", class: "nav-link" do %>
+                📧 
+                <span>สร้างข่าวสาร</span>
+              <% end %>
+            </li>
           <% end %>
-        </li>
-         <li class="nav-item">
-          <%= link_to "/news/new", class: "nav-link" do %>
-            📧 
-            <span>สร้างข่าวสาร</span>
+        <%end%>
+        <% if perm_service.can_view?("advisor_group") %>
+          <li class="nav-item">
+            <%= link_to "/advisors/index", class: "nav-link" do %>
+              ⏳ 
+              <span>อาจารย์ที่ปรึกษา</span>
+            <% end %>
+          </li>
+          <% if perm_service.can_create?("advisor_group") %>
+          <li class="nav-item">
+            <%= link_to "/advisors/new", class: "nav-link" do %>
+              ⏳ 
+              <span>สร้างกลุ่ม</span>
+            <% end %>
+          </li>
+          
           <% end %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "/advisors/index", class: "nav-link" do %>
-            ⏳ 
-            <span>อาจารย์ที่ปรึกษา</span>
-          <% end %>
-        </li>
+        <% end %>
         <li class="nav-item">
           <%= link_to "/reports/index", class: "nav-link" do %>
             <%= image_tag "report.svg", class: "icon"%> 
@@ -44,12 +59,14 @@
             <span>roles</span>
           <% end %>
         </li>
-        <li class="nav-item">
-          <%= link_to "/seasons", class: "nav-link" do %>
-            📧 
-            <span>seasons</span>
-          <% end %>
-        </li>
+        <% if perm_service.can_view?("seasons") %>
+          <li class="nav-item">
+            <%= link_to "/seasons", class: "nav-link" do %>
+              📧 
+              <span>seasons</span>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </nav>
   </div>
