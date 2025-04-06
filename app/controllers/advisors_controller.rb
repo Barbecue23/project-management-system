@@ -1,6 +1,11 @@
 class AdvisorsController < ApplicationController
   def index
-    @advisors_group_members = AdvisorGroupMember.includes(:user).page(params[:page]).per(5)
+    @advisors_group_members = AdvisorGroupMember
+  .includes(:user)
+  .left_joins(:student_group_members)
+  .select("advisor_group_members.*, COUNT(student_group_members.id) AS student_count")
+  .group("advisor_group_members.id")
+  .page(params[:page]).per(5)
   end
 
   def new
