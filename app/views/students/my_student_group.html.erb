@@ -1,0 +1,36 @@
+
+ <h1><%= "รายชื่อนักศึกษาที่ดูแล" %></h1> 
+
+<!-- Tabs -->
+<div class="tabs">
+ 
+</div>
+
+<!-- Search + Filters -->
+<div class="actions">
+  <%# <input type="text" placeholder="Search" class="search-bar" />
+  <button class="filter-btn">🔍 Filters</button> %>
+</div>
+
+<!-- Table -->
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ชื่อ-สกุล</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @student.each do |student| %>
+        <tr>
+          <td><%= student.user.name %></td>
+          
+          <td>
+            <button class="btn btn-delete">ลบ</button>
+          </td>
+        </tr>
+      <% end %> 
+    </tbody>
+  </table>
+</div>

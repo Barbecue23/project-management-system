@@ -27,22 +27,30 @@ class RolesController < ApplicationController
 
   def update
     @role = Role.find(params[:id])
-
+  
     if @role.update(role_params)
       # อัปเดต Users ที่เกี่ยวข้อง
       @role.users = User.where(id: params[:user_ids])
-
+  
       # อัปเดต Permissions
-      @role.map_permissions.each do |map_perm|
-        perm_params = params[:permissions][map_perm.permission_id.to_s] || {}
-        map_perm.update(
-          can_view: perm_params[:can_view].present?,
-          can_create: perm_params[:can_create].present?,
-          can_edit: perm_params[:can_edit].present?,
-          can_delete: perm_params[:can_delete].present?
-        )
+      Permission.all.each do |permission|
+        perm_params = params[:permissions][permission.id.to_s] || {}
+  
+        map_perm = @role.map_permissions.find_or_initialize_by(permission_id: permission.id)
+  
+        if perm_params.blank?
+          # ถ้าไม่มี checkbox ถูกติ๊กเลย ลบออก
+          map_perm.destroy if map_perm.persisted?
+        else
+          # ถ้ามีอย่างน้อยหนึ่งอย่าง ติ๊กไว้ ให้ update หรือสร้าง
+          map_perm.can_view   = perm_params[:can_view].present?
+          map_perm.can_create = perm_params[:can_create].present?
+          map_perm.can_edit   = perm_params[:can_edit].present?
+          map_perm.can_delete = perm_params[:can_delete].present?
+          map_perm.save!
+        end
       end
-
+  
       flash[:notice] = "Role updated successfully."
       redirect_to roles_path
     else
@@ -50,6 +58,7 @@ class RolesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+  
 
   private
 
