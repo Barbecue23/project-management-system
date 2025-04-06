@@ -56,13 +56,13 @@ class NewsController < ApplicationController
   def create
     is_public = params[:category] == "All"
 
-    @news = News.new(news_params.merge(is_public: is_public, created_by: "system"))
+    @news = News.new(news_params.merge(is_public: is_public, created_by: current_user.name))
 
     if @news.save
       unless is_public
         advisor_group_ids = AdvisorGroup.where(group_name: params[:category]).pluck(:id)
         advisor_group_ids.each do |advisor_group_id|
-          NewsGroup.create!(news: @news, advisor_group_id: advisor_group_id, created_by: "system")
+          NewsGroup.create!(news: @news, advisor_group_id: advisor_group_id, created_by: current_user.name)
         end
       end
       redirect_to news_index_path

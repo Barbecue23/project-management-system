@@ -11,7 +11,7 @@ class RolesController < ApplicationController
   end
 
   def create
-    @role = Role.new(role_params.merge(created_by: "system", updated_by: "system"))
+    @role = Role.new(role_params.merge(created_by: current_user.name, updated_by: current_user.name))
 
     return render :new unless @role.save
 

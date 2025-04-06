@@ -8,7 +8,7 @@ class AdvisorsController < ApplicationController
   end
 
   def create
-    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: 1))
+    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: current_user.id))
 
     if @advisor_group.save
       # ตรวจสอบ owner และเพิ่มเข้าไปในกลุ่มถ้ายังไม่มี

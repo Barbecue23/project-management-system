@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
 
   def student_requests
     @advisor_requests = AdvisorRequest.create(
-      student_id: 1,
+      student_id: current_user.id,
       advisor_group_member_id: params[:advisor_group_member_id],
       status: "pending",
       season_year_term: "-"
