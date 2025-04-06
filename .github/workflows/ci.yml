@@ -140,18 +140,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]
     env:
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }} # Discord webhook URL
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       - name: Send Discord notification on failure
         if: failure()
-        uses: Ilshidur/action-discord@0.3.1
+        uses: Ilshidur/action-discord@master
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: "❌ A job failed on ${{ github.ref }} by ${{ github.actor }}. Please check the logs."
-
+          args: "❌ A job failed on ${{ github.ref }} by ${{ github.actor }}. Please check the logs."
+          
       - name: Send Discord notification on success
         if: success()
-        uses: Ilshidur/action-discord@0.3.1
+        uses: Ilshidur/action-discord@master
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: "✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}."
+          args: "✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}."
