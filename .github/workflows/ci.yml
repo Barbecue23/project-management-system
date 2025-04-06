@@ -146,11 +146,12 @@ jobs:
         if: failure()
         uses: Ilshidur/action-discord@0.3.1
         with:
-          args: "--webhook-url ${{ secrets.DISCORD_WEBHOOK_URL }} --message \"❌ A job failed on ${{ github.ref }} by ${{ github.actor }}. Please check the logs.\""
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: "❌ A job failed on ${{ github.ref }} by ${{ github.actor }}. Please check the logs."
 
       - name: Send Discord notification on success
         if: success()
         uses: Ilshidur/action-discord@0.3.1
         with:
-          args: "--webhook-url ${{ secrets.DISCORD_WEBHOOK_URL }} --message \"✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}.\""
-
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: "✅ All jobs succeeded on ${{ github.ref }} by ${{ github.actor }}."
