@@ -15,10 +15,10 @@ class StudentsController < ApplicationController
       status: "pending",
       season_year_term: params[:year_term] # ← รับจาก form ที่ user กรอก
     )
-  
+
     redirect_to advisors_index_path(advisor_chosen: "true") # ← กลับไปที่หน้า advisor พร้อม alert
   end
-  
+
 
   def my_student_group
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)

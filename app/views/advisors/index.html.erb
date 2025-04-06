@@ -72,7 +72,21 @@
               </div>
             </td>
             <td class="text-center">
-            <% if !@advisor_requests %>
+            <% if @advisor_requests %>
+              <% if @student_group_members.present? %>
+                <div> - </div>
+              <% else %>
+                <button
+                  type="button"
+                  data-advisor-id="<%= advisor.id %>"
+                  data-advisor-name="<%= advisor.user.name %>"
+                  onclick="openAdvisorModal(this)"
+                  class="btn btn-primary"
+                >
+                  เลือก
+                </button>
+              <% end %>
+            <% else %>
               <button
                 type="button"
                 data-advisor-id="<%= advisor.id %>"
@@ -82,9 +96,8 @@
               >
                 เลือก
               </button>
-            <% else %>
-              <div> - </div>
-              <% end %>
+            <% end %>
+
             </td>
           </tr>
         <% end %>

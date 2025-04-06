@@ -7,8 +7,11 @@ class AdvisorsController < ApplicationController
   .group("advisor_group_members.id")
   .page(params[:page]).per(5)
 
-  @advisor_requests = AdvisorRequest.where(status: ["pending", "accepted",student_id: current_user.id])
+  @advisor_requests = AdvisorRequest.where(status: [ "pending", "accepted" ], student_id: current_user.id).order(created_at: :desc).first
+  @student_group_members = StudentGroupMember.where(user_id: current_user.id, status: "accepted")
 
+  puts "111: ", @advisor_requests.inspect
+  puts "555: ", @student_group_members.inspect
   end
 
   def new
