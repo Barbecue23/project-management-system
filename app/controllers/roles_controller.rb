@@ -27,17 +27,17 @@ class RolesController < ApplicationController
 
   def update
     @role = Role.find(params[:id])
-  
+
     if @role.update(role_params)
       # อัปเดต Users ที่เกี่ยวข้อง
       @role.users = User.where(id: params[:user_ids])
-  
+
       # อัปเดต Permissions
       Permission.all.each do |permission|
         perm_params = params[:permissions][permission.id.to_s] || {}
-  
+
         map_perm = @role.map_permissions.find_or_initialize_by(permission_id: permission.id)
-  
+
         if perm_params.blank?
           # ถ้าไม่มี checkbox ถูกติ๊กเลย ลบออก
           map_perm.destroy if map_perm.persisted?
@@ -50,7 +50,7 @@ class RolesController < ApplicationController
           map_perm.save!
         end
       end
-  
+
       flash[:notice] = "Role updated successfully."
       redirect_to roles_path
     else
@@ -58,7 +58,7 @@ class RolesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-  
+
 
   private
 

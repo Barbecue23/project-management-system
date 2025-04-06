@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "students/index"
   get "students/my_student_group", to: "students#my_student_group"  # Route to show the student group pag
   post "students/student_requests", to: "students#student_requests"  # Route to handle form submission
+  delete "students/:id", to: "students#destroy", as: "delete_student_request"  # Route to handle form submission
   get "advisors/index"
   get "advisors/new", to: "advisors#new"  # Route to show the create advisor page
   post "advisors/create", to: "advisors#create"  # Route to handle form submission

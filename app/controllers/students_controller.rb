@@ -1,6 +1,11 @@
 class StudentsController < ApplicationController
   def index
-    @students = AdvisorRequest.all.page(params[:page]).per(5) # Paginate 4 per page
+    advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
+    if advisor_group_member.present?
+      @students = AdvisorRequest.where(advisor_group_member_id: advisor_group_member.id).page(params[:page]).per(5) # Paginate 4 per page
+    else
+      @students = AdvisorRequest.none.page(params[:page]).per(5)
+    end
   end
 
   def student_requests
@@ -14,7 +19,7 @@ class StudentsController < ApplicationController
 
   def my_student_group
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
-  
+
     if advisor_group_member.present?
       @student = StudentGroupMember.where(advisor_group_member_id: advisor_group_member.id)
     else
@@ -23,7 +28,7 @@ class StudentsController < ApplicationController
       redirect_to root_path # หรือ path ที่เหมาะสม
     end
   end
-  
+
   def my_group
     @advisor_group = AdvisorGroupMember.find_by(user_id: current_user.id)
     if @advisor_group.present?
@@ -36,5 +41,11 @@ class StudentsController < ApplicationController
         redirect_to root_path
       end
     end
+  end
+
+  def destroy
+    @advisor_request = StudentGroupMember.find(params[:id])
+    @advisor_request.destroy
+    redirect_to students_my_student_group_path, notice: "Request deleted successfully."
   end
 end

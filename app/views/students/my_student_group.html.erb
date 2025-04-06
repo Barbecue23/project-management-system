@@ -18,16 +18,21 @@
     <thead>
       <tr>
         <th>ชื่อ-สกุล</th>
-        <th></th>
+        <th>รหัสนักศึกษา</th>
+        <th>เทอม</th>
+        <th>วันที่อัพเดต</th>
+        <th>action</th>
       </tr>
     </thead>
     <tbody>
       <% @student.each do |student| %>
         <tr>
           <td><%= student.user.name %></td>
-          
+          <td><%= student.user.student_id %></td> 
+          <td><%= student.year_term %></td>
+          <td><%= student.updated_at.in_time_zone("Bangkok").strftime("%d/%m/%Y  %H:%M") %></td>
           <td>
-            <button class="btn btn-delete">ลบ</button>
+            <%= button_to "ปฏิเสธ", delete_student_request_path(id: student.id),method: :delete, class: "btn btn-danger" %>
           </td>
         </tr>
       <% end %> 
