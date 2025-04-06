@@ -9,13 +9,16 @@ class StudentsController < ApplicationController
   end
 
   def student_requests
-    @advisor_requests = AdvisorRequest.create(
+    @advisor_requests = AdvisorRequest.create!(
       student_id: current_user.id,
       advisor_group_member_id: params[:advisor_group_member_id],
       status: "pending",
-      season_year_term: "-"
+      season_year_term: params[:year_term] # ← รับจาก form ที่ user กรอก
     )
+  
+    redirect_to advisors_index_path(advisor_chosen: "true") # ← กลับไปที่หน้า advisor พร้อม alert
   end
+  
 
   def my_student_group
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)

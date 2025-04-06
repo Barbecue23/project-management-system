@@ -72,7 +72,19 @@
               </div>
             </td>
             <td class="text-center">
-              <%= button_to "เลือก", students_student_requests_path(advisor_group_member_id: advisor.id), method: :post, class: "btn btn-primary" %>
+            <% if !@advisor_requests %>
+              <button
+                type="button"
+                data-advisor-id="<%= advisor.id %>"
+                data-advisor-name="<%= advisor.user.name %>"
+                onclick="openAdvisorModal(this)"
+                class="btn btn-primary"
+              >
+                เลือก
+              </button>
+            <% else %>
+              <div> - </div>
+              <% end %>
             </td>
           </tr>
         <% end %>
@@ -81,3 +93,49 @@
   </div>
   
 </div>
+
+<div id="advisor-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+  <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative">
+    <h2 class="text-xl font-bold mb-4">เลือกอาจารย์</h2>
+    <p class="mb-2">คุณกำลังจะเลือก <span id="modal-advisor-name" class="font-semibold"></span></p>
+    
+    <form id="advisor-form" action="<%= students_student_requests_path %>" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="advisor_group_member_id" id="modal-advisor-id">
+
+      <label for="year_term" class="block mb-1">ปี/เทอม</label>
+      <input type="text" name="year_term" placeholder="เช่น 2/2567" required class="w-full mb-4 p-2 border rounded">
+      
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeAdvisorModal()" class="btn">ยกเลิก</button>
+        <button type="submit" class="btn btn-primary">ยืนยัน</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  function openAdvisorModal(button) {
+    const modal = document.getElementById("advisor-modal");
+    const advisorId = button.dataset.advisorId;
+    const advisorName = button.dataset.advisorName;
+
+    document.getElementById("modal-advisor-id").value = advisorId;
+    document.getElementById("modal-advisor-name").innerText = advisorName;
+
+    modal.classList.remove("hidden");
+  }
+
+  function closeAdvisorModal() {
+    document.getElementById("advisor-modal").classList.add("hidden");
+  }
+
+  // แสดง alert หลังจาก submit แล้ว redirect กลับมา
+    document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("advisor_chosen") === "true") {
+      alert("คุณได้เลือกอาจารย์เรียบร้อยแล้ว กรุณาติดต่ออาจารย์ด้วยนะครับ 🙏");
+    }
+  });
+</script>

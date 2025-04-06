@@ -6,6 +6,9 @@ class AdvisorsController < ApplicationController
   .select("advisor_group_members.*, COUNT(student_group_members.id) AS student_count")
   .group("advisor_group_members.id")
   .page(params[:page]).per(5)
+
+  @advisor_requests = AdvisorRequest.where(status: ["pending", "accepted",student_id: current_user.id])
+
   end
 
   def new
@@ -13,7 +16,7 @@ class AdvisorsController < ApplicationController
   end
 
   def create
-    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: current_user))
+    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: current_user.id))
 
     if @advisor_group.save
       # ตรวจสอบ owner และเพิ่มเข้าไปในกลุ่มถ้ายังไม่มี
