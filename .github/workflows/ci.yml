@@ -142,7 +142,7 @@ jobs:
     steps:
       - name: Send Discord notification on failure
         if: failure()  # จะทำงานถ้าเกิดความล้มเหลว
-        uses: Ilshidur/action-discord@v2
+        uses: Ilshidur/action-discord@v1
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           message: |
@@ -151,7 +151,7 @@ jobs:
       
       - name: Send Discord notification on success
         if: success()  # จะทำงานถ้าทุกอย่างสำเร็จ
-        uses: Ilshidur/action-discord@v2
+        uses: Ilshidur/action-discord@v1
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           message: |
