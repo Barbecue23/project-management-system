@@ -139,6 +139,8 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }} # Discord webhook URL
     steps:
       - name: Send Discord notification on failure
         if: failure()
