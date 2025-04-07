@@ -9,14 +9,14 @@
       <!-- Navigation -->
       <nav class="nav-menu">
         <ul>
-          <% if perm_service.can_view?("news") %>
+          <% if current_user && perm_service.can_view?("news") %>
             <li class="nav-item">
               <%= link_to "/news/index", class: "nav-link" do %>
                 <%= image_tag "news.svg", class: "icon"%> 
                 <span>ข่าวสาร</span>
               <% end %>
             </li>
-            <% if perm_service.can_create?("news") %>
+            <% if current_user && perm_service.can_create?("news") %>
               <li class="nav-item">
                 <%= link_to "/news/new", class: "nav-link" do %>
                   📧 
@@ -25,7 +25,7 @@
               </li>
             <% end %>
           <%end%>
-          <% if perm_service.can_view?("advisor_group") %>
+          <% if perm_service.current_user && can_view?("advisor_group") %>
             <li class="nav-item">
               <%= link_to "/advisors/index", class: "nav-link" do %>
                 ⏳ 
@@ -38,7 +38,7 @@
                 <span>สมาชิก</span>
               <% end %>
             </li>
-            <% if perm_service.can_create?("advisor_group") %>
+            <% if current_user && perm_service.can_create?("advisor_group") %>
             <li class="nav-item">
               <%= link_to "/advisors/new", class: "nav-link" do %>
                 ⏳ 
