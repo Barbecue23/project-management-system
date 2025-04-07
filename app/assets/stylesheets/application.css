@@ -16,6 +16,7 @@
 @import "news.css";
 @import "form.css";
 @import "reports.css";
+@import "sign_in.css";
 
 body {
   font-family: "Poppins", sans-serif;
@@ -47,7 +48,8 @@ body {
 
 /* Secondary button */
 .btn-secondary {
-  background-color: #ffffff; /* bg-gray-200 */
+  background-color: #f0f0f0;
+  color: #333;
   text-decoration: #888888;
 }
 

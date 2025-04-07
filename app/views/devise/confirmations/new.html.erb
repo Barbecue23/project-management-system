@@ -1,16 +1,40 @@
-<h2>Resend confirmation instructions</h2>
+<div class="login-wrapper">
+  <div class="login-container">
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <!-- โลโก้หรือภาพประกอบ -->
+    <div class="login-illustration">
+      <%= image_tag "logo.svg", class: "login-logo" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+    <!-- ฟอร์มยืนยันอีเมล -->
+    <div class="login-form">
+      <h2 class="login-title">ส่งลิงก์ยืนยันอีเมลอีกครั้ง</h2>
+      <p class="login-subtext">กรอกอีเมลที่คุณใช้สมัครสมาชิก</p>
+
+      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: "form" }) do |f| %>
+
+        <div class="form-group">
+          <%= f.label :email, "Email", class: "form-label" %>
+          <%= f.email_field :email,
+                autofocus: true,
+                autocomplete: "email",
+                value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
+                class: "form-control" %>
+          <% if resource.errors[:email].any? %>
+            <div class="field-error"><%= resource.errors[:email].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "ส่งลิงก์ยืนยันอีกครั้ง", class: "btn btn-primary full-width" %>
+        </div>
+
+        <div class="auth-links">
+          <%= link_to "เข้าสู่ระบบ", new_session_path(resource_name), class: "btn btn-secondary full-width" %>
+          <%= link_to "สมัครสมาชิก", new_registration_path(resource_name), class: "btn btn-secondary full-width" %>
+        </div>
+      <% end %>
+
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
