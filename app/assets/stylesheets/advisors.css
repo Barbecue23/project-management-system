@@ -175,3 +175,126 @@
   }
   
   
+  /* ปิด modal เริ่มต้น */
+.hidden {
+  display: none;
+}
+
+/* Modal Overlay */
+#advisor-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* กล่อง modal */
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 32px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.25);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* ปุ่มใน modal */
+.modal-box .btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-box .btn:hover {
+  opacity: 0.9;
+}
+
+/* Primary Button */
+.modal-box .btn-primary {
+  background-color: #4a90e2;
+  color: white;
+}
+
+/* Secondary Button */
+.modal-box .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+/* Input Field */
+.modal-box input[type="text"] {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* Headings */
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.modal-subtext {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Modal Form Layout */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Group & Label */
+.modal-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-form .form-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.modal-form .form-control {
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.modal-form .form-control:focus {
+  border-color: #4a90e2;
+}
+
+/* Actions Button */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

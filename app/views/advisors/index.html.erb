@@ -106,26 +106,30 @@
   </div>
   
 </div>
+<div id="advisor-modal" >
+  <div class="modal-box">
+    <h2 class="modal-title">เลือกอาจารย์</h2>
+    <p class="modal-subtext">
+      คุณกำลังจะเลือก <span id="modal-advisor-name" class="font-semibold text-primary"></span>
+    </p>
 
-<div id="advisor-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-  <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative">
-    <h2 class="text-xl font-bold mb-4">เลือกอาจารย์</h2>
-    <p class="mb-2">คุณกำลังจะเลือก <span id="modal-advisor-name" class="font-semibold"></span></p>
-    
-    <form id="advisor-form" action="<%= students_student_requests_path %>" method="post">
+    <form id="advisor-form" action="<%= students_student_requests_path %>" method="post" class="modal-form">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <input type="hidden" name="advisor_group_member_id" id="modal-advisor-id">
+      <%= hidden_field_tag :advisor_group_member_id, "", id: "modal-advisor-id" %>
 
-      <label for="year_term" class="block mb-1">ปี/เทอม</label>
-      <input type="text" name="year_term" placeholder="เช่น 2/2567" required class="w-full mb-4 p-2 border rounded">
-      
-      <div class="flex justify-end gap-2">
-        <button type="button" onclick="closeAdvisorModal()" class="btn">ยกเลิก</button>
+      <div class="form-group">
+        <label for="year_term" class="form-label">ปี/เทอม</label>
+        <input type="text" name="year_term" placeholder="เช่น 2/2567" required class="form-control" />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" onclick="closeAdvisorModal()" class="btn btn-secondary">ยกเลิก</button>
         <button type="submit" class="btn btn-primary">ยืนยัน</button>
       </div>
     </form>
   </div>
 </div>
+
 
 
 <script>
