@@ -182,14 +182,20 @@
 
 /* Modal Overlay */
 #advisor-modal {
+  display: none; /* default ซ่อน */
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1000;
-  display: flex;
   align-items: center;
   justify-content: center;
 }
+
+/* class ที่ใช้โชว์ modal */
+#advisor-modal.show {
+  display: flex;
+}
+
 
 /* กล่อง modal */
 .modal-box {

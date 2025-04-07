@@ -20,8 +20,7 @@
       <% else %>
       <p class="login-subtext">Please login with your email and password</p>
         <div class="auth-links">
-          <%= link_to "Signin", new_user_session_path, class: "btn btn-primary" %>
-          <%= link_to "Create Account", new_user_registration_path, class: "btn btn-secondary" %>
+          <%= button_to "Sign in with SU", user_azure_oauth2_omniauth_authorize_path,method: :post, class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>

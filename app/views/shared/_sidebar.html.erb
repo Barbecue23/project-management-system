@@ -82,8 +82,8 @@
     <div class="user-profile">
       <%# <%= image_tag "avatar.png", class: "avatar", alt: "User" %>
       <div class="user-info">
-        <p class="user-name"><%= current_user.name =%></p>
-        <p class="user-role"><%= current_user.role || "-"=%></p>
+        <p class="user-name"><%= current_user.name %></p>
+        <p class="user-role"><%= current_user.role&.name || "-" %></p>
       </div>
       <%= link_to "↗",destroy_user_session_path, method: :delete ,class: "profile-link" %>
     </div>
