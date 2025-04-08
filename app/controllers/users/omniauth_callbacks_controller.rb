@@ -31,6 +31,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 def oauth2
   auth = request.env["omniauth.auth"]
   Rails.logger.debug "OmniAuth Auth: #{auth.inspect}"
+  render html: "<pre>#{CGI.escapeHTML(auth.to_yaml)}</pre>".html_safe and return
+
 
   user = User.from_omniauth(auth)
 
