@@ -281,14 +281,7 @@ Devise.setup do |config|
     scope: "openid email profile",
     info_fields: "email name",
     uid_field: "email",
-    callback_path: "/users/auth/oauth2/callback",
-    setup: lambda { |env|
-      strategy = env["omniauth.strategy"]
-      strategy.options[:token_params] = { parse: :json }
-      strategy.options[:client_options][:auth_scheme] = :request_body
-      strategy.options[:user_info_url] = "https://nidp.su.ac.th/nidp/oauth/nam/userinfo"
-    }
-
+    callback_path: "/users/auth/oauth2/callback"
 
 
   # ==> Warden configuration
