@@ -12,7 +12,7 @@ minio:
   secret_access_key: ENV.AWS_SECRET_ACCESS_KEY
   region: us-east-1
   endpoint: http://main-buf-nano-greeting.trycloudflare.com:9000
-  bucket: <%= ENV.AWS_BUCKET %>
+  bucket: <%= ENV.BUCKET_NAME %>
   force_path_style: true
 
 
