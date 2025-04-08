@@ -30,14 +30,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 # app/controllers/users/omniauth_callbacks_controller.rb
 def oauth2
   auth = request.env["omniauth.auth"]
+  Rails.logger.debug "OmniAuth Auth: #{auth.inspect}"
+
   user = User.from_omniauth(auth)
 
   if user.persisted?
     sign_in_and_redirect user
   else
-    redirect_to root_path, alert: "Login failed: #{user.errors.full_messages.join(", ")}"
+    Rails.logger.debug "User not persisted. Errors: #{user.errors.full_messages}"
+    redirect_to root_path, alert: "Login failed: #{user.errors.full_messages.join(', ')}"
   end
 end
+
 
 
   def failure

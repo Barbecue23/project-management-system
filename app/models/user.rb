@@ -11,20 +11,17 @@ class User < ApplicationRecord
 
   # app/models/user.rb
   def self.from_omniauth(auth)
-    user = where(email: auth.info.email.downcase).first_or_initialize
+    email = auth.info.email || auth.dig(:extra, :raw_info, :email)
+    return nil unless email
 
-    user.name = auth.info.name
+    user = where(email: email.downcase).first_or_initialize
+    user.name = auth.info.name if auth.info.name.present?
 
     if user.new_record?
       user.password = Devise.friendly_token[0, 20]
     end
 
-    if user.changed? || user.new_record?
-      unless user.save
-        Rails.logger.debug "User save failed: #{user.errors.full_messages}"
-      end
-    end
-
+    user.save if user.changed?
     user
   end
 end
