@@ -28,25 +28,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 #   super(scope)
 # end
 # app/controllers/users/omniauth_callbacks_controller.rb
-def oauth2
+def su_oauth2
   auth = request.env["omniauth.auth"]
-  user = User.find_or_create_by(uid: auth.uid) do |u|
-    u.email = auth.info.email
-    u.name = auth.info.name || auth.info.nickname
-    u.password = Devise.friendly_token[0, 20]
+
+  @user = User.find_or_create_by(email: auth.info.email) do |user|
+    user.name = auth.info.name
+    user.password = Devise.friendly_token[0, 20]
   end
 
-  if user.persisted?
-    sign_in_and_redirect user, event: :authentication
-  else
-    session["devise.su_oauth_data"] = auth
-    redirect_to new_user_registration_url
-  end
+  sign_in_and_redirect @user, event: :authentication
 end
 
-
-
-  def failure
-    redirect_to root_path
-  end
+def failure
+  redirect_to root_path
+end
 end
