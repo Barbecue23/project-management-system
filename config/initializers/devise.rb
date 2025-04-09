@@ -268,20 +268,20 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
-    # ==> OmniAuth
-    # Add a new OmniAuth provider. Check the wiki for more information on setting
-    # up on your models and hooks.
-    # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-    config.omniauth :oauth2,
-    client_id: "905347a0-3f96-485e-be7a-f9b63b14bc12",
-    client_secret: "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
-    client_options: {
-      site: "https://nidp.su.ac.th",
-      authorize_url: "/nidp/oauth/nam/authz",
-      token_url: "/nidp/oauth/nam/token",
-      user_info_url: "/nidp/oauth/nam/userinfo"
-    },
-    scope: "openid profile email"
+  # ==> OmniAuth
+  # Add a new OmniAuth provider. Check the wiki for more information on setting
+  # up on your models and hooks.
+  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  # config.omniauth :oauth2,
+  # client_id: "905347a0-3f96-485e-be7a-f9b63b14bc12",
+  # client_secret: "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
+  # client_options: {
+  #   site: "https://nidp.su.ac.th",
+  #   authorize_url: "/nidp/oauth/nam/authz",
+  #   token_url: "/nidp/oauth/nam/token",
+  #   user_info_url: "/nidp/oauth/nam/userinfo"
+  # },
+  # scope: "openid profile email"
 
 
 

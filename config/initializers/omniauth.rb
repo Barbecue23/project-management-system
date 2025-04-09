@@ -1,3 +1,5 @@
+# config/initializers/omniauth.rb
+
 require Rails.root.join("lib/omniauth/strategies/oauth2")
 
 Rails.application.config.middleware.use OmniAuth::Builder do
