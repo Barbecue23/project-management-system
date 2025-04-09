@@ -1,8 +1,10 @@
+# lib/omniauth/strategies/su_oauth2.rb
 require "omniauth-oauth2"
+
 module OmniAuth
   module Strategies
-    class Oauth2 < OmniAuth::Strategies::OAuth2
-      option :name, :oauth2  # <-- ตรงนี้สำคัญ!
+    class SuOauth2 < OmniAuth::Strategies::OAuth2
+      option :name, :oauth2  # <<< ยังคงใช้ :oauth2 ได้เหมือนเดิม
 
       option :client_options, {
         site: "https://nidp.su.ac.th",
