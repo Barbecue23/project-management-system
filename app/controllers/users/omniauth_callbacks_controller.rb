@@ -28,7 +28,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 #   super(scope)
 # end
 # app/controllers/users/omniauth_callbacks_controller.rb
-def su_oauth2
+def oauth2
   auth = request.env["omniauth.auth"]
 
   @user = User.find_or_create_by(email: auth.info.email) do |user|

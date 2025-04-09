@@ -3,7 +3,7 @@ require "omniauth-oauth2"
 module OmniAuth
   module Strategies
     class SuOauth2 < OmniAuth::Strategies::OAuth2
-      option :name, :su_oauth2
+      option :name, :oauth2
 
       option :client_options, {
         site: "https://nidp.su.ac.th",

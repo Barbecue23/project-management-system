@@ -1,7 +1,7 @@
-require Rails.root.join("lib/omniauth/strategies/su_oauth2")
+require Rails.root.join("lib/omniauth/strategies/oauth2")
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :su_oauth2,
+  provider :oauth2,
     "905347a0-3f96-485e-be7a-f9b63b14bc12",
     "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
     {
