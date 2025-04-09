@@ -281,7 +281,6 @@ Devise.setup do |config|
       token_url: "/nidp/oauth/nam/token",
       user_info_url: "/nidp/oauth/nam/userinfo"
     },
-    name: :su_oauth,
     scope: "openid profile email"
 
 
