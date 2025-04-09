@@ -273,15 +273,11 @@ Devise.setup do |config|
     # up on your models and hooks.
     # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
     config.omniauth :oauth2, ENV["AZURE_CLIENT_ID"], ENV["AZURE_CLIENT_SECRET"],
-    client_options: {
-      site: "https://nidp.su.ac.th/nidp/oauth/nam",
-      authorize_url: "https://nidp.su.ac.th/nidp/oauth/nam/authz",
-      token_url: "https://nidp.su.ac.th/nidp/oauth/nam/token"
-    },
-    scope: "openid email profile",
-    info_fields: "email name",
-    uid_field: "email",
-    callback_path: "/users/auth/oauth2/callback"
+      client_options: {
+        site: "https://nidp.su.ac.th/nidp/oauth/nam",
+        authorize_url: "https://nidp.su.ac.th/nidp/oauth/nam/authz",
+        token_url: "https://nidp.su.ac.th/nidp/oauth/nam/token"
+      }
 
 
   # ==> Warden configuration
