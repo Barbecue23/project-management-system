@@ -28,19 +28,19 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 #   super(scope)
 # end
 # app/controllers/users/omniauth_callbacks_controller.rb
-def oauth2
+def su_oauth
   auth = request.env["omniauth.auth"]
-  Rails.logger.debug "OmniAuth Auth: #{auth.inspect}"
-  render html: "<pre>#{CGI.escapeHTML(auth.to_yaml)}</pre>".html_safe and return
-
-
-  user = User.from_omniauth(auth)
+  user = User.find_or_create_by(uid: auth.uid) do |u|
+    u.email = auth.info.email
+    u.name = auth.info.name || auth.info.nickname
+    u.password = Devise.friendly_token[0, 20]
+  end
 
   if user.persisted?
-    sign_in_and_redirect user
+    sign_in_and_redirect user, event: :authentication
   else
-    Rails.logger.debug "User not persisted. Errors: #{user.errors.full_messages}"
-    redirect_to root_path, alert: "Login failed: #{user.errors.full_messages.join(', ')}"
+    session["devise.su_oauth_data"] = auth
+    redirect_to new_user_registration_url
   end
 end
 
