@@ -273,14 +273,15 @@ Devise.setup do |config|
     # up on your models and hooks.
     # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
     config.omniauth :oauth2,
-    client_id: "905347a0-3f96-485e-be7a-f9b63b14bc12",
-    client_secret: "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
-    client_options: {
-      site: "https://nidp.su.ac.th",
-      authorize_url: "/nidp/oauth/nam/authz",
-      token_url: "/nidp/oauth/nam/token",
-      user_info_url: "/nidp/oauth/nam/userinfo"
-    }
+      client_id: "905347a0-3f96-485e-be7a-f9b63b14bc12",
+      client_secret: "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
+      client_options: {
+        site: "https://nidp.su.ac.th",
+        authorize_url: "/nidp/oauth/nam/authz",
+        token_url: "/nidp/oauth/nam/token"
+      },
+      token_params: { parse: :json }
+
 
 
 
