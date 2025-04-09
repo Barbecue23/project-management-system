@@ -29,5 +29,7 @@ module ProjectMs
 
     config.time_zone = "Bangkok"
     config.active_record.default_timezone = :local
+
+    config.autoload_paths << Rails.root.join("lib")
   end
 end
