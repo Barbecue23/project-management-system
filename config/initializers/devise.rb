@@ -280,7 +280,8 @@ Devise.setup do |config|
         authorize_url: "/nidp/oauth/nam/authz",
         token_url: "/nidp/oauth/nam/token"
       },
-      token_params: { parse: :json }
+      token_params: { parse: :json },
+      callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
 
 
 
