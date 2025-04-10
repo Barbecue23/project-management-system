@@ -1,12 +1,12 @@
-# app/controllers/users/omniauth_callbacks_controller.rb
-require "net/http"
-
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def oauth2
     auth = request.env["omniauth.auth"]
 
     # 🔥 ดึง userinfo จาก token เอง (เพราะ omniauth-oauth2 ไม่ทำให้)
     access_token = auth.credentials.token
+
+    # Log OAuth2 auth data
+    Rails.logger.info "OAuth2: Auth data = #{auth.inspect}"
 
     uri = URI("https://nidp.su.ac.th/nidp/oauth/nam/userinfo")
     userinfo = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
@@ -16,8 +16,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       JSON.parse(res.body)
     end
 
+    # Log userinfo data
+    Rails.logger.info "OAuth2: Userinfo = #{userinfo.inspect}"
+
     email = userinfo["email"]
     name = userinfo["name"]
+
+    # Log email and name data
+    Rails.logger.info "OAuth2: Email = #{email}, Name = #{name}"
 
     @user = User.find_or_create_by(email: email) do |user|
       user.name = name
