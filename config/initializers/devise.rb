@@ -281,6 +281,7 @@ Devise.setup do |config|
         token_url: "/nidp/oauth/nam/token"
       },
       token_params: { parse: :json },
+      redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback",
       callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
 
 
