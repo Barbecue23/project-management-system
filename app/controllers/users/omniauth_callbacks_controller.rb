@@ -2,6 +2,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def oauth2
     auth = request.env["omniauth.auth"]
 
+    if auth.nil?
+      Rails.logger.error "🔥 AUTH IS NIL!"
+      redirect_to root_path, alert: "ข้อมูลการเข้าสู่ระบบไม่สมบูรณ์"
+      return
+    end
+
     unless auth
       Rails.logger.error "OAuth2 callback missing auth data"
       redirect_to root_path, alert: "ข้อมูลการเข้าสู่ระบบไม่สมบูรณ์"
@@ -46,7 +52,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    Rails.logger.error "OAuth2 authentication failure: #{failure_message}"
+    Rails.logger.error "OAuth2 authentication failure: #{request.env['omniauth.error']&.inspect}"
+    Rails.logger.error "OAuth2 error type: #{request.env['omniauth.error.type']}"
     redirect_to root_path, alert: "การยืนยันตัวตนล้มเหลว"
   end
 end

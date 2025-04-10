@@ -325,4 +325,11 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
   config.sign_out_via = [ :get, :delete ]
+
+  OmniAuth.config.on_failure = Proc.new { |env|
+  message = env["omniauth.error.type"]
+  strategy = env["omniauth.error.strategy"]
+  Rails.logger.error "OmniAuth failure: #{message}, Strategy: #{strategy}"
+  OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+}
 end
