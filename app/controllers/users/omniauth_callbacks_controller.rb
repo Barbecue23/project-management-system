@@ -1,6 +1,8 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def oauth2
     auth = request.env["omniauth.auth"]
+    Rails.logger.info "🔁 OmniAuth Raw Params: #{auth.inspect}"
+    Rails.logger.info "🔑 OAuth2 code (params): #{request.params['code']}"
 
     if auth.nil?
       Rails.logger.error "🔥 AUTH IS NIL!"
@@ -8,19 +10,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
     end
 
-    unless auth
-      Rails.logger.error "OAuth2 callback missing auth data"
-      redirect_to root_path, alert: "ข้อมูลการเข้าสู่ระบบไม่สมบูรณ์"
-      return
-    end
-
     # 🔥 ดึง userinfo จาก token เอง (เพราะ omniauth-oauth2 ไม่ทำให้)
     access_token = auth.credentials.token
-
-    # Log OAuth2 auth data
     Rails.logger.info "OAuth2: Auth data = #{auth.inspect}"
-    # แสดงข้อมูลดิบไว้ก่อนสำหรับ debug
-    render plain: auth.to_yaml and return
 
     begin
       uri = URI("https://nidp.su.ac.th/nidp/oauth/nam/userinfo")
@@ -31,13 +23,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         JSON.parse(res.body)
       end
 
-      # Log userinfo data
       Rails.logger.info "OAuth2: Userinfo = #{userinfo.inspect}"
 
       email = userinfo["email"]
       name = userinfo["name"]
-
-      Rails.logger.info "OAuth2: Email = #{email}, Name = #{name}"
 
       @user = User.find_or_create_by(email: email) do |user|
         user.name = name

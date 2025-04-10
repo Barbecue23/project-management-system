@@ -39,4 +39,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
   }
+
+  # ใส่ด้านนอก devise_for
+  get "/users/auth/failure", to: "users/omniauth_callbacks#failure"
 end
