@@ -7,6 +7,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Log OAuth2 auth data
     Rails.logger.info "OAuth2: Auth data = #{auth.inspect}"
+    render plain: auth.to_yaml
 
     uri = URI("https://nidp.su.ac.th/nidp/oauth/nam/userinfo")
     userinfo = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
