@@ -285,17 +285,23 @@ Devise.setup do |config|
       #   redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback",
       #   callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
       config.omniauth :openid_connect, {
-        name: :oauth2,
-        scope: [ :openid, :email ],  # เพิ่ม scope ตามต้องการ เช่น :profile, :phone ก็ได้
-        response_type: :code,
-        discovery: true,
-        issuer: "https://nidp.su.ac.th/nidp/oauth/nam",
-        client_options: {
-          identifier: ENV["AZURE_CLIENT_ID"],
-          secret: ENV["AZURE_CLIENT_SECRET"],
-          redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
-        }
-      }
+  name: :openid_connect,
+  scope: [ :openid, :email ],
+  response_type: :code,
+  discovery: false,
+  client_options: {
+    identifier: ENV["AZURE_CLIENT_ID"],
+    secret: ENV["AZURE_CLIENT_SECRET"],
+    redirect_uri: "https://your-app.com/users/auth/su_oidc/callback",
+    host: "nidp.su.ac.th",
+    scheme: "https",
+    port: 443,
+    authorization_endpoint: "/nidp/oauth/nam/authz",
+    token_endpoint: "/nidp/oauth/nam/token",
+    userinfo_endpoint: "/nidp/oauth/nam/userinfo"
+  }
+}
+
 
 
 
