@@ -10,27 +10,34 @@ class User < ApplicationRecord
     has_many :advisor_group_members
     has_many :advisor_groups, through: :advisor_group_members
 
-  # app/models/user.rb
-  # def self.from_omniauth(auth)
-  #   email = auth.info.email || auth.dig(:extra, :raw_info, :email)
-  #   return nil unless email
+    def self.from_omniauth(auth)
+      # ดึงข้อมูล userinfo เพิ่มเติม หากไม่มี email มา
+      email = auth.info.email
+      name = auth.info.name || auth.info.nickname || auth.uid
 
-  #   user = where(email: email.downcase).first_or_initialize
-  #   user.name = auth.info.name if auth.info.name.present?
+      if email.blank?
+        begin
+          uri = URI("https://nidp.su.ac.th/nidp/oauth/nam/userinfo")
+          userinfo = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+            req = Net::HTTP::Get.new(uri)
+            req["Authorization"] = "Bearer #{auth.credentials.token}"
+            res = http.request(req)
+            JSON.parse(res.body)
+          end
 
-  #   if user.new_record?
-  #     user.password = Devise.friendly_token[0, 20]
-  #   end
+          email = userinfo["email"] || "#{userinfo["sub"]}@su.ac.th"
+          name = userinfo["name"] || name
+        rescue => e
+          Rails.logger.warn "Userinfo fetch failed: #{e.message}"
+          email ||= "#{auth.uid}@su.ac.th"
+        end
+      end
 
-  #   user.save if user.changed?
-  #   user
-  # end
-  def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
-      user.email = auth.info.email.presence || "#{auth.uid}@example.com"  # ถ้าไม่ได้ email กลับมา
-      user.name = auth.info.name || auth.info.nickname || auth.uid
-      user.password ||= Devise.friendly_token[0, 20]
-      user.save!
+      where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
+        user.email = email
+        user.name = name
+        user.password ||= Devise.friendly_token[0, 20]
+        user.save!
+      end
     end
-  end
 end

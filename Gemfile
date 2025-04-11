@@ -77,7 +77,6 @@ end
 gem "devise"
 gem "omniauth"
 gem "omniauth-rails_csrf_protection"
-gem "omniauth_openid_connect"
 gem "omniauth-oauth2"
 # gem "omniauth-azure-oauth2"
 gem "aws-sdk-s3", require: false
