@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-          :omniauthable, omniauth_providers: [ :openid_connect ]
+          :omniauthable, omniauth_providers: [ :oauth2 ]
 
     belongs_to :role, optional: true
 
