@@ -26,12 +26,11 @@ class User < ApplicationRecord
   #   user
   # end
   def self.from_omniauth(auth)
-    Rails.logger.debug "🔥 Auth info: #{auth.inspect}"
-
-    where(email: auth.info.email).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0, 20]
-      # ปรับ attribute ตาม structure ที่ auth provider ส่งมา
+    where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
+      user.email = auth.info.email.presence || "#{auth.uid}@example.com"  # ถ้าไม่ได้ email กลับมา
+      user.name = auth.info.name || auth.info.nickname || auth.uid
+      user.password ||= Devise.friendly_token[0, 20]
+      user.save!
     end
   end
 end

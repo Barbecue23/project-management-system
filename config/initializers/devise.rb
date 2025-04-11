@@ -268,22 +268,35 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
-    # ==> OmniAuth
-    # Add a new OmniAuth provider. Check the wiki for more information on setting
-    # up on your models and hooks.
-    # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-    config.omniauth :oauth2,
-      client_id: "905347a0-3f96-485e-be7a-f9b63b14bc12",
-      client_secret: "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
-      client_options: {
-        site: "https://nidp.su.ac.th",
-        authorize_url: "/nidp/oauth/nam/authz",
-        token_url: "/nidp/oauth/nam/token"
-      },
-      scope: "openid email",
-      token_params: { parse: :json },
-      redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback",
-      callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
+      # ==> OmniAuth
+      # Add a new OmniAuth provider. Check the wiki for more information on setting
+      # up on your models and hooks.
+      # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+      # config.omniauth :oauth2,
+      #   client_id: "905347a0-3f96-485e-be7a-f9b63b14bc12",
+      #   client_secret: "GLqNi2vbZQw3vYY-NX5Dc5H9kHcdyd-CJqXq02iDfpz3lPYNhTU2d1mXnRcfTh4rqAvnesBihg4xBjDX67WKxw",
+      #   client_options: {
+      #     site: "https://nidp.su.ac.th",
+      #     authorize_url: "/nidp/oauth/nam/authz",
+      #     token_url: "/nidp/oauth/nam/token"
+      #   },
+      #   scope: "openid email",
+      #   token_params: { parse: :json },
+      #   redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback",
+      #   callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
+      config.omniauth :openid_connect, {
+        name: :oauth2,
+        scope: [ :openid, :email ],  # เพิ่ม scope ตามต้องการ เช่น :profile, :phone ก็ได้
+        response_type: :code,
+        discovery: true,
+        issuer: "https://nidp.su.ac.th/nidp/oauth/nam",
+        client_options: {
+          identifier: ENV["AZURE_CLIENT_ID"],
+          secret: ENV["AZURE_CLIENT_SECRET"],
+          redirect_uri: "https://your-app.com/users/auth/su_oidc/callback"
+        }
+      }
+
 
 
 
