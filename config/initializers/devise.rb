@@ -293,7 +293,7 @@ Devise.setup do |config|
         client_options: {
           identifier: ENV["AZURE_CLIENT_ID"],
           secret: ENV["AZURE_CLIENT_SECRET"],
-          redirect_uri: "https://your-app.com/users/auth/su_oidc/callback"
+          redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
         }
       }
 
