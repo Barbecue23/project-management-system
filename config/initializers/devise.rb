@@ -280,6 +280,7 @@ Devise.setup do |config|
         authorize_url: "/nidp/oauth/nam/authz",
         token_url: "/nidp/oauth/nam/token"
       },
+      scope: "openid email",
       token_params: { parse: :json },
       redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback",
       callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
@@ -325,6 +326,7 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
   config.sign_out_via = [ :get, :delete ]
+  OmniAuth.config.logger = Rails.logger
 
   OmniAuth.config.on_failure = Proc.new { |env|
   message = env["omniauth.error.type"]
