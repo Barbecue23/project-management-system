@@ -280,7 +280,6 @@ Devise.setup do |config|
         authorize_url: "/nidp/oauth/nam/authz",
         token_url: "/nidp/oauth/nam/token"
       },
-      scope: "openid email",
       token_params: { parse: :json },
       redirect_uri: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback",
       callback_url: "https://fingers-mn-sun-rights.trycloudflare.com/users/auth/oauth2/callback"
