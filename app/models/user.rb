@@ -11,8 +11,13 @@ class User < ApplicationRecord
     has_many :advisor_groups, through: :advisor_group_members
 
     def self.from_omniauth(auth)
-      user = where(email: auth.info.email.downcase).first_or_initialize
+      email = auth.info.email.downcase
 
+      unless email.ends_with?("@su.ac.th")
+        raise "Unauthorized email domain"
+      end
+
+      user = where(email: email).first_or_initialize
       user.name = auth.info.name
 
       if user.new_record?

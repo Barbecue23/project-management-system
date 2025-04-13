@@ -1,7 +1,12 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def azure_oauth2
     auth = request.env["omniauth.auth"]
-    user = User.from_omniauth(auth)
+
+    begin
+      user = User.from_omniauth(auth)
+    rescue => e
+      redirect_to root_path, alert: "Login failed: #{e.message}" and return
+    end
 
     if user.persisted?
       sign_in_and_redirect user
