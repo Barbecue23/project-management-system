@@ -8,14 +8,11 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
 
-  def after_sign_out_path_for(resource_or_scope)
-    root_path # หรือเปลี่ยนเป็น path ที่คุณต้องการ
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || some_dashboard_path
   end
 
-  def authenticate_user!
-    unless user_signed_in?
-      flash[:alert] = "กรุณาเข้าสู่ระบบก่อนใช้งาน"
-      redirect_to root_path
-    end
+  def after_sign_out_path_for(resource_or_scope)
+    root_path
   end
 end
