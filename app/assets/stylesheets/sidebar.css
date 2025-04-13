@@ -1,92 +1,144 @@
+.sidebar {
+  width: 16rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
 
- .sidebar {
-    width: 16rem;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
+.logo-container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.logo {
+  height: 2.5rem;
+}
+
+.title {
+  height: 2rem;
+  margin-left: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.nav-menu {
+  margin-top: 1rem;
+}
+
+.nav-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-item {
+  color: #4a4a4a;
+  transition: background 0.3s;
+}
+
+.nav-item:hover {
+  background-color: #f3f4f6;
+}
+
+.nav-link {
+  padding: 1.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon {
+  height: 1.25rem;
+  width: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.user-profile {
+  padding: 1rem;
+  background-color: #ebf8ff;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ccc;
+}
+
+.user-info {
+  margin-left: 0.75rem;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.profile-link {
+  color: #2563eb;
+  text-decoration: none;
+  margin-left: auto;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: transparent;
+  border: 0px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 0.75rem;
+  font-size: 1.5rem;
+  z-index: 1100;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-radius: 50%
+}
+
+.sidebar-toggle {
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-toggle:focus,
+.sidebar-toggle:active {
+  border-radius: 50%;
+  outline: none;
+  box-shadow: none; /* หรือใช้แบบกลมๆ */
+}
+
+
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+    padding-top: 4rem; /* เว้นด้านบนให้ปุ่ม */
   }
-  
-  .logo-container {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
+
+  .sidebar.open {
+    left: 0;
   }
-  
-  .logo {
-    height: 2.5rem;
+
+  .sidebar-toggle {
+    display: block;
   }
-  
-  .title {
-    height: 2rem;
-    margin-left: 0.5rem;
-    margin-top: 0.25rem;
+
+  .main-content {
+    margin-left: 0 !important;
   }
-  
-  .nav-menu {
-    margin-top: 1rem;
-  }
-  
-  .nav-menu ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .nav-item {
-    color: #4a4a4a;
-    transition: background 0.3s;
-  }
-  
-  .nav-item:hover {
-    background-color: #f3f4f6;
-  }
-  
-  .nav-link {
-    padding: 1.5rem 1.5rem;
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .icon {
-    height: 1.25rem;
-    width: 1.5rem;
-    margin-right: 0.5rem;
-  }
-  
-  .user-profile {
-    padding: 1rem;
-    background-color: #ebf8ff;
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #ccc;
-  }
-  
-  .user-info {
-    margin-left: 0.75rem;
-  }
-  
-  .user-name {
-    font-size: 0.875rem;
-    font-weight: bold;
-  }
-  
-  .user-role {
-    font-size: 0.75rem;
-    color: #6b7280;
-  }
-  
-  .profile-link {
-    color: #2563eb;
-    text-decoration: none;
-    margin-left: auto;
-  }
-  
-   body {
-      font-family: 'Poppins', sans-serif;
-    }
+}
