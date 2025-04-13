@@ -29,6 +29,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
 
   def failure
-    redirect_to root_path, alert: "การยืนยันตัวตนล้มเหลว"
+    error_type = request.env["omniauth.error.type"]
+    error_message = request.env["omniauth.error"]&.message
+
+    flash[:alert] = "ยืนยันตัวตนล้มเหลว: #{error_type} - #{error_message}"
+    redirect_to root_path
   end
 end
