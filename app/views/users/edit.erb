@@ -1,0 +1,41 @@
+<div class="form">
+  <div class="form-header">
+    <h1 class="page-title">เพิ่มอาจารย์</h1>
+  </div>
+
+    <%= form_with(model: @user, url: user_path, method: :patch, local: true) do |f| %>
+     <div class="form-group">
+      <%= f.label :name, "ชื่อ-นามสกุล" %>
+      <%= f.text_field :name, class: "form-control" %>
+      <% if @user.errors[:name].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:name].first %>
+        </div>
+        <% end %>
+    </div>
+    <div class="form-group">
+      <%= f.label :email, "อีเมล" %>
+        <%= f.text_field :email, class: "form-control", readonly: true %>
+    </div>
+    <% if @user.errors[:email].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:email].first %>
+        </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :student_id, "รหัศรหัสนักศึกษา" %>
+      <%= f.text_field :student_id, class: "form-control" %>
+      <% if @user.errors[:student_id].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:student_id].first %>
+        </div>
+        <% end %>
+    </div>
+    <%= f.hidden_field :role_id, value: Role.find_by(name: "นักศึกษา")&.id %>
+    </div>
+     <div class="form-actions">
+      <%= f.submit "เสร็จสิน", class: "btn-create" %>
+    </div>
+    <% end %>
+</div>

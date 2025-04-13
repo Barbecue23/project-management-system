@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   resources :roles, only: [ :edit, :update, :index, :new, :create ]
 
+  resources :users, only: [ :edit, :update ]
+
   # GET
   get "reports/index"
   get "users/add_user", to: "users#add_user"
