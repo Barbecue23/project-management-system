@@ -327,10 +327,10 @@ Devise.setup do |config|
   config.sign_out_via = [ :get, :delete ]
   OmniAuth.config.logger = Rails.logger
 
-  OmniAuth.config.on_failure = Proc.new { |env|
-  message = env["omniauth.error.type"]
-  strategy = env["omniauth.error.strategy"]
-  Rails.logger.error "OmniAuth failure: #{message}, Strategy: #{strategy}"
-  OmniAuth::FailureEndpoint.new(env).redirect_to_failure
-}
+  # OmniAuth.config.on_failure = Proc.new { |env|
+  #   message = env["omniauth.error.type"]
+  #   strategy = env["omniauth.error.strategy"]
+  #   Rails.logger.error "OmniAuth failure: #{message}, Strategy: #{strategy}"
+  #   OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+  # }
 end
