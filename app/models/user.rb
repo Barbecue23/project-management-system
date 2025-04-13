@@ -39,10 +39,4 @@ class User < ApplicationRecord
 
     validates :name,
     presence: { message: "กรุณากรอกชื่อ" }
-
-    validates :expertise,
-    presence: { message: "กรุณากรอกความเชี่ยวชาญ" }
-
-    validates :role_id,
-    presence: { message: "กรุณาเลือกบทบาท" }
 end

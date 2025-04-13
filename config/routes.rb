@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   # GET
   get "reports/index"
-  get "roles/add_user", to: "roles#add_user"
+  get "users/add_user", to: "users#add_user"
   get "students/index"
   get "students/my_student_group", to: "students#my_student_group"
   get "advisors/index"
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   post "advisors/accept_request", to: "advisors#accept_request"
   post "advisors/reject_request", to: "advisors#reject_request"
   post "news/create", to: "news#create"
-  post "roles/crcreate_user", to: "roles#create_user"
+  post "users/create_user", to: "users#create_user"
 
   # DELETE
   delete "students/:id", to: "students#destroy", as: "delete_student_request"

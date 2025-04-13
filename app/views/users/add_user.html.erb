@@ -4,7 +4,7 @@
     <%= link_to '← กลับ', roles_path, class: "btn-create" %>
   </div>
 
-    <%= form_with(model: @user, url: roles_crcreate_user_path, method: :post, local: true) do |f| %>
+    <%= form_with(model: @user, url: users_create_user_path, method: :post, local: true) do |f| %>
      <div class="form-group">
       <%= f.label :name, "ชื่อ-นามสกุล" %>
       <%= f.text_field :name, class: "form-control" %>
