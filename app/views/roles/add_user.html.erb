@@ -8,18 +8,39 @@
      <div class="form-group">
       <%= f.label :name, "ชื่อ-นามสกุล" %>
       <%= f.text_field :name, class: "form-control" %>
+      <% if @user.errors[:name].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:name].first %>
+        </div>
+        <% end %>
     </div>
     <div class="form-group">
       <%= f.label :email, "อีเมล" %>
-      <%= f.text_field :email, class: "form-control" %>
+        <%= f.text_field :email, class: "form-control", pattern: "^[a-zA-Z0-9._%+-]+@su\.ac\.th$", title: "อีเมลต้องลงท้ายด้วย @su.ac.th" %>
     </div>
+    <% if @user.errors[:email].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:email].first %>
+        </div>
+    <% end %>
+
     <div class="form-group">
       <%= f.label :expertise, "เชี่ยวชาญ" %>
       <%= f.text_field :expertise, class: "form-control" %>
+      <% if @user.errors[:expertise].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:expertise].first %>
+        </div>
+        <% end %>
     </div>
     <div class="form-group">
-      <%= f.label :expertise, "เลือกบทบาท" %>
+      <%= f.label :role_id, "เลือกบทบาท" %>
         <%= f.select :role_id, Role.all.collect { |role| [role.name, role.id] }, { include_blank: 'เลือกบทบาท' }, class: "form-control" %>
+        <% if @user.errors[:role_id].any? %>
+        <div class="text-red-500 text-sm mt-1">
+            <%= @user.errors[:role_id].first %>
+        </div>
+        <% end %>
     </div>
      <div class="form-actions">
       <%= f.submit "เพิ่มอาจารย์", class: "btn-create" %>

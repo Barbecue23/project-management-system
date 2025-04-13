@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
+         :recoverable, :rememberable,
           :omniauthable, omniauth_providers: [ :azure_oauth2 ]
 
     belongs_to :role, optional: true
@@ -32,4 +32,17 @@ class User < ApplicationRecord
 
       user
     end
+    validates :email,
+    presence: { message: "กรุณากรอกอีเมล" },
+    uniqueness: { message: "อีเมลนี้มีในระบบแล้ว" },
+    format: { with: /\A[\w+\-.]+@su\.ac\.th\z/i, message: "ต้องใช้อีเมล @su.ac.th เท่านั้น" }
+
+    validates :name,
+    presence: { message: "กรุณากรอกชื่อ" }
+
+    validates :expertise,
+    presence: { message: "กรุณากรอกความเชี่ยวชาญ" }
+
+    validates :role_id,
+    presence: { message: "กรุณาเลือกบทบาท" }
 end
