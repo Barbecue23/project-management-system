@@ -19,7 +19,13 @@ class AdvisorsController < ApplicationController
   end
 
   def create
-    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: current_user.id))
+    owner_id = if current_user.role.name == "ผู้ดูแลระบบ"
+      params[:owner_id].presence || current_user.id
+    else
+      current_user.id
+    end
+
+    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: owner_id))
 
     if @advisor_group.save
       # ตรวจสอบ owner และเพิ่มเข้าไปในกลุ่มถ้ายังไม่มี
