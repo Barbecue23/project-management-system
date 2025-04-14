@@ -9,22 +9,42 @@ class StudentsController < ApplicationController
   end
 
   def student_requests
-    @advisor_requests = AdvisorRequest.create!(
+    existing_request = AdvisorRequest.find_by(
       student_id: current_user.id,
-      advisor_group_member_id: params[:advisor_group_member_id],
-      status: "pending",
-      season_year_term: params[:year_term] # ← รับจาก form ที่ user กรอก
+      advisor_group_member_id: params[:advisor_group_member_id]
     )
 
-    redirect_to advisors_index_path(advisor_chosen: "true") # ← กลับไปที่หน้า advisor พร้อม alert
+    if existing_request
+      # ถ้ามีอยู่แล้ว → อัปเดตสถานะ
+      existing_request.update(status: "pending")
+    else
+      # ถ้ายังไม่มี → สร้างใหม่
+      AdvisorRequest.create!(
+        student_id: current_user.id,
+        advisor_group_member_id: params[:advisor_group_member_id],
+        status: "pending",
+        season_year_term: params[:year_term]
+      )
+    end
+
+    redirect_to advisors_index_path(advisor_chosen: "true")
   end
+
 
 
   def my_student_group
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
 
     if advisor_group_member.present?
-      @student = StudentGroupMember.where(advisor_group_member_id: advisor_group_member.id)
+      all_students = StudentGroupMember
+        .includes(:user)
+        .where(advisor_group_member_id: advisor_group_member.id)
+
+      # กลุ่มตาม student_id แล้วเลือก record ที่ updated_at ล่าสุด
+      @student = all_students
+        .group_by(&:user_id)
+        .values
+        .map { |records| records.max_by(&:updated_at) }
     else
       @student = [] # หรือ redirect / render error / flash message ก็ได้
       flash[:alert] = "คุณยังไม่อยู่ในกลุ่มที่ปรึกษา"

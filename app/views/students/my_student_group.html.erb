@@ -21,6 +21,7 @@
         <th>รหัสนักศึกษา</th>
         <th>เทอม</th>
         <th>วันที่อัพเดต</th>
+        <th>สถานะ</th>
         <th>action</th>
       </tr>
     </thead>
@@ -32,8 +33,19 @@
           <td><%= student.year_term %></td>
           <td><%= student.updated_at.in_time_zone("Bangkok").strftime("%d/%m/%Y  %H:%M") %></td>
           <td>
+            <% if student.status == "pending" %>
+              <span class="badge badge-warning">รอการอนุมัติ</span>
+            <% elsif student.status == "approved" %>
+              <span class="badge badge-success">อนุมัติ</span>
+            <% else %>
+              <span class="badge badge-danger">ปฏิเสธ</span>
+            <% end %>
+          </td>
+          <% if student.status != "rejected" %>
+          <td>
             <%= button_to "ปฏิเสธ", delete_student_request_path(id: student.id),method: :delete, class: "btn btn-danger" %>
           </td>
+          <% end %>
         </tr>
       <% end %> 
     </tbody>

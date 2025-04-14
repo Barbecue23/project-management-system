@@ -128,17 +128,33 @@ class AdvisorsController < ApplicationController
 
   def accept_request
     @advisor_request = AdvisorRequest.find(params[:id])
-    @student_group_members = StudentGroupMember.create(
-      user_id: @advisor_request.student.id,
-      season_id: 1,
-      year_term: "2567/3",
-      advisor_group_member_id: @advisor_request.advisor_group_member_id
-    )
-    if @student_group_members.save
+    existing_request = StudentGroupMember.find_by(user_id: @advisor_request.student.id)
+
+    if existing_request
+      existing_request.update(
+        status: "accepted",
+        advisor_group_member_id: @advisor_request.advisor_group_member_id
+      )
+      success = true
+    else
+      @student_group_member = StudentGroupMember.new(
+        user_id: @advisor_request.student.id,
+        season_id: 1,
+        year_term: "2567/3",
+        advisor_group_member_id: @advisor_request.advisor_group_member_id,
+        status: "accepted"
+      )
+      success = @student_group_member.save
+    end
+
+    if success
       @advisor_request.update(status: "accepted")
-      redirect_to students_index_path
+      redirect_to students_index_path, notice: "อนุมัติคำขอแล้ว"
+    else
+      redirect_to students_index_path, alert: "เกิดข้อผิดพลาดในการอนุมัติ"
     end
   end
+
 
   def reject_request
     @advisor_request = AdvisorRequest.find(params[:id])
