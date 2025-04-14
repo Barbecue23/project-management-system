@@ -51,9 +51,13 @@ class AdvisorsController < ApplicationController
     @advisor_group = AdvisorGroup.all
     @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @advisor_group.first
 
-    @advisors_in_group = User
-      .joins(:advisor_group_members)
-      .where(advisor_group_members: { advisor_group_id: @selected_group.id })
+    if @selected_group.nil?
+      @advisors_in_group = []
+    else
+      @advisors_in_group = User
+        .joins(:advisor_group_members)
+        .where(advisor_group_members: { advisor_group_id: @selected_group.id })
+    end
   end
 
   def advisor_group_overview

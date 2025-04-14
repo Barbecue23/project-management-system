@@ -12,7 +12,7 @@
   <%# <input type="text" placeholder="Search" class="search-bar" />
   <button class="filter-btn">🔍 Filters</button> %>
 </div>
-
+<% if @selected_group %>
 <!-- Table -->
 <div class="table-container">
   <table class="table">
@@ -36,3 +36,4 @@
     </tbody>
   </table>
 </div>
+<% end %>
