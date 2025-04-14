@@ -141,11 +141,11 @@
     document.getElementById("modal-advisor-id").value = advisorId;
     document.getElementById("modal-advisor-name").innerText = advisorName;
 
-    modal.classList.remove("hidden");
+    modal.classList.add("show");
   }
 
   function closeAdvisorModal() {
-    document.getElementById("advisor-modal").classList.add("hidden");
+    document.getElementById("advisor-modal").classList.remove("show");
   }
 
   // แสดง alert หลังจาก submit แล้ว redirect กลับมา

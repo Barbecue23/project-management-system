@@ -176,9 +176,9 @@
   
   
   /* ปิด modal เริ่มต้น */
-.hidden {
+/* .hidden {
   display: none;
-}
+} */
 
 /* Modal Overlay */
 #advisor-modal {
