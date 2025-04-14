@@ -48,7 +48,7 @@ class StudentsController < ApplicationController
 
   def destroy
     @advisor_request = StudentGroupMember.find(params[:id])
-    @advisor_request.destroy
+    @advisor_request.update(status: "rejected")
     redirect_to students_my_student_group_path, notice: "Request deleted successfully."
   end
 end
