@@ -54,7 +54,16 @@ class AdvisorsController < ApplicationController
   end
 
   def detail_group
-    @advisor_group = AdvisorGroup.all
+    admin_role_id = Role.find_by(name: "ผู้ดูแลระบบ")&.id
+
+    if current_user.role_id == admin_role_id
+      @advisor_group = AdvisorGroup.all
+    else
+      @advisor_group = AdvisorGroup
+        .joins(:advisor_group_members)
+        .where(advisor_group_members: { user_id: current_user.id })
+    end
+
     @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @advisor_group.first
 
     if @selected_group.nil?
