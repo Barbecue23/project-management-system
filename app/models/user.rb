@@ -32,11 +32,22 @@ class User < ApplicationRecord
 
       user
     end
-    validates :email,
-    presence: { message: "กรุณากรอกอีเมล" },
-    uniqueness: { message: "อีเมลนี้มีในระบบแล้ว" },
-    format: { with: /\A[\w+\-.]+@su\.ac\.th\z/i, message: "ต้องใช้อีเมล @su.ac.th เท่านั้น" }
+    with_options on: [ :profile_update, :profile_create ] do
+      validates :email,
+        presence: { message: "กรุณากรอกอีเมล" },
+        uniqueness: { message: "อีเมลนี้มีในระบบแล้ว" },
+        format: { with: /\A[\w+\-.]+@su\.ac\.th\z/i, message: "ต้องใช้อีเมล @su.ac.th เท่านั้น" }
 
-    validates :name,
-    presence: { message: "กรุณากรอกชื่อ" }
+      validates :name,
+        presence: { message: "กรุณากรอกชื่อ" }
+    end
+
+    validates :student_id,
+    presence: { message: "กรุณากรอกเลขประจำตัวนักศึกษา" },
+    uniqueness: { message: "เลขประจำตัวนักศึกษา นี้มีในระบบแล้ว" },
+    on: :profile_update
+
+    validates :expertise,
+    presence: { message: "กรุณากรอกความเชี่ยวชาญ" },
+    on: :profile_create
 end

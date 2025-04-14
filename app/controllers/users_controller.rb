@@ -4,13 +4,16 @@ class UsersController < ApplicationController
     end
 
     def update
-        @user = User.find(params[:id])
-        if @user.update(user_params)
-          redirect_to root_path, notice: "อัปเดตข้อมูลสำเร็จแล้ว"
-        else
-          render :edit, status: :unprocessable_entity
-        end
+      @user = User.find(params[:id])
+      @user.assign_attributes(user_params)
+
+      if @user.save(context: :profile_update)
+        redirect_to root_path, notice: "อัปเดตข้อมูลสำเร็จแล้ว"
+      else
+        render :edit, status: :unprocessable_entity
       end
+    end
+
 
 
     def add_user
@@ -22,7 +25,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.password = Devise.friendly_token[0, 20]
 
-    if @user.save
+    if @user.save(context: :profile_create)
         redirect_to roles_path, notice: "User was successfully created."
     else
         render :add_user, status: :unprocessable_entity
