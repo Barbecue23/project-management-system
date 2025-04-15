@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_07_151518) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_15_142833) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,6 +112,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_07_151518) do
     t.boolean "default_create", default: false
     t.boolean "default_edit", default: false
     t.boolean "default_delete", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.string "title"
+    t.string "student_name"
+    t.string "year"
+    t.string "category"
+    t.string "record_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
