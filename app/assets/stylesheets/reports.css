@@ -128,3 +128,47 @@
   display: flex;
   justify-content: space-around;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: none;
+  }
+
+  .search-filter {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .table th,
+  .table td,
+  .report-table th,
+  .report-table td {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .col-btn {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .filter-btn {
+    width: 100%;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+}
