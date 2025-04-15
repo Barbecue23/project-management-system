@@ -31,7 +31,7 @@
               <%= link_to 'แก้ไข', edit_season_path(id: season.id), class: "btn btn-primary" %>
             </td>
             <td>
-              <%= link_to 'ลบ', season_path(season), data: { turbo_method: :delete, turbo_confirm: "คุณแน่ใจหรือไม่ว่าต้องการลบ?" }, class: "btn btn-delete" %>
+              <%= button_to 'ลบ', season_path(season), method: :delete ,data: { turbo_method: :delete, turbo_confirm: "คุณแน่ใจหรือไม่ว่าต้องการลบ?" }, class: "btn btn-delete" %>
             </td>
           </tr>
         <% end %>

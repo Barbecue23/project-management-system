@@ -56,7 +56,7 @@ class SeasonsController < ApplicationController
     end
 
     if @season.update(season_params.merge(seasons_detail: seasons_details))
-      redirect_to seasons_index_path
+      redirect_to seasons_path
     else
       render :edit
     end
