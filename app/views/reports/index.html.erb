@@ -19,137 +19,38 @@
   </div>
 
   <!-- Main Content -->
-  <% if params[:tab] == 'projects' %>
-  <!-- โครงการที่ผ่านมา -->
-  <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ชื่อโครงการ</th>
-          <th>ผู้จัดทำ</th>
-          <th>ปี</th>
-          <th>ประเภท</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @records.each do |project| %>
-          <tr>
-            <td><%= project.title %></td>
-            <td><%= project.student_name %></td>
-            <td><%= project.year %></td>
-            <td><%= project.category %></td>
-            <td>
-  <% if project.respond_to?(:file) && project.file.attached? %>
-    <% ext = File.extname(project.file.filename.to_s).delete('.').downcase %>
-    <% type = if %w[jpg jpeg png gif].include?(ext)
-                "image"
-              elsif %w[mp4 mov avi].include?(ext)
-                "video"
-              elsif ext == "pdf"
-                "pdf"
-              else
-                "other"
-              end %>
-
-    <% if type != "other" %>
-      <button class="btn btn-secondary btn-preview"
-        data-type="<%= type %>"
-        data-url="<%= rails_blob_path(project.file, disposition: "inline") %>">
-        ดู
-      </button>
-    <% else %>
-      <%= button("ดู", type: :secondary, disabled: true) %>
-    <% end %>
-  <% else %>
-    <%= button("ดู", type: :secondary, disabled: true) %>
-  <% end %>
-</td>
-
-          </tr>
+  <div class="report-grid">
+  <% @records.each do |report| %>
+    <div class="report-card-item">
+      <div class="report-content">
+        <p class="report-title ellipsis-one-line"><%= report.file.filename %></p>
+        <% if params[:tab] == "projects" %>
+          <p class="report-meta">ปีการศึกษา: <%= report.year %></p>
+          <p class="report-meta">ผู้จัดทำ: <%= report.student_name %></p>
+          <p class="report-meta">หมวดหมู่: <%= report.category %></p>
+        <% else %>
+          <p class="report-meta">รายละเอียด: <%= report.record_type.humanize %></p>
         <% end %>
-      </tbody>
-    </table>
 
-    <%= render partial: "shared/pagination", locals: { records: @records, label: "projects" } %>
-  </div>
-  <% else %>
-  <!-- รายงาน -->
-  <div class="table-container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ชื่อไฟล์</th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @records.each do |report| %>
-          <tr>
-            <td>
-              <span class="file-icon">
-                <%= case File.extname(report.file.filename.to_s).downcase
-                  when ".jpg", ".jpeg", ".png", ".gif"
-                    "📷"
-                  when ".mp4", ".mov", ".avi"
-                    "🎥"
-                  when ".pdf"
-                    "📄"
-                  when ".doc", ".docx"
-                    "📝"
-                  else
-                    "📁"
-                end %>
-              </span>
-              <%= report.file.filename %>
-            </td>
-            <% if current_user.role.name == "ผู้ดูแลระบบ" %>
-            <td>
-              <%= link_to "แก้ไข", edit_report_path(id: report.id), class: "btn btn-warning" %>
-            </td>  
-            <td>
-              <%= button_to "ลบ", delete_report_path(report), method: :delete, data: { confirm: "คุณแน่ใจหรือว่าต้องการลบ?" }, class: "btn btn-danger" %>
-            </td>
-            <% else %>
-              <td></td>
-              <td></td>
-            <% end %>
-            <td class="col-btn">
-              <% if report.file.attached? %>
-                  <% ext = File.extname(report.file.filename.to_s).delete('.').downcase %>
-                  <% type = if %w[jpg jpeg png gif].include?(ext)
-                              "image"
-                            elsif %w[mp4 mov avi].include?(ext)
-                              "video"
-                            elsif ext == "pdf"
-                              "pdf"
-                            else
-                              "other"
-                            end %>
-
-                  <% if type != "other" %>
-                    <button class="btn btn-secondary btn-preview"
-                      data-type="<%= type %>"
-                      data-url="<%= rails_blob_path(report.file, disposition: "inline") %>">
-                      ดู
-                    </button>
-                  <% else %>
-                    <%= button("ดู", type: :secondary, disabled: true) %>
-                  <% end %>
-                <% end %>
-                <%= link_to "ดาวน์โหลด", rails_blob_path(report.file, disposition: "attachment"), class: "btn btn-primary" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <%= render partial: "shared/pagination", locals: { records: @records, label: "reports" } %>
-  </div>
+        <div class="report-actions">
+          <%= link_to "ดู", "#", 
+      class: "btn btn-secondary btn-preview", 
+      data: {
+        type: report.file.image? ? "image" : report.file.content_type.include?("pdf") ? "pdf" : "video",
+        url: rails_blob_path(report.file, disposition: "inline")
+      } %>
+          <% if params[:tab] != "projects" %>
+          <%= link_to "ดาวน์โหลด", rails_blob_path(report.file, disposition: "attachment"), class: "btn btn-primary" %>
+          <% end %>
+          <% if current_user.role.name == "ผู้ดูแลระบบ" %>
+            <%= link_to "แก้ไข", edit_report_path(report), class: "btn btn-warning" %>
+            <%= button_to "ลบ", delete_report_path(report), method: :delete, data: { confirm: "แน่ใจหรือไม่?" }, class: "btn btn-danger" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
-
+</div>
 </div>
 <!-- Modal -->
 <div id="previewModal" class="modal" style="display: none;">

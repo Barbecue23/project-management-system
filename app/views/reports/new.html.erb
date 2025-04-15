@@ -27,7 +27,7 @@
   <div>
     <%= form.label :file, "แนบไฟล์" %>
     <%= form.file_field :file %>
-    <% if @record.file.attached? %>
+    <% if @record.persisted? && @record.file.attached? %>
       <p>ไฟล์เดิม: <%= link_to @record.file.filename, rails_blob_path(@record.file, disposition: "attachment") %></p>
     <% end %>
   </div>
