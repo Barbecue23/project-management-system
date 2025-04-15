@@ -59,6 +59,15 @@ class NewsController < ApplicationController
     @news = News.new(news_params.merge(is_public: is_public, created_by: current_user.name))
 
     if @news.save
+
+      @news.banner_image.attach(params[:banner_image]) if params[:banner_image]
+
+      if params[:more_images]
+        params[:more_images].each do |img|
+          @news.more_images.attach(img)
+        end
+      end
+
       unless is_public
         advisor_group_ids = AdvisorGroup.where(group_name: params[:category]).pluck(:id)
         advisor_group_ids.each do |advisor_group_id|
@@ -74,6 +83,6 @@ class NewsController < ApplicationController
   private
 
   def news_params
-    params.permit(:title, :content, :publish_date)
+    params.permit(:title, :content, :publish_date, :banner_image, more_images: [])
   end
 end

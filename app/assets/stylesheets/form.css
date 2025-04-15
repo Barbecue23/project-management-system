@@ -169,7 +169,9 @@ label {
 }
 
 .file-input {
-  display: none;
+  position: relative !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
 }
 
 /* Gallery Section */
