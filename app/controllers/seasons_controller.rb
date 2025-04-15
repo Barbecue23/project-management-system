@@ -62,6 +62,25 @@ class SeasonsController < ApplicationController
     end
   end
 
+  def update_status
+    @season = Season.find(params[:id])
+
+    if @season
+      # Set all other seasons to false
+      Season.update_all(status: false)
+
+      # Set this season to current
+      @season.update(status: true)
+
+      flash[:success] = "Season ถูกเปลี่ยนสถานะเรียบร้อยแล้ว"
+    else
+      flash[:error] = "ไม่พบ Season ที่ต้องการเปลี่ยนสถานะ"
+    end
+
+    redirect_to seasons_path
+  end
+
+
   def destroy
     @season = Season.find_by(id: params[:id])
 
@@ -79,6 +98,6 @@ class SeasonsController < ApplicationController
   private
 
   def season_params
-    params.require(:season).permit(:start_date, :end_date, :season_name)
+    params.require(:season).permit(:season_name, :max_student)
   end
 end

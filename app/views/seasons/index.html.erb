@@ -11,7 +11,8 @@
           <th>ชื่อรอบ</th>
           <th>รายละเอียด</th>
           <th>สถานะ</th>
-          <th style="display=flex;"colspan="2">การกระทำ</th>
+          <th>จำนวนที่รับนักศึกษา</th>
+          <th style="display=flex;"colspan="3">การกระทำ</th>
         </tr>
       </thead>
       <tbody>
@@ -25,7 +26,18 @@
               <% end %>
             </td>
             <td>
-              
+              <% if season.status? %>
+                <span class="status-current">รอบปัจจุบัน</span>
+              <% else %>
+                <span class="status-inactive">ไม่ใช่รอบปัจจุบัน</span>
+              <% end %>
+            </td>
+            <td>
+              <%= season.max_student %>
+            </td>
+            <td>
+              <%= button_to 'รอบปัจจุบัน', season_update_status_path(season.id), method: :patch, class: "btn btn-primary" %>
+            </td>
             <td>
               <%= link_to 'แก้ไข', edit_season_path(id: season.id), class: "btn btn-primary" %>
             </td>

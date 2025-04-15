@@ -36,16 +36,16 @@ Rails.application.routes.draw do
 
   # DELETE
   delete "students/:id", to: "students#destroy", as: "delete_student_request"
+  delete "news/attachments/:id", to: "news#delete_attachment", as: "delete_news_attachment"
+  delete "news/:id", to: "news#destroy", as: :delete_news
+  delete "reports/:id", to: "reports#destroy", as: :delete_report
 
   # PATCH
   patch "advisors/:id", to: "advisors#update", as: "advisor_update"
   patch "news/:id", to: "news#update", as: "news_update"
   patch "reports/:id", to: "reports#update", as: "report_update"
+  patch "seasons/:id/update_status", to: "seasons#update_status", as: "season_update_status"
 
-
-  delete "news/attachments/:id", to: "news#delete_attachment", as: "delete_news_attachment"
-  delete "news/:id", to: "news#destroy", as: :delete_news
-  delete "reports/:id", to: "reports#destroy", as: :delete_report
 
   # health check route
   get "up" => "rails/health#show", as: :rails_health_check
