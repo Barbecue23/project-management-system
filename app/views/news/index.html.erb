@@ -1,51 +1,59 @@
 <div class="container">
-  <h1 class="page-title">ข่าวสาร</h1>
+    <h1 class="page-title">ข่าวสาร</h1>
 
-  <!-- Featured News -->
-  <div class="featured-news">
+    <!-- Featured News -->
     <% featured_news = @news.first %>
-    <div class="featured-news-card">
-      <div class="image-placeholder">
-        <% if featured_news&.banner_image&.attached? %>
-          <%= image_tag featured_news.banner_image, class: "featured-news-image", alt: featured_news.title %>
-        <% else %>
-          <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path d="..."/>
-          </svg>
-        <% end %>
-      </div>
-      <div class="featured-news-content">
-        <h2 class="featured-news-title"><%= featured_news.title %></h2>
-        <p class="featured-news-info"><%= featured_news.content %></p>
-        <p class="featured-news-meta">
-          <%= time_ago_in_words(featured_news.publish_date) %> ที่แล้ว | <%= featured_news.created_by %>
-        </p>
-      </div>
-    </div>
-  </div>
 
-  <!-- Latest News -->
-  <h2 class="latest-news-title">ข่าวสารล่าสุด</h2>
-  <div class="latest-news">
-    <% @news.offset(1).each do |news| %>
-      <div class="news-card">
-        <div class="image-placeholder">
-          <% if news.banner_image.attached? %>
-            <%= image_tag news.banner_image, class: "news-image", alt: news.title %>
-          <% else %>
-            <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path d="..."/>
-            </svg>
+    <% if featured_news.present? %>
+      <%= link_to news_show_path(featured_news.id), class: "featured-news-card-link" do %>
+      <div class="featured-news-card">
+          <div class="image-placeholder">
+              <% if featured_news.banner_image.attached? %>
+                <%= image_tag featured_news.banner_image, class: "featured-news-image", alt: featured_news.title %>
+              <% else %>
+                <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path d="..." />
+              </svg>
+              <% end %>
+          </div>
+          <div class="featured-news-content">
+              <h2 class="featured-news-title ellipsis-one-line"><%= featured_news.title %></h2>
+              <p class="featured-news-info ellipsis-multiline"><%= featured_news.content %></p>
+              <p class="featured-news-meta">
+                  <%= time_ago_in_words(featured_news.publish_date) %> ที่แล้ว | <%= featured_news.created_by %>
+              </p>
+          </div>
+      </div>
+
+      <!-- Latest News -->
+      <h2 class="latest-news-title">ข่าวสารล่าสุด</h2>
+      <div class="latest-news">
+          <% @news.offset(1).each do |news| %>
+            <%= link_to news_show_path(news.id), class: "news-card-link" do %>
+              <div class="news-card">
+                  <div class="image-placeholder">
+                      <% if news.banner_image.attached? %>
+                        <%= image_tag news.banner_image, class: "news-image", alt: news.title %>
+                      <% else %>
+                      <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                          <path d="..." />
+                      </svg>
+                      <% end %>
+                  </div>
+                  <div class="news-content">
+                      <h3 class="news-title ellipsis-one-line"><%= news.title %></h3>
+                      <p class="news-info ellipsis-one-line"><%= news.content %></p>
+                      <p class="news-meta">
+                          <%= time_ago_in_words(news.publish_date) %> ที่แล้ว | <%= news.created_by %>
+                      </p>
+                  </div>
+              </div>
+            <% end %>
           <% end %>
-        </div>
-        <div class="news-content">
-          <h3 class="news-title"><%= news.title %></h3>
-          <p class="news-info"><%= news.content %></p>
-          <p class="news-meta">
-            <%= time_ago_in_words(news.publish_date) %> ที่แล้ว | <%= news.created_by %>
-          </p>
-        </div>
+
       </div>
     <% end %>
-  </div>
+    <% else %>
+      <p style="color: #999;">ไม่มีข่าวเด่นในขณะนี้</p>
+    <% end %>
 </div>

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get "home/index"
   get "news/index"
   get "news/new", to: "news#new"
+  get "/news/:id", to: "news#show", as: "news_show"
 
   # POST
   post "students/student_requests", to: "students#student_requests"

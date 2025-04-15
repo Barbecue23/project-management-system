@@ -3,6 +3,11 @@ class NewsController < ApplicationController
     @news = News.includes(:banner_image_attachment).order(publish_date: :desc)
   end
 
+  def show
+    @news = News.find(params[:id])
+  end
+
+
   def new
     @news = News.new
   end

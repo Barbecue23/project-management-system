@@ -1,0 +1,25 @@
+<div class="container">
+  <h1 class="news-title"><%= @news.title %></h1>
+  
+  <% if @news.banner_image.attached? %>
+    <div class="news-banner">
+      <%= image_tag @news.banner_image, class: "banner-image" %>
+    </div>
+  <% end %>
+
+  <p class="news-meta">
+    <%= @news.publish_date.strftime("%d %B %Y") %> | โดย <%= @news.created_by %>
+  </p>
+
+  <div class="news-content">
+    <%= simple_format(@news.content) %>
+  </div>
+
+  <% if @news.more_images.attached? %>
+    <div class="news-gallery">
+      <% @news.more_images.each do |img| %>
+        <%= image_tag img, class: "gallery-image" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
