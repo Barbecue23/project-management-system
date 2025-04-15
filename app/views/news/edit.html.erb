@@ -1,44 +1,32 @@
-<%= form_with model: @news, url: news_update_path(@news), method: :patch, local: true, html: { class: "form", multipart: true } do |f| %>
+<%= form_with model: @news, url: news_update_path, method: :patch, local: true, html: { class: "form", multipart: true } do |form| %>
 
   <!-- Header Section -->
   <div class="form-header">
-    <h1 class="page-title">แก้ไขข่าวสาร</h1>
-    <%= f.submit "อัปเดตข่าวสาร", class: "btn-create" %>
+    <h1 class="page-title">อัพเดสข่าวสาร</h1>
+    <%= form.submit "+สร้างข่าวสาร", class: "btn-create" %>
   </div>
 
   <!-- Title -->
   <div class="form-group">
     <label>Title</label>
-    <%= f.text_field :title, class: "form-control", placeholder: "Enter news title" %>
+    <%= form.text_field :title, class: "form-control", placeholder: "Enter news title" %>
   </div>
 
   <!-- Content -->
   <div class="form-group">
     <label>Content</label>
-    <%= f.text_area :content, class: "form-control textarea", placeholder: "Enter news content" %>
+    <%= form.text_area :content, class: "form-control textarea", placeholder: "Enter news content" %>
   </div>
 
   <!-- Category, Publish Date -->
   <div class="form-row">
     <div class="form-group">
       <label>Category</label>
-      <%
-  selected_category =
-    if params[:category]
-      params[:category]
-    elsif @news.is_public?
-      "All"
-    else
-      @news.advisor_groups.first&.group_name # หรือ .map.join(", ") ถ้าหลายกลุ่ม
-    end
-%>
-
-<%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), selected: selected_category), class: "form-control select-dropdown" %>
-
+      <%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), params[:category]), { prompt: "Select", class: "form-control select-dropdown" } %>
     </div>
     <div class="form-group">
       <label>Publish Date</label>
-      <%= f.date_field :publish_date, class: "form-control date-picker" %>
+      <%= form.date_field :publish_date, class: "form-control date-picker" %>
     </div>
   </div>
 
@@ -46,37 +34,42 @@
   <div class="form-group">
     <label>Upload Images</label>
     <div class="image-upload-container">
-        <div class="upload-row">
-            <div class="banner-upload">
-                <label>Banner Image</label>
-                <div class="upload-box large preview-wrapper" onclick="document.getElementById('banner_image_input').click();">
-                    <% if @news.banner_image.attached? %>
-                    <%= image_tag @news.banner_image, id: "banner_preview", class: "preview-image" %>
-                    <% else %>
-                    <span class="upload-icon">📤</span>
-                    <span class="upload-text">Click or drag file</span>
-                    <span class="upload-info">Recommend size 851 x 315 px</span>
-                    <% end %>
-                    <%= file_field_tag :banner_image, class: "file-input", id: "banner_image_input", style: "display: none;" %>
-                </div>
-            </div>
-            <div class="gallery-upload">
-                <div class="gallery-header">
-                    <label>More Images</label>
-                    <span class="gallery-note">(show as gallery)</span>
-                </div>
-                <div class="upload-box small">
-                    <span class="upload-icon">+</span>
-                    <span class="upload-text">Upload multiple images</span>
-                    <%= file_field_tag 'more_images[]', multiple: true, class: "file-input", id: "more_images_input" %>
-                </div>
-                <div class="gallery-preview" id="gallery_preview">
-                    <% @news.more_images.each do |img| %>
-                      <%= image_tag img, class: "gallery-image" %>
-                    <% end %>
-                </div>
-            </div>
+      <div class="upload-row">
+        <div class="banner-upload">
+          <label>Banner Image</label>
+          <div class="upload-box large preview-wrapper" onclick="document.getElementById('banner_image_input').click();">
+            <% if @news.banner_image.attached? %>
+              <%= image_tag @news.banner_image, id: "banner_preview", class: "preview-image" %>
+            <% else %>
+              <span class="upload-icon">📤</span>
+              <span class="upload-text">Click or drag file</span>
+              <span class="upload-info">Recommend size 851 x 315 px</span>
+            <% end %>
+            <%= form.file_field :banner_image, class: "file-input", id: "banner_image_input", style: "display: none;" %>
+          </div>
         </div>
+
+        <div class="gallery-upload">
+          <div class="gallery-header">
+            <label>More Images</label>
+            <span class="gallery-note">(show as gallery)</span>
+          </div>
+          <div class="upload-box small">
+            <span class="upload-icon">+</span>
+            <span class="upload-text">Upload multiple images</span>
+            <%= form.file_field :more_images, multiple: true, direct_upload: true, name: "news[more_images][]", id: "more_images_input" %>
+          </div>
+          <div class="gallery-preview" id="gallery_preview">
+            <% @news.more_images.each do |image| %>
+              <div class="image-wrapper existing-image" data-id="<%= image.id %>">
+                <%= image_tag image, class: "gallery-image" %>
+                <button class="delete-button" data-attachment-id="<%= image.id %>">ลบ</button>
+              </div>
+            <% end %>
+          </div>
+          <div class="gallery-preview" id="new_gallery_preview"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -110,27 +103,103 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 // JavaScript for handling multiple image uploads
-document.addEventListener("DOMContentLoaded", function () {
-  const inputMoreImages = document.getElementById("more_images_input");
-  const galleryPreview = document.getElementById("gallery_preview");
+let filesBuffer = [];
 
-  if (inputMoreImages) {
-    inputMoreImages.addEventListener("change", function (e) {
-      const files = e.target.files; // รับไฟล์ทั้งหมดที่เลือก
-      galleryPreview.innerHTML = ""; // ลบพรีวิวเก่าก่อน
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          const img = document.createElement("img");
-          img.src = event.target.result;
-          img.classList.add("gallery-image"); // ใช้ class gallery-image เพื่อจัดรูปภาพ
-          galleryPreview.appendChild(img);
-        };
-        reader.readAsDataURL(file); // อ่านไฟล์แต่ละไฟล์และแปลงเป็น Data URL
-      }
+// ย้าย renderPreviews ออกมาด้านนอก
+function renderPreviews() {
+  const newPreviewContainer = document.getElementById("new_gallery_preview");
+  const input = document.getElementById("more_images_input");
+
+  newPreviewContainer.innerHTML = "";
+
+  filesBuffer.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "image-wrapper";
+
+      const img = document.createElement("img");
+      img.src = event.target.result;
+      img.className = "gallery-image";
+
+      const btn = document.createElement("button");
+      btn.innerText = "ลบ";
+      btn.className = "delete-button";
+      btn.onclick = function (e) {
+        e.preventDefault();
+        filesBuffer.splice(index, 1);
+        renderPreviews();
+      };
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(btn);
+      newPreviewContainer.appendChild(wrapper);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  const dataTransfer = new DataTransfer();
+  filesBuffer.forEach(f => dataTransfer.items.add(f));
+  input.files = dataTransfer.files;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("more_images_input");
+  const bannerInput = document.getElementById("banner_image_input");
+
+  input.addEventListener("change", function (e) {
+    const newFiles = Array.from(e.target.files);
+    const existingImagesCount = document.querySelectorAll(".gallery-preview .existing-image").length;
+    const bannerAttached = document.getElementById("banner_preview") ? 1 : 0;
+
+    const totalCount = existingImagesCount + bannerAttached + filesBuffer.length + newFiles.length;
+
+    if (totalCount > 6) {
+      alert("ไม่สามารถอัปโหลดรูปภาพรวมเกิน 6 รูปได้");
+      return input.value = ""; // เคลียร์ไฟล์ที่เลือก
+    }
+
+    newFiles.forEach((file) => {
+      filesBuffer.push(file);
     });
-  }
+    renderPreviews();
+  });
+
+  // ป้องกัน banner เกินด้วย (กรณีเปลี่ยนใหม่แล้วมี gallery หลายภาพ)
+  bannerInput.addEventListener("change", function (e) {
+    const existingImagesCount = document.querySelectorAll(".gallery-preview .existing-image").length;
+    const newGalleryCount = filesBuffer.length;
+    const bannerFile = e.target.files.length > 0 ? 1 : 0;
+
+    const totalCount = existingImagesCount + newGalleryCount + bannerFile;
+
+    if (totalCount > 6) {
+      alert("ไม่สามารถอัปโหลดรูปภาพรวมเกิน 5 รูปได้");
+      bannerInput.value = "";
+    }
+  });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const existingDeleteButtons = document.querySelectorAll(".delete-button[data-attachment-id]");
+
+  existingDeleteButtons.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const id = btn.dataset.attachmentId;
+
+      fetch(`/news/attachments/${id}`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+        }
+      }).then(() => {
+        btn.closest(".image-wrapper").remove();
+      });
+    });
+  });
+});
+
 
 </script>

@@ -17,6 +17,12 @@ class NewsController < ApplicationController
 
     @news = News.new(news_params.merge(is_public: is_public, created_by: current_user.name))
 
+    if params[:news][:more_images].reject(&:blank?).size > 6
+      flash[:alert] = "ไม่สามารถอัปโหลดรูปมากกว่า 5 รูปได้"
+      redirect_to new_news_path and return
+    end
+
+
     if @news.save
 
       unless is_public
@@ -41,11 +47,27 @@ class NewsController < ApplicationController
     is_now_public = params[:category] == "All"
     was_public = @news.is_public?
 
-    if @news.update(news_params.merge(is_public: is_now_public))
-      @news.banner_image.attach(params[:banner_image]) if params[:banner_image]
+    # เช็ค banner image ว่าแนบมาไหม
+    banner_count = params[:news][:banner_image].present? ? 1 : (@news.banner_image.attached? ? 1 : 0)
 
-      if params[:news][:more_images]
-        @news.more_images.attach(params[:news][:more_images])
+    # เช็คจำนวนรูปเดิม + ใหม่
+    existing_more_images_count = @news.more_images.count
+    new_more_images = params[:news][:more_images].reject(&:blank?) rescue []
+    total_more_images = existing_more_images_count + new_more_images.size
+
+    total_image_count = banner_count + total_more_images
+
+    if total_image_count > 6
+      flash[:alert] = "ไม่สามารถอัปโหลดรูปภาพรวมเกิน 6 รูปได้"
+      redirect_to news_edit_path(@news) and return
+    end
+
+    if @news.update(news_params.merge(is_public: is_now_public).except(:more_images))
+
+      if params[:news][:more_images].present?
+        params[:news][:more_images].each do |image|
+          @news.more_images.attach(image)
+        end
       end
 
       if is_now_public && !was_public
@@ -73,7 +95,7 @@ class NewsController < ApplicationController
   end
   private
 
-def news_params
-  params.require(:news).permit(:title, :content, :publish_date, :banner_image, more_images: [])
-end
+  def news_params
+    params.require(:news).permit(:title, :content, :publish_date, :banner_image, more_images: [])
+  end
 end

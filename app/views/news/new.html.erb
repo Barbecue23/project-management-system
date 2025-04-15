@@ -38,7 +38,7 @@
         <div class="banner-upload">
           <label>Banner Image</label>
           <div class="upload-box large preview-wrapper" onclick="document.getElementById('banner_image_input').click();">
-            <% if @news.banner_image.attached? %>
+            <% if @news.persisted? && @news.banner_image.attached? %>
               <%= image_tag @news.banner_image, id: "banner_preview", class: "preview-image" %>
             <% else %>
               <span class="upload-icon">📤</span>
@@ -104,13 +104,19 @@ document.addEventListener("DOMContentLoaded", function () {
   input.addEventListener("change", function (e) {
     const newFiles = Array.from(e.target.files);
 
-    // เพิ่มไฟล์ใหม่เข้า buffer
+    if (filesBuffer.length + newFiles.length > 5) {
+      alert("คุณสามารถอัปโหลดได้สูงสุด 5 รูปเท่านั้น");
+      input.value = ""; // 👈 แก้บัคตรงนี้ เคลียร์ input ที่ทำให้มันติด
+      return;
+    }
+
     newFiles.forEach((file) => {
       filesBuffer.push(file);
     });
 
     renderPreviews();
   });
+
 
   function renderPreviews() {
     // เคลียร์ preview เดิม
