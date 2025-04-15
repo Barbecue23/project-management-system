@@ -86,6 +86,20 @@ class NewsController < ApplicationController
     end
   end
 
+  def destroy
+    @news = News.find(params[:id])
+
+    # ลบ banner_image ถ้ามี
+    @news.banner_image.purge_later if @news.banner_image.attached?
+
+    # ลบรูปทั้งหมดใน more_images ถ้ามี
+    @news.more_images.each(&:purge_later) if @news.more_images.attached?
+
+    # ลบ record ข่าว
+    @news.destroy
+
+    redirect_to news_index_path, notice: "ลบข่าวสารเรียบร้อยแล้ว"
+  end
 
 
   def delete_attachment

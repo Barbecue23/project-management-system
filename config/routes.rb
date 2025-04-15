@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
 
   delete "news/attachments/:id", to: "news#delete_attachment", as: "delete_news_attachment"
+  delete "news/:id", to: "news#destroy", as: :delete_news
 
   # health check route
   get "up" => "rails/health#show", as: :rails_health_check
