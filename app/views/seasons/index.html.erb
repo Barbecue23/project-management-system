@@ -10,8 +10,7 @@
         <tr>
           <th>ชื่อรอบ</th>
           <th>รายละเอียด</th>
-          <th>วันที่เริ่ม</th>
-          <th>วันที่สิ้นสุด</th>
+          <th>สถานะ</th>
           <th style="display=flex;"colspan="2">การกระทำ</th>
         </tr>
       </thead>
@@ -25,8 +24,8 @@
                 <p>ปี <%= season_info["year"] %> เทอม <%= season_info["term"] %></p>
               <% end %>
             </td>
-            <td><%= season.start_date.strftime("%d/%m/%Y") %></td>
-            <td><%= season.end_date.strftime("%d/%m/%Y") %></td>
+            <td>
+              
             <td>
               <%= link_to 'แก้ไข', edit_season_path(id: season.id), class: "btn btn-primary" %>
             </td>

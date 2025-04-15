@@ -1,8 +1,8 @@
 <div class="container">
   <h1 class="page-title">รูปแบบรายงาน</h1>
-
-  <%= link_to "เพิ่ม", reports_new_path %>
-
+  <% if current_user.role.name == "ผู้ดูแลระบบ" %>
+    <%= link_to "เพิ่ม", reports_new_path %>
+  <% end %>
   <!-- Tabs -->
   <div class="tabs">
     <%= link_to "รายงาน", reports_index_path(tab: "reports"), class: "tab #{params[:tab] != 'projects' ? 'active' : ''}" %>
@@ -81,6 +81,8 @@
         <tr>
           <th>ชื่อไฟล์</th>
           <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -103,6 +105,17 @@
               </span>
               <%= report.file.filename %>
             </td>
+            <% if current_user.role.name == "ผู้ดูแลระบบ" %>
+            <td>
+              <%= link_to "แก้ไข", edit_report_path(id: report.id), class: "btn btn-warning" %>
+            </td>  
+            <td>
+              <%= button_to "ลบ", delete_report_path(report), method: :delete, data: { confirm: "คุณแน่ใจหรือว่าต้องการลบ?" }, class: "btn btn-danger" %>
+            </td>
+            <% else %>
+              <td></td>
+              <td></td>
+            <% end %>
             <td class="col-btn">
               <% if report.file.attached? %>
                   <% ext = File.extname(report.file.filename.to_s).delete('.').downcase %>

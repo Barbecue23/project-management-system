@@ -1,4 +1,4 @@
-<%= form_with model: @record, local: true do |form| %>
+<%= form_with model: @record,url: report_update_path , local: true do |form| %>
   <div>
     <%= form.label :record_type, "ประเภท" %>
     <%= form.select :record_type, Record.record_types.keys.map { |t| [t.humanize, t] }, prompt: "เลือกประเภท" %>

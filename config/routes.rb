@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # GET
   get "reports/index"
   get "reports/new", to: "reports#new"
-  get "reports/edit", to: "reports#edit"
+  get "reports/:id/edit", to: "reports#edit", as: "edit_report"
   get "users/add_user", to: "users#add_user"
   get "students/index"
   get "students/my_student_group", to: "students#my_student_group"
