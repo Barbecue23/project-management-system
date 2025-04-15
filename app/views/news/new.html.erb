@@ -1,32 +1,32 @@
-<%= form_with url: news_create_path, method: :post, local: true, html: { class: "form", multipart: true } do %>
+<%= form_with model: @news, url: news_create_path, method: :post, local: true, html: { class: "form", multipart: true } do |form| %>
 
   <!-- Header Section -->
   <div class="form-header">
     <h1 class="page-title">สร้างข่าวสาร</h1>
-    <%= submit_tag "+สร้างข่าวสาร", class: "btn-create" %>
+    <%= form.submit "+สร้างข่าวสาร", class: "btn-create" %>
   </div>
 
   <!-- Title -->
   <div class="form-group">
     <label>Title</label>
-    <%= text_field_tag :title, @news[:title], class: "form-control", placeholder: "Enter news title" %>
+    <%= form.text_field :title, class: "form-control", placeholder: "Enter news title" %>
   </div>
 
   <!-- Content -->
   <div class="form-group">
     <label>Content</label>
-    <%= text_area_tag :content, @news[:content], class: "form-control textarea", placeholder: "Enter news content" %>
+    <%= form.text_area :content, class: "form-control textarea", placeholder: "Enter news content" %>
   </div>
 
-  <!-- Category, Announcer, Publish Date -->
+  <!-- Category, Publish Date -->
   <div class="form-row">
     <div class="form-group">
       <label>Category</label>
-      <%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), @news[:category]), { prompt: "Select", class: "form-control select-dropdown" } %>
+      <%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), params[:category]), { prompt: "Select", class: "form-control select-dropdown" } %>
     </div>
     <div class="form-group">
       <label>Publish Date</label>
-      <%= date_field_tag :publish_date, @news[:publish_date], class: "form-control date-picker" %>
+      <%= form.date_field :publish_date, class: "form-control date-picker" %>
     </div>
   </div>
 
@@ -34,37 +34,36 @@
   <div class="form-group">
     <label>Upload Images</label>
     <div class="image-upload-container">
-        <div class="upload-row">
-            <div class="banner-upload">
-                <label>Banner Image</label>
-                <div class="upload-box large preview-wrapper" onclick="document.getElementById('banner_image_input').click();">
-                    <% if @news.banner_image.attached? %>
-                    <%= image_tag @news.banner_image, id: "banner_preview", class: "preview-image" %>
-                    <% else %>
-                    <span class="upload-icon">📤</span>
-                    <span class="upload-text">Click or drag file</span>
-                    <span class="upload-info">Recommend size 851 x 315 px</span>
-                    <% end %>
-                    <%= file_field_tag :banner_image, class: "file-input", id: "banner_image_input", style: "display: none;" %>
-                </div>
-            </div>
-            <div class="gallery-upload">
-                <div class="gallery-header">
-                    <label>More Images</label>
-                    <span class="gallery-note">(show as gallery)</span>
-                </div>
-                <div class="upload-box small">
-                    <span class="upload-icon">+</span>
-                    <span class="upload-text">Upload multiple images</span>
-                    <%= file_field_tag 'more_images[]', multiple: true, class: "file-input", id: "more_images_input" %>
-                </div>
-                <div class="gallery-preview" id="gallery_preview">
-                </div>
-            </div>
+      <div class="upload-row">
+        <div class="banner-upload">
+          <label>Banner Image</label>
+          <div class="upload-box large preview-wrapper" onclick="document.getElementById('banner_image_input').click();">
+            <% if @news.banner_image.attached? %>
+              <%= image_tag @news.banner_image, id: "banner_preview", class: "preview-image" %>
+            <% else %>
+              <span class="upload-icon">📤</span>
+              <span class="upload-text">Click or drag file</span>
+              <span class="upload-info">Recommend size 851 x 315 px</span>
+            <% end %>
+            <%= form.file_field :banner_image, class: "file-input", id: "banner_image_input", style: "display: none;" %>
+          </div>
         </div>
+
+        <div class="gallery-upload">
+          <div class="gallery-header">
+            <label>More Images</label>
+            <span class="gallery-note">(show as gallery)</span>
+          </div>
+          <div class="upload-box small">
+            <span class="upload-icon">+</span>
+            <span class="upload-text">Upload multiple images</span>
+            <%= form.file_field :more_images, multiple: true, direct_upload: true, name: "news[more_images][]", id: "more_images_input" %>
+          </div>
+          <div class="gallery-preview" id="gallery_preview"></div>
+        </div>
+      </div>
     </div>
   </div>
-
 
 <% end %>
 
@@ -97,25 +96,56 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 // JavaScript for handling multiple image uploads
 document.addEventListener("DOMContentLoaded", function () {
-  const inputMoreImages = document.getElementById("more_images_input");
-  const galleryPreview = document.getElementById("gallery_preview");
+  const input = document.getElementById("more_images_input");
+  const previewContainer = document.getElementById("gallery_preview");
 
-  if (inputMoreImages) {
-    inputMoreImages.addEventListener("change", function (e) {
-      const files = e.target.files; // รับไฟล์ทั้งหมดที่เลือก
-      galleryPreview.innerHTML = ""; // ลบพรีวิวเก่าก่อน
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          const img = document.createElement("img");
-          img.src = event.target.result;
-          img.classList.add("gallery-image"); // ใช้ class gallery-image เพื่อจัดรูปภาพ
-          galleryPreview.appendChild(img);
-        };
-        reader.readAsDataURL(file); // อ่านไฟล์แต่ละไฟล์และแปลงเป็น Data URL
-      }
+  let filesBuffer = [];
+
+  input.addEventListener("change", function (e) {
+    const newFiles = Array.from(e.target.files);
+
+    // เพิ่มไฟล์ใหม่เข้า buffer
+    newFiles.forEach((file) => {
+      filesBuffer.push(file);
     });
+
+    renderPreviews();
+  });
+
+  function renderPreviews() {
+    // เคลียร์ preview เดิม
+    previewContainer.innerHTML = "";
+
+    filesBuffer.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "image-wrapper";
+
+        const img = document.createElement("img");
+        img.src = event.target.result;
+        img.className = "gallery-image";
+
+        const btn = document.createElement("button");
+        btn.innerText = "ลบ";
+        btn.className = "delete-button";
+        btn.onclick = function (e) {
+          e.preventDefault();
+          filesBuffer.splice(index, 1);
+          renderPreviews();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        previewContainer.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // สร้าง input ใหม่แล้วใส่ไฟล์ทั้งหมดกลับเข้าไป
+    const dataTransfer = new DataTransfer();
+    filesBuffer.forEach(f => dataTransfer.items.add(f));
+    input.files = dataTransfer.files;
   }
 });
 

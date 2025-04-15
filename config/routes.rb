@@ -37,6 +37,9 @@ Rails.application.routes.draw do
   patch "advisors/:id", to: "advisors#update", as: "advisor_update"
   patch "news/:id", to: "news#update", as: "news_update"
 
+
+  delete "news/attachments/:id", to: "news#delete_attachment", as: "delete_news_attachment"
+
   # health check route
   get "up" => "rails/health#show", as: :rails_health_check
 

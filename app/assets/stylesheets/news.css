@@ -235,5 +235,30 @@
   object-fit: cover;
   border-radius: 8px;
 }
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+}
+
+.gallery-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.delete-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(255, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
 
 
