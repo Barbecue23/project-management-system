@@ -23,13 +23,13 @@
   <% @records.each do |report| %>
     <div class="report-card-item">
       <div class="report-content">
-        <p class="report-title ellipsis-one-line"><%= report.file.filename %></p>
+        <p class="report-title ellipsis-one-line"><%= report.title %></p>
         <% if params[:tab] == "projects" %>
           <p class="report-meta">ปีการศึกษา: <%= report.year %></p>
           <p class="report-meta">ผู้จัดทำ: <%= report.student_name %></p>
           <p class="report-meta">หมวดหมู่: <%= report.category %></p>
         <% else %>
-          <p class="report-meta">รายละเอียด: <%= report.record_type.humanize %></p>
+          <p class="report-meta">รายละเอียด: <%= report.category %></p>
         <% end %>
 
         <div class="report-actions">

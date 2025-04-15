@@ -11,7 +11,12 @@
     <%= form.label :file, "แนบไฟล์" %>
     <%= form.file_field :file %>
   </div>
-
+  <% if @record.record_type != "project" %>
+    <div>
+      <%= form.label :category, "รายละเอียด" %>
+      <%= form.text_area :category %>
+    </div>
+  <% end %>
   <% if @record.record_type == "project" %>
     <div>
       <%= form.label :student_name, "ชื่อนักศึกษา" %>
