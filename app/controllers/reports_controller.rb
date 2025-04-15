@@ -9,8 +9,11 @@ class ReportsController < ApplicationController
     end
   end
   def new
-    @record = Record.new
+    @record_type = params[:record_type]
+    redirect_to reports_select_type_path, alert: "กรุณาเลือกประเภทก่อน" unless @record_type.present?
+    @record = Record.new(record_type: @record_type)
   end
+
 
   def create
     @record = Record.new(record_params)

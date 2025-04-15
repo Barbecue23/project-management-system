@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   # GET
   get "reports/index"
+  get "reports/select_type", to: "reports#select_type"
   get "reports/new", to: "reports#new"
   get "reports/:id/edit", to: "reports#edit", as: "edit_report"
   get "users/add_user", to: "users#add_user"

@@ -1,0 +1,9 @@
+<!-- app/views/reports/select_type.html.erb -->
+<h1>เลือกประเภทของรายงาน</h1>
+
+<%= form_with url: reports_new_path, method: :get, local: true do |form| %>
+  <%= form.label :record_type, "ประเภท" %>
+  <%= form.select :record_type, Record.record_types.keys.map { |t| [t.humanize, t] }, prompt: "เลือกประเภท" %>
+
+  <%= form.submit "ถัดไป" %>
+<% end %>
