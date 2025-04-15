@@ -1,6 +1,21 @@
+<% perm_service = PermissionService.new(current_user) %>
+
 <div class="container">
-  <h1 class="news-title"><%= @news.title %></h1>
-  
+  <div class="news-header" style="display: flex; align-items: center; justify-content: space-between;">
+    <h1 class="news-title"><%= @news.title %></h1>
+
+
+    <div class="news-actions" style="display: flex; gap: 0.5rem;">
+        <%= link_to 'กลับ', news_index_path%>
+        <% if @news.created_by == current_user.name  && perm_service.can_edit?("news")%>
+          <%= link_to 'แก้ไข' , news_edit_path%>
+        <% end %>
+        <% if @news.created_by == current_user.name  && perm_service.can_delete?("news")%>
+            <%= link_to 'ลบ', data: { confirm: "คุณแน่ใจว่าต้องการลบข่าวนี้?" } %>
+        <% end %>
+    </div>
+  </div>
+
   <% if @news.banner_image.attached? %>
     <div class="news-banner">
       <%= image_tag @news.banner_image, class: "banner-image" %>

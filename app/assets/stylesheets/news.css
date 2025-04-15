@@ -157,8 +157,9 @@
 }
 
 .banner-image {
-  width: 100%;
+  width: 75%;
   height: auto;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 
@@ -190,4 +191,49 @@
   transition: 0.2s;
   transform: translateY(-2px);
 }
+.upload-row {
+  display: flex;
+  gap: 20rem;
+  flex-wrap: wrap; /* ให้ responsive */
+  align-items: flex-start;
+}
+.banner-upload,
+.gallery-upload {
+  flex: 1; /* ให้ทั้งสองส่วนแบ่งพื้นที่เท่ากัน */
+  min-width: 300px; /* กำหนดขนาดขั้นต่ำไม่ให้แคบเกินไป */
+}
+
+/* ให้กรอบรูปภาพไม่ขยายเกินไป */
+.preview-wrapper {
+  width: 100%; /* ปรับให้ครอบคลุมทั้งกรอบ */
+  height: 200px; /* ความสูงคงที่ */
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  background: #f9f9f9;
+}
+
+/* ถ้า preview รูปจะใช้ให้มันครอบคลุมกรอบ */
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* สำหรับการแสดงรูปภาพหลายๆ รูปในแบบ Gallery */
+.gallery-preview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gallery-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 

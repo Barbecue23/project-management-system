@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get "news/index"
   get "news/new", to: "news#new"
   get "/news/:id", to: "news#show", as: "news_show"
+  get "news/:id/edit", to: "news#edit", as: "news_edit"
 
   # POST
   post "students/student_requests", to: "students#student_requests"
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
 
   # PATCH
   patch "advisors/:id", to: "advisors#update", as: "advisor_update"
+  patch "news/:id", to: "news#update", as: "news_update"
 
   # health check route
   get "up" => "rails/health#show", as: :rails_health_check
