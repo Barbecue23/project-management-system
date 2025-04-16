@@ -18,7 +18,7 @@
 
   <% if @news.banner_image.attached? %>
     <div class="news-banner">
-      <%= image_tag @news.banner_image, class: "banner-image" %>
+      <%= image_tag url_for(@news.banner_image), class: "banner-image" %>
     </div>
   <% end %>
 
