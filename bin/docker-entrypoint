@@ -10,6 +10,8 @@ fi
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:create
   ./bin/rails db:migrate
+  ./bin/rails active_storage:install
+  ./bin/jobs &
   ./bin/rails db:prepare
 fi
 
