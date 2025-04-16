@@ -59,4 +59,8 @@ Rails.application.routes.draw do
 
   # ใส่ด้านนอก devise_for
   get "/users/auth/failure", to: "users/omniauth_callbacks#failure"
+
+  direct :rails_blob do |blob|
+    route_for(:rails_blob, blob)
+  end
 end
