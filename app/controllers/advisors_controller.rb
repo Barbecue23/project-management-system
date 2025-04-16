@@ -129,17 +129,17 @@ class AdvisorsController < ApplicationController
     @selected_group = AdvisorGroup.find_by(id: params[:group_id]) || @advisor_group.first
 
     @current_season = Season.find_by(status: 1)
-    @student_count = StudentGroupMember
-      .joins(:advisor_group_member)
-      .where(
-        advisor_group_members: { advisor_group_id: @selected_group.id },
-        season_id: @current_season&.id,
-        status: "accepted"
-      )
-      .count
-
 
       if @selected_group
+        @student_count = StudentGroupMember
+          .joins(:advisor_group_member)
+          .where(
+            advisor_group_members: { advisor_group_id: @selected_group.id },
+            season_id: @current_season&.id,
+            status: "accepted"
+          )
+          .count
+
         @advisors_in_group = User
           .joins(:advisor_group_members)
           .where(advisor_group_members: { advisor_group_id: @selected_group.id })
