@@ -1,36 +1,43 @@
-<%= form_with model: @record,url: report_update_path , local: true do |form| %>
-  <div>
-    <%= form.label :record_type, "ประเภท" %>
-    <%= form.select :record_type, Record.record_types.keys.map { |t| [t.humanize, t] }, prompt: "เลือกประเภท" %>
+<%= form_with model: @record, url: report_update_path, local: true, html: { class: "report-form" } do |form| %>
+  <div class="form-group">
+    <%= form.label :record_type, "ประเภท", class: "form-label" %>
+    <div class="custom-select-wrapper">
+      <%= form.select :record_type, Record.record_types.keys.map { |t| [t.humanize, t] },
+                      { prompt: "เลือกประเภท" },
+                      { class: "form-select", id: "record_type" } %>
+      <span class="select-icon">▼</span>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :title, "ชื่อเรื่อง" %>
-    <%= form.text_field :title %>
+  <div class="form-group">
+    <%= form.label :title, "ชื่อเรื่อง", class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :student_name, "ชื่อนักศึกษา" %>
-    <%= form.text_field :student_name %>
+  <div class="form-group">
+    <%= form.label :student_name, "ชื่อนักศึกษา", class: "form-label" %>
+    <%= form.text_field :student_name, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :year, "ปี" %>
-    <%= form.text_field :year %>
+  <div class="form-group">
+    <%= form.label :year, "ปี", class: "form-label" %>
+    <%= form.text_field :year, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :category, "หมวดหมู่" %>
-    <%= form.text_field :category %>
+  <div class="form-group">
+    <%= form.label :category, "หมวดหมู่", class: "form-label" %>
+    <%= form.text_field :category, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :file, "แนบไฟล์" %>
-    <%= form.file_field :file %>
+  <div class="form-group">
+    <%= form.label :file, "แนบไฟล์", class: "form-label" %>
+    <%= form.file_field :file, class: "form-control" %>
     <% if @record.file.attached? %>
-      <p>ไฟล์เดิม: <%= link_to @record.file.filename, rails_blob_path(@record.file, disposition: "attachment") %></p>
+      <p class="file-note">ไฟล์เดิม: <%= link_to @record.file.filename, rails_blob_path(@record.file, disposition: "attachment"), class: "file-link" %></p>
     <% end %>
   </div>
 
-  <%= form.submit %>
+  <div class="form-actions">
+    <%= form.submit "บันทึกการแก้ไข", class: "btn btn-primary" %>
+  </div>
 <% end %>
