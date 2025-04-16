@@ -29,5 +29,10 @@ module ProjectMs
 
     config.time_zone = "Bangkok"
     config.active_record.default_timezone = :local
+
+    Rails.application.config.session_store :cookie_store,
+      key: "_your_app_session",
+      same_site: :lax,             # 👈 ช่วยให้ cookie ทำงานใน dev/docker
+      secure: false
   end
 end

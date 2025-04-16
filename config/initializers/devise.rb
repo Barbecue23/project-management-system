@@ -279,6 +279,9 @@ Devise.setup do |config|
       tenant_id: "common",
       scope: "openid profile email"
 
+      OmniAuth.config.allowed_request_methods = [ :get ]
+
+
 
 
 
