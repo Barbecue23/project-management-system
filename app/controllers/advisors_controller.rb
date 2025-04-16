@@ -133,7 +133,8 @@ class AdvisorsController < ApplicationController
       .joins(:advisor_group_member)
       .where(
         advisor_group_members: { advisor_group_id: @selected_group.id },
-        season_id: @current_season&.id
+        season_id: @current_season&.id,
+        status: "accepted"
       )
       .count
 
@@ -147,7 +148,8 @@ class AdvisorsController < ApplicationController
           .joins(advisor_group_member: :user)
           .where(
             advisor_group_members: { advisor_group_id: @selected_group.id },
-            season_id: @current_season&.id
+            season_id: @current_season&.id,
+            status: "accepted"
           )
           .group("users.id")
           .count
