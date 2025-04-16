@@ -17,28 +17,32 @@
           </tr>
         </thead>
         <tbody>
-          <% User.where(role_id: Role.find_by(name: ["อาจารย์", "ผู้ประสารงาน","ผู้ดูแลระบบ"])&.id).each do |user| %>
-            <tr>
-              <td>
-                <%= check_box_tag 'user_ids[]', user.id, false, id: "user_#{user.id}" %>
-              </td>
-              <td><%= user.name %></td>
-              <td><%= user.email %></td>
-              <td><%= user.created_at.strftime("%d/%m/%Y %H:%M") %></td>
-            </tr>
-          <% end %>
-         
+        <% roles = Role.where(name: ["อาจารย์", "ผู้ประสารงาน", "ผู้ดูแลระบบ"]) %>
+        <% taken_owner_ids = AdvisorGroup.pluck(:owner_id).compact %>
+
+        <% User.where(role_id: roles.pluck(:id)).where.not(id: taken_owner_ids).each do |user| %>
+          <tr>
+            <td>
+              <%= check_box_tag 'user_ids[]', user.id, false, id: "user_#{user.id}" %>
+            </td>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+          </tr>
+        <% end %>
         </tbody>
       </table>
        <% if current_user.role.name == "ผู้ดูแลระบบ" %>
-            <div class="form-group">
-              <%= label_tag :owner_id, "เลือกเจ้าของกลุ่ม (Owner)", class: "form-label" %>
-              <%= select_tag :owner_id,
-                    options_from_collection_for_select(User.where(role_id: Role.find_by(name: "ผู้ประสารงาน")&.id), :id, :name),
-                    prompt: "เลือกอาจารย์ที่เป็นผู้ประสารงานของกลุ่ม",
-                    class: "form-control" %>
-            </div>
-          <% end %>
+        <% coordinator_roles = Role.where(name: ["ผู้ประสารงาน", "ผู้ดูแลระบบ"]).pluck(:id) %>
+        <% available_owners = User.where(role_id: coordinator_roles).where.not(id: taken_owner_ids) %>
+        <div class="form-group">
+          <%= label_tag :owner_id, "เลือกเจ้าของกลุ่ม (Owner)", class: "form-label" %>
+          <%= select_tag :owner_id,
+                options_from_collection_for_select(available_owners, :id, :name),
+                prompt: "เลือกอาจารย์ที่เป็นผู้ประสานงานของกลุ่ม",
+                class: "form-control" %>
+        </div>
+      <% end %>
     </div>
   </div>
 

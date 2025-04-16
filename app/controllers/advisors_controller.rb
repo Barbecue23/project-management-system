@@ -19,37 +19,76 @@ class AdvisorsController < ApplicationController
   end
 
   def create
-    owner_id = if current_user.role.name == "ผู้ดูแลระบบ"
-      params[:owner_id].presence || current_user.id
-    else
-      current_user.id
+    @advisor_group = AdvisorGroup.new(advisor_group_params)
+
+    if !AdvisorGroup.find_by(owner_id: params[:owner_id])
+      @advisor_group.owner_id = params[:owner_id]
     end
 
-    @advisor_group = AdvisorGroup.new(advisor_group_params.merge(owner_id: owner_id))
-
     if @advisor_group.save
-      # ตรวจสอบ owner และเพิ่มเข้าไปในกลุ่มถ้ายังไม่มี
-      is_owner = AdvisorGroupMember.find_by(user_id: @advisor_group.owner_id)
-      if is_owner.nil? || !is_owner.is_owner
-        AdvisorGroupMember.create!(advisor_group: @advisor_group, user_id: @advisor_group.owner_id, is_owner: true)
-      end
+      is_owner_member = AdvisorGroupMember.find_by(user_id: @advisor_group.owner_id)
+      if is_owner_member
+        puts "Owner already exists"
 
-      user_ids = params[:user_ids] || []
-      @advisor_group_members = user_ids.map do |user_id|
-        existing_member = AdvisorGroupMember.find_by(user_id: user_id)
-
-        if existing_member.nil?
-          # ✅ ถ้ายังไม่มีอยู่ในระบบ → สร้างใหม่
-          AdvisorGroupMember.create!(advisor_group: @advisor_group, user_id: user_id, is_owner: false)
-        elsif !existing_member.is_owner && existing_member.advisor_group_id != @advisor_group.id
-          # 🔄 ถ้ามีอยู่แล้วแต่เป็นกลุ่มอื่น และไม่ใช่ owner → อัปเดตให้ย้ายมาอยู่กลุ่มใหม่
-          existing_member.update!(advisor_group: @advisor_group)
+        if !is_owner_member.is_owner || is_owner_member.advisor_group_id != @advisor_group.id
+          is_owner_member.update!(
+            advisor_group: @advisor_group,
+            is_owner: true
+          )
         end
+
+        user_ids = (params[:user_ids] || []).map(&:to_i).reject { |uid| uid == @advisor_group.owner_id }
+
+        user_ids.each do |user_id|
+          member = AdvisorGroupMember.find_or_initialize_by(user_id: user_id)
+
+          if member.new_record?
+            # กรณีใหม่
+            member.advisor_group = @advisor_group
+            member.is_owner = false
+            member.save!
+          elsif member.advisor_group_id != @advisor_group.id
+            # มีอยู่แล้ว → ย้ายกลุ่ม & อัปเดต
+            member.update!(advisor_group: @advisor_group, is_owner: false)
+          else
+            # อยู่ในกลุ่มเดียวกันแล้ว → ไม่ต้องทำอะไร
+            puts "User #{user_id} is already in the group"
+          end
+        end
+      else
+        puts "Owner does not exist"
+        owner_member = AdvisorGroupMember.find_or_initialize_by(
+          user_id: @advisor_group.owner_id,
+          advisor_group: @advisor_group
+        )
+        owner_member.is_owner = true
+        owner_member.save!
+
+        user_ids = (params[:user_ids] || []).map(&:to_i).reject { |uid| uid == @advisor_group.owner_id }
+
+        user_ids.each do |user_id|
+          member = AdvisorGroupMember.find_or_initialize_by(user_id: user_id)
+
+          if member.new_record?
+            # กรณีใหม่
+            member.advisor_group = @advisor_group
+            member.is_owner = false
+            member.save!
+          elsif member.advisor_group_id != @advisor_group.id
+            # มีอยู่แล้ว → ย้ายกลุ่ม & อัปเดต
+            member.update!(advisor_group: @advisor_group, is_owner: false)
+          else
+            # อยู่ในกลุ่มเดียวกันแล้ว → ไม่ต้องทำอะไร
+            puts "User #{user_id} is already in the group"
+          end
+        end
+
       end
 
-      redirect_to advisors_index_path
+      # 🎯 สำเร็จ → Redirect
+      redirect_to advisors_detail_group_path, notice: "Advisor Group created successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
