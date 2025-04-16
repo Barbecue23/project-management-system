@@ -164,7 +164,7 @@
             const val = item[key];
 
             const option = document.createElement("option");
-            option.value = key;
+            option.value = `${val.term} / ${val.year}`;
             option.textContent = `เทอม ${val.term} ปี ${val.year}`;
             yearTermSelect.appendChild(option);
           });
