@@ -35,7 +35,8 @@
         <tr>
           <td><%= advisor.name %></td>
           <td><%= advisor.updated_at.strftime("%d/%m/%Y") %></td>
-          <td><%= @student_counts_by_advisor[advisor.id] || 0 %> / <%= @current_season.max_student %> คน</td>
+          <% max_students = @current_season&.max_student || 0 %>
+          <td><%= @student_counts_by_advisor[advisor.id] || 0 %> / <%= max_students %> คน</td>
         </tr>
       <% end %>
     </tbody>
