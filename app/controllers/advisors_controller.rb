@@ -129,32 +129,53 @@ class AdvisorsController < ApplicationController
   end
   def edit
     @advisor_group = AdvisorGroup.find(params[:id])
-    @advisor_group_members = @advisor_group.advisor_group_members.pluck(:user_id)
+    @advisor_group_members = @advisor_group.advisor_group_members.where(is_owner: false).pluck(:user_id)
   end
 
   def update
     @advisor_group = AdvisorGroup.find(params[:id])
 
     if @advisor_group.update(advisor_group_params)
-      # ✅ อัปเดต Owner ถ้ายังไม่มี
-      owner_member = AdvisorGroupMember.find_or_initialize_by(user_id: @advisor_group.owner_id, advisor_group: @advisor_group)
+      # ✅ ยืนยันให้ owner เป็น owner จริง ๆ
+      owner_member = AdvisorGroupMember.find_or_initialize_by(
+        user_id: @advisor_group.owner_id,
+        advisor_group: @advisor_group
+      )
       owner_member.update!(is_owner: true)
 
-      # ✅ อัปเดตสมาชิกกลุ่ม
-      user_ids = params[:user_ids] || []
-      existing_member_ids = @advisor_group.advisor_group_members.pluck(:user_id)
+      # ✅ ทำงานเฉพาะสมาชิกที่ไม่ใช่ owner
+      user_ids = (params[:user_ids] || []).map(&:to_i)
+      user_ids.reject! { |uid| uid == @advisor_group.owner_id }
 
-      # 🔹 เพิ่มหรืออัปเดตสมาชิกที่เลือก
+      # สมาชิกเก่าที่ไม่ใช่ owner
+      existing_member_ids = @advisor_group.advisor_group_members.where(is_owner: false).pluck(:user_id)
+
       user_ids.each do |user_id|
-        member = AdvisorGroupMember.find_or_initialize_by(user_id: user_id, advisor_group: @advisor_group)
-        member.update!(is_owner: false)
+        member = AdvisorGroupMember.find_by(user_id: user_id)
+
+        if member.nil?
+          # ไม่เคยอยู่ในกลุ่มไหนเลย → สร้างใหม่
+          AdvisorGroupMember.create!(
+            user_id: user_id,
+            advisor_group: @advisor_group,
+            is_owner: false
+          )
+        elsif member.advisor_group_id != @advisor_group.id
+          # เคยอยู่กลุ่มอื่น → ย้ายกลุ่ม
+          member.update!(
+            advisor_group: @advisor_group,
+            is_owner: false
+          )
+        else
+          # อยู่ในกลุ่มนี้อยู่แล้ว → แค่อัปเดต (กันไว้)
+          member.update!(is_owner: false)
+        end
       end
 
-      # 🔥 ลบสมาชิกที่ไม่ได้ถูกเลือก
-      members_to_remove = existing_member_ids - user_ids.map(&:to_i)
-      @advisor_group.advisor_group_members.where(user_id: members_to_remove).destroy_all
+      # 🔥 ลบสมาชิกที่ไม่ได้เลือก (ยกเว้น owner)
+      members_to_remove = existing_member_ids - user_ids
+      @advisor_group.advisor_group_members.where(user_id: members_to_remove, is_owner: false).destroy_all
 
-      # 🎯 สำเร็จ → Redirect
       redirect_to advisors_detail_group_path, notice: "Advisor Group updated successfully."
     else
       render :edit, status: :unprocessable_entity
