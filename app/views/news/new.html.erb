@@ -54,11 +54,13 @@
             <label>More Images</label>
             <span class="gallery-note">(show as gallery)</span>
           </div>
-          <div class="upload-box small">
-            <span class="upload-icon">+</span>
-            <span class="upload-text">Upload multiple images</span>
-            <%= form.file_field :more_images, multiple: true, direct_upload: true, name: "news[more_images][]", id: "more_images_input" %>
-          </div>
+<div class="upload-box small">
+  <span class="upload-icon">+</span>
+  <span class="upload-text">Upload multiple images</span>
+
+  <%= form.file_field :more_images, multiple: true, direct_upload: true, name: "news[more_images][]", id: "more_images_input", class: "file-overlay" %>
+</div>
+
           <div class="gallery-preview" id="gallery_preview"></div>
         </div>
       </div>

@@ -1,0 +1,36 @@
+<%= form_with model: @record , url: reports_create_path, local: true do |form| %>
+  <p>ประเภท: <strong><%= @record.record_type.humanize %></strong></p>
+  <%= form.hidden_field :record_type %>
+
+  <div>
+    <%= form.label :title, "ชื่อเรื่อง" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :file, "แนบไฟล์" %>
+    <%= form.file_field :file %>
+  </div>
+  <% if @record.record_type != "project" %>
+    <div>
+      <%= form.label :category, "รายละเอียด" %>
+      <%= form.text_area :category %>
+    </div>
+  <% end %>
+  <% if @record.record_type == "project" %>
+    <div>
+      <%= form.label :student_name, "ชื่อนักศึกษา" %>
+      <%= form.text_field :student_name %>
+    </div>
+    <div>
+      <%= form.label :year, "ปี" %>
+      <%= form.text_field :year %>
+    </div>
+    <div>
+      <%= form.label :category, "หมวดหมู่" %>
+      <%= form.text_field :category %>
+    </div>
+  <% end %>
+
+  <%= form.submit %>
+<% end %>

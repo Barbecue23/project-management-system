@@ -1,19 +1,52 @@
 class ReportsController < ApplicationController
-  def index
-    reports = [
-      { name: "CS-1111-Kiw.jpg", uploader: "สัจาภรณ์ โวรรยา", date: "12/02/2568" },
-      { name: "CS-1112-Kiw.jpg", uploader: "สัจาภรณ์ โวรรยา", date: "12/02/2568" },
-      { name: "CS-1113-Kiw.pdf", uploader: "สัจาภรณ์ โวรรยา", date: "12/02/2568" },
-      { name: "CS-1114.mp4", uploader: "สัจาภรณ์ โวรรยา", date: "12/02/2568" },
-      { name: "CS-kiwkiw.docx", uploader: "สัจาภรณ์ โวรรยา", date: "12/02/2568" },
-      { name: "CS-test.docx", uploader: "สัจาภรณ์ โวรรยา", date: "12/02/2568" }
-    ]
-    @reports = Kaminari.paginate_array(reports).page(params[:page]).per(5)
+  before_action :set_record, only: [ :edit, :update, :destroy ]
 
-    @projects = Kaminari.paginate_array([
-      { title: "ระบบจัดการนักศึกษา", student_name: "น.ส.ปรียา", year: "2566", category: "Web App" },
-      { title: "ระบบสแกนใบหน้า", student_name: "นายเจษ", year: "2565", category: "AI" },
-      { title: "ระบบคลังเอกสาร", student_name: "นายวีรชัย", year: "2567", category: "ระบบสารสนเทศ" }
-    ]).page(params[:page]).per(5)
+  def index
+    if params[:tab] == "projects"
+      @records = Record.where(record_type: :project).page(params[:page]).per(5)
+    else
+      @records = Record.where(record_type: :report).page(params[:page]).per(5)
+    end
+  end
+  def new
+    @record_type = params[:record_type]
+    redirect_to reports_select_type_path, alert: "กรุณาเลือกประเภทก่อน" unless @record_type.present?
+    @record = Record.new(record_type: @record_type)
+  end
+
+
+  def create
+    @record = Record.new(record_params)
+    if @record.save
+      redirect_to reports_index_path, notice: "บันทึกเรียบร้อยแล้ว"
+    else
+      render :new
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @record.update(record_params)
+      redirect_to reports_index_path, notice: "อัปเดตเรียบร้อยแล้ว"
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @record.destroy
+    redirect_to reports_index_path, notice: "ลบเรียบร้อยแล้ว"
+  end
+
+  private
+
+  def set_record
+    @record = Record.find(params[:id])
+  end
+
+  def record_params
+    params.require(:record).permit(:title, :student_name, :year, :category, :record_type, :file)
   end
 end

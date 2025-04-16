@@ -1,5 +1,8 @@
 <h1><%= @selected_group&.group_name || "ไม่มีชื่อกลุ่ม" %></h1>
-
+<h1>จำนวนที่นักศึกษา: <%= @student_count %> รอบ <%= @current_season.season_name%></h1>
+<% if @selected_group %>
+<%= link_to "แก้ไข", advisors_edit_path(id: @selected_group.id)%>
+<% end %>
 <!-- Tabs -->
 <div class="tabs">
   <% @advisor_group.each do |group| %>
@@ -27,10 +30,8 @@
       <% @advisors_in_group.each do |advisor| %>
         <tr>
           <td><%= advisor.name %></td>
-          <td><%= advisor.created_at.strftime("%d/%m/%Y") %></td>
-          <td>
-            <button class="btn btn-delete">ลบ</button>
-          </td>
+          <td><%= advisor.updated_at.strftime("%d/%m/%Y") %></td>
+          <td><%= @student_counts_by_advisor[advisor.id] || 0 %> / <%= @current_season.max_student %> คน</td>
         </tr>
       <% end %>
     </tbody>

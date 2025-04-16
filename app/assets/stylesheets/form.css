@@ -1,9 +1,12 @@
+
 /* Main Container */
 .form {
   max-width: 100%;
   padding: 32px;
   background: #fff;
   border-radius: 8px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Header Section */
@@ -31,7 +34,7 @@
   border: none;
   transition: background-color 0.2s ease-in-out, opacity 0.2s;
   background-color: #d8edff;
-  color: #587ea0; 
+  color: #587ea0;
 }
 
 .btn-create:hover {
@@ -111,13 +114,16 @@ label {
 
 /* Image Upload Section */
 .image-upload-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: flex-start;
-    padding: 24px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Banner Upload */
@@ -125,25 +131,42 @@ label {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 /* Upload Box */
 .upload-box {
-    padding: 40px;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    text-align: center;
-    background: #f9f9f9;
-    cursor: pointer;
-    position: relative;
+  padding: 40px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  text-align: center;
+  background: #f9f9f9;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.upload-box input[type="file"].file-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
 }
 
 /* Large Upload Box */
 .upload-box.large {
-    height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  flex-shrink: 1;
+  box-sizing: border-box;
 }
 
 .upload-box:hover {
@@ -176,17 +199,19 @@ label {
 
 /* Gallery Section */
 .gallery-upload {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 /* Gallery Header */
 .gallery-header {
-    display: flex;
-    align-items: baseline; 
-    justify-content: space-between;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
+
 .gallery-note {
   font-size: 12px;
   color: #888;
@@ -194,28 +219,116 @@ label {
 
 /* Gallery Grid */
 .gallery-grid {
-    display: flex;
-    gap: 10px;
-    flex-wrap: nowrap;
-    align-items: center;
-    
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
 /* Small Upload Boxes */
 .upload-box.small {
-    width: 80px;
-    height: 80px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #f9f9f9;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
+  width: 80px;
+  height: 80px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f9f9f9;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
 }
 
 .upload-box.small:hover {
-    border-color: #007bff;
+  border-color: #007bff;
 }
 
+@media (max-width: 768px) {
+  .form {
+    padding: 24px 16px;
+  }
+
+  .form-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .image-upload-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .upload-box.large {
+    width: 100% !important;
+    height: auto;
+    min-height: 160px;
+    padding: 20px;
+    min-width: 0 !important;
+    flex: none !important;
+    box-sizing: border-box;
+  }
+
+  .upload-box.small {
+    width: 100%;
+    min-height: 100px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .gallery-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-create {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-control,
+  .select-dropdown,
+  .date-picker {
+    font-size: 16px;
+  }
+
+  .gallery-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .gallery-preview .image-wrapper {
+    width: 100px;
+    height: auto;
+  }
+
+  .gallery-preview img {
+    max-width: 100%;
+    border-radius: 6px;
+  }
+
+  .delete-button {
+    margin-top: 4px;
+    width: 100%;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .delete-button:hover {
+    opacity: 0.9;
+  }
+}

@@ -1,6 +1,8 @@
 class StudentsController < ApplicationController
   def index
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
+    @seasons = Season.where(status: 1)
+
     if advisor_group_member.present?
       @students = AdvisorRequest.where(advisor_group_member_id: advisor_group_member.id).page(params[:page]).per(5) # Paginate 4 per page
     else
@@ -34,41 +36,45 @@ class StudentsController < ApplicationController
 
   def my_student_group
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
+    @seasons = Season.all.order(created_at: :asc)
+    @selected_season = Season.find_by(id: params[:season_id]) || @seasons.first
 
     if advisor_group_member.present?
       all_students = StudentGroupMember
         .includes(:user)
         .where(advisor_group_member_id: advisor_group_member.id)
+        .where(season_id: @selected_season.id) # กรองตามซีซั่น
 
-      # กลุ่มตาม student_id แล้วเลือก record ที่ updated_at ล่าสุด
-      @student = all_students
+      @students = all_students
         .group_by(&:user_id)
         .values
         .map { |records| records.max_by(&:updated_at) }
     else
-      @student = [] # หรือ redirect / render error / flash message ก็ได้
       flash[:alert] = "คุณยังไม่อยู่ในกลุ่มที่ปรึกษา"
-      redirect_to root_path # หรือ path ที่เหมาะสม
+      redirect_to root_path and return
     end
   end
 
-  def my_group
-    @advisor_group = AdvisorGroupMember.find_by(user_id: current_user.id)
-    if @advisor_group.present?
-      @advisor_group_members = AdvisorGroupMember.where(advisor_group_id: @advisor_group.advisor_group_id)
-
-      if @advisor_group_members.present?
-        @students = AdvisorGroupMember.where(advisor_group_id: @advisor_group.advisor_group_id)
-      else
-        @students = []
-        redirect_to root_path
-      end
-    end
-  end
 
   def destroy
-    @advisor_request = StudentGroupMember.find(params[:id])
-    @advisor_request.update(status: "rejected")
-    redirect_to students_my_student_group_path, notice: "Request deleted successfully."
+    @student_member = StudentGroupMember.find(params[:id])
+
+    if @student_member.update(status: "rejected")
+      student_id = @student_member.user_id
+      advisor_id = @student_member.advisor_group_member_id
+
+      if student_id.present? && advisor_id.present?
+        advisor_request = AdvisorRequest.find_by(
+          student_id: student_id,
+          advisor_group_member_id: advisor_id
+        )
+
+        advisor_request&.update(status: "rejected")
+      end
+
+      redirect_to students_my_student_group_path, notice: "Request rejected successfully."
+    else
+      redirect_to students_my_student_group_path, alert: "เกิดข้อผิดพลาดในการปฏิเสธคำขอ"
+    end
   end
 end

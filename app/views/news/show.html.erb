@@ -11,7 +11,7 @@
           <%= link_to 'แก้ไข' , news_edit_path%>
         <% end %>
         <% if @news.created_by == current_user.name  && perm_service.can_delete?("news")%>
-            <%= link_to 'ลบ', data: { confirm: "คุณแน่ใจว่าต้องการลบข่าวนี้?" } %>
+          <%= button_to 'ลบ', delete_news_path(@news), method: :delete, data: { confirm: "คุณแน่ใจว่าต้องการลบข่าวนี้?" } %>
         <% end %>
     </div>
   </div>
@@ -30,11 +30,44 @@
     <%= simple_format(@news.content) %>
   </div>
 
+  <!-- ส่วน gallery -->
   <% if @news.more_images.attached? %>
     <div class="news-gallery">
       <% @news.more_images.each do |img| %>
-        <%= image_tag img, class: "gallery-image" %>
+        <%= image_tag img, class: "gallery-image", data: { full: url_for(img) } %>
       <% end %>
     </div>
   <% end %>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-hidden">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-image" class="lightbox-content" />
+  </div>
+
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("lightbox-modal");
+  const modalImg = document.getElementById("lightbox-image");
+  const closeBtn = document.querySelector(".lightbox-close");
+
+  document.querySelectorAll(".gallery-image").forEach(img => {
+    img.addEventListener("click", function () {
+      modal.style.display = "block";
+      modalImg.src = this.dataset.full;
+    });
+  });
+
+  closeBtn.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  modal.onclick = function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+});
+</script>
