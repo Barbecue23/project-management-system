@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   def index
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
-    @seasons = Season.where(status: 1)
+    @seasons = Season.all.order(created_at: :asc)
 
     if advisor_group_member.present?
       @students = AdvisorRequest.where(advisor_group_member_id: advisor_group_member.id).page(params[:page]).per(5) # Paginate 4 per page

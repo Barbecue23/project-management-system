@@ -4,6 +4,6 @@ class StudentMailer < ApplicationMailer
     def rejection_email(student, advisor)
         @student = student
         @advisor = advisor
-        mail(to: [ @student.email, @advisor.email ], subject: "คำขอเข้าร่วมกลุ่มถูกปฏิเสธ")
+        mail(to: [ @student.email, @advisor.email ], subject: "เข้าร่วมกลุ่มที่อาจารย์ที่ปรึกษาถูกยกเลิก")
       end
 end
