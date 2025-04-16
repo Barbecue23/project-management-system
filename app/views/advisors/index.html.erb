@@ -37,8 +37,13 @@
             </td>
             <td>
               <div class="student-status">
-                <% max_icons = @seasons.max_student || 0 %>
-                <% student_count = advisor.student_group_members.where(status: 'accepted', season_id: @season.id).count %>  <!-- ตรวจสอบเฉพาะสถานะ "accepted" -->
+                <% if @season %>
+                  <% max_icons = @season.max_student || 0 %>
+                  <% student_count = advisor.student_group_members.where(status: 'accepted', season_id: @season.id).count %>
+                <% else %>
+                  <% max_icons = 0 %>
+                  <% student_count = 0 %>
+                <% end %>  <!-- ตรวจสอบเฉพาะสถานะ "accepted" -->
                 <% filled_icons = [student_count, max_icons].min %>  <!-- คำนวณจำนวนสมาชิกที่เต็ม -->
                 <% empty_icons = max_icons - filled_icons %>
 
@@ -75,7 +80,7 @@
                 <span class="text-gray-500">รอการตอบรับ</span>
 
               <% elsif is_full %>
-                <span class="text-danger">กลุ่มเต็ม</span>
+                <span class="text-danger">-</span>
 
               <% elsif has_chosen_someone %>
                 <!-- เคยเลือกอาจารย์ไปแล้ว แต่ไม่ใช่คนนี้ -->
