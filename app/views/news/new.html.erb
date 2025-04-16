@@ -54,11 +54,16 @@
             <label>More Images</label>
             <span class="gallery-note">(show as gallery)</span>
           </div>
-          <div class="upload-box small">
+
+          <div class="upload-box small" onclick="document.getElementById('more_images_input').click();">
             <span class="upload-icon">+</span>
             <span class="upload-text">Upload multiple images</span>
-            <%= form.file_field :more_images, multiple: true, direct_upload: true, name: "news[more_images][]", id: "more_images_input" %>
+
+            <%= form.file_field :more_images, multiple: true, direct_upload: true,
+              name: "news[more_images][]", id: "more_images_input",
+              class: "file-overlay", style: "display: none;" %>
           </div>
+
           <div class="gallery-preview" id="gallery_preview"></div>
         </div>
       </div>

@@ -142,12 +142,12 @@ label {
   text-align: center;
   background: #f9f9f9;
   position: relative;
-  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
 }
 
 .upload-box input[type="file"].file-overlay {
+  display: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -176,7 +176,6 @@ label {
 .upload-icon {
   font-size: 24px;
   color: #007bff;
-  margin-bottom: 10px;
 }
 
 .upload-text {
