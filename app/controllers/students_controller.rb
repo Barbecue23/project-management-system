@@ -70,6 +70,11 @@ class StudentsController < ApplicationController
         )
 
         advisor_request&.update(status: "rejected")
+
+        student = User.find(student_id)
+        advisor_member = AdvisorGroupMember.find(advisor_id)
+        advisor = User.find(advisor_member.user_id)
+        StudentMailer.rejection_email(student, advisor).deliver_later
       end
 
       redirect_to students_my_student_group_path, notice: "Request rejected successfully."
