@@ -5,7 +5,7 @@
     <% featured_news = @news.first %>
 
     <% if featured_news.present? %>
-      <%= link_to news_show_path(featured_news.id), class: "featured-news-card-link" do %>
+      <%# <%= link_to news_show_path(featured_news.id), class: "featured-news-card-link" do %>
       <div class="featured-news-card">
           <div class="image-placeholder">
               <% if featured_news.banner_image.attached? %>
