@@ -3,16 +3,13 @@
 
 <!-- Tabs -->
 <div class="tabs">
- 
-</div>
-
-<!-- Search + Filters -->
-<div class="actions">
-  <%# <input type="text" placeholder="Search" class="search-bar" />
-  <button class="filter-btn">🔍 Filters</button> %>
+  <% @seasons.each do |season| %>
+    <%= link_to season.season_range_text, students_my_student_group_path(season_id: season.id), class: "tab #{'active' if season == @selected_season}" %>
+  <% end %>
 </div>
 
 <!-- Table -->
+<turbo-frame id="students_table">
 <div class="table-container">
   <table class="table">
     <thead>
@@ -26,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @student.each do |student| %>
+      <% @students.each do |student| %>
         <tr>
           <td><%= student.user.name %></td>
           <td><%= student.user.student_id %></td> 
@@ -51,3 +48,4 @@
     </tbody>
   </table>
 </div>
+</turbo-frame>
