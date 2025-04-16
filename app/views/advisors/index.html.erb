@@ -1,18 +1,8 @@
 <div class="container">
   <h1 class="page-title">อาจารย์ที่ปรึกษาโครงการ</h1>
 
-  <div class="search-container">
-    <div class="search-wrapper">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#7a7a7a" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-      <input type="text" placeholder="Search" class="search-input">
-    </div>
-    
-    <%# <%= button("Filters", type: :secondary , icon: raw(
-      '<svg style="width: 1rem; height: 1rem; margin-right: 0.75rem; xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" 
-        stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 
-        01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-      </svg>'))  %> 
+<h2>รอบเปิดรับ <%= @season_range_text %></h2>
+
   </div>
 
   <div class="table-container">
@@ -47,7 +37,7 @@
             </td>
             <td >
               <div class="student-status">
-                <% max_icons = 8 %>
+                <% max_icons = @seasons.max_student || 0 %>
                 <% student_count = advisor.student_group_members.count %>
                 <% filled_icons = [student_count, max_icons].min %>
                 <% empty_icons = max_icons - filled_icons %>
@@ -72,10 +62,27 @@
               </div>
             </td>
             <td class="text-center">
-            <% if @advisor_requests %>
-              <% if @student_group_members.present? %>
-                <div> - </div>
+              <% student_count = advisor.try(:student_count).to_i %>
+              <% is_full = student_count >= @max_student %>
+              <% already_requested = @advisor_requests.include?(advisor.id) %>
+              <% already_member = @student_group_members.include?(advisor.id) %>
+              <% has_chosen_someone = @advisor_requests.any? || @student_group_members.any? %>
+
+              <% if already_member %>
+                <span class="text-success">อยู่ในกลุ่มนี้แล้ว</span>
+
+              <% elsif already_requested %>
+                <span class="text-gray-500">รอการตอบรับ</span>
+
+              <% elsif is_full %>
+                <span class="text-danger">กลุ่มเต็ม</span>
+
+              <% elsif has_chosen_someone %>
+                <!-- เคยเลือกอาจารย์ไปแล้ว แต่ไม่ใช่คนนี้ -->
+                <span class="text-muted">ไม่สามารถเลือกได้</span>
+
               <% else %>
+                <!-- ยังไม่เคยเลือกใคร และยังเลือกคนนี้ได้ -->
                 <button
                   type="button"
                   data-advisor-id="<%= advisor.id %>"
@@ -86,18 +93,6 @@
                   เลือก
                 </button>
               <% end %>
-            <% else %>
-              <button
-                type="button"
-                data-advisor-id="<%= advisor.id %>"
-                data-advisor-name="<%= advisor.user.name %>"
-                onclick="openAdvisorModal(this)"
-                class="btn btn-primary"
-              >
-                เลือก
-              </button>
-            <% end %>
-
             </td>
           </tr>
         <% end %>

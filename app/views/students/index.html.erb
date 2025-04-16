@@ -43,9 +43,18 @@
               <td><%= students.updated_at.in_time_zone("Bangkok").strftime("%d/%m/%Y  %H:%M") %></td>
               <% if students.status == "pending" %>
                 <td class="button-container">
-                  <%= button_to "ยอมรับ", advisors_accept_request_path(id: students.id), method: :post, class: "btn btn-primary" %>
-                  <%= button_to "ปฏิเสธ", advisors_reject_request_path(id: students.id),method: :post, class: "btn btn-danger" %>
-                </td>
+  <button
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#approveModal"
+    data-student-name="<%= students.student.name %>"
+    data-request-id="<%= students.id %>"
+  >
+    ยอมรับ
+  </button>
+  <%= button_to "ปฏิเสธ", advisors_reject_request_path(id: students.id), method: :post, class: "btn btn-danger" %>
+</td>
+
               <% end %>
             </tr>
           <% end %>
@@ -84,3 +93,103 @@
     </div>
   <% end %>
 </div>
+
+<div id="accept-modal" class="modal hidden">
+  <div class="modal-box">
+    <h2 class="modal-title">ยืนยันการรับนักศึกษา</h2>
+    <p>คุณกำลังจะรับนักศึกษา: <span id="student-name" class="font-semibold"></span></p>
+
+    <form id="accept-form" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <%= hidden_field_tag :advisor_request_id, "", id: "modal-request-id" %>
+     <div class="form-group">
+  <label for="season_id" class="form-label">เลือกรอบ</label>
+  <select name="season_id" id="season_id" class="form-control" required>
+    <option value="">เลือกรอบ</option>
+    <% @seasons.each do |season| %>
+      <option value="<%= season.id %>"><%= season.season_name %></option>
+    <% end %>
+  </select>
+</div>
+<div class="form-group">
+  <label for="year_term" class="form-label">เลือกช่วงเวลา</label>
+  <select name="year_term" id="year_term" class="form-control" required>
+    <option value="">เลือกช่วงเวลา</option>
+  </select>
+</div>
+
+
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeAcceptModal()">ยกเลิก</button>
+        <button type="submit" class="btn btn-primary">ยืนยัน</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // ฟัง event ปุ่ม "ยอมรับ"
+    document.querySelectorAll('button[data-bs-toggle="modal"]').forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const studentName = this.getAttribute("data-student-name");
+        const requestId = this.getAttribute("data-request-id");
+
+        const studentData = {
+          student: { name: studentName },
+          id: requestId
+        };
+
+        openAcceptModal(studentData);
+      });
+    });
+
+    // dropdown season_id listener
+    const seasonSelect = document.getElementById("season_id");
+    const yearTermSelect = document.getElementById("year_term");
+
+    if (seasonSelect) {
+      seasonSelect.addEventListener("change", function () {
+        const seasonId = parseInt(this.value);
+        const season = seasonsDetailMap.find(s => s.id === seasonId);
+
+        yearTermSelect.innerHTML = '<option value="">เลือกช่วงเวลา</option>';
+
+        // ✅ ใช้ .forEach แทน Object.entries
+        if (season && Array.isArray(season.seasons_detail)) {
+          season.seasons_detail.forEach((item) => {
+            const key = Object.keys(item)[0];
+            const val = item[key];
+
+            const option = document.createElement("option");
+            option.value = key;
+            option.textContent = `เทอม ${val.term} ปี ${val.year}`;
+            yearTermSelect.appendChild(option);
+          });
+        }
+      });
+    }
+  });
+
+  // preload seasons detail ขึ้นมาด้วย
+  const seasonsDetailMap = <%= raw(@seasons.to_json(only: [:id, :seasons_detail])) %>;
+
+  function openAcceptModal(studentData) {
+    const modal = document.getElementById("accept-modal");
+    document.getElementById("student-name").innerText = studentData.student.name;
+    document.getElementById("modal-request-id").value = studentData.id;
+    document.getElementById("accept-form").action = `/advisors/accept_request?id=${studentData.id}`;
+
+    modal.classList.remove("hidden");
+
+    // รีเซ็ต year_term dropdown
+    document.getElementById("year_term").innerHTML = `<option value="">เลือกช่วงเวลา</option>`;
+  }
+</script>
+
+
+
+
+

@@ -1,6 +1,8 @@
 class StudentsController < ApplicationController
   def index
     advisor_group_member = AdvisorGroupMember.find_by(user_id: current_user.id)
+    @seasons = Season.where(status: 1)
+
     if advisor_group_member.present?
       @students = AdvisorRequest.where(advisor_group_member_id: advisor_group_member.id).page(params[:page]).per(5) # Paginate 4 per page
     else
@@ -67,8 +69,24 @@ class StudentsController < ApplicationController
   end
 
   def destroy
-    @advisor_request = StudentGroupMember.find(params[:id])
-    @advisor_request.update(status: "rejected")
-    redirect_to students_my_student_group_path, notice: "Request deleted successfully."
+    @student_member = StudentGroupMember.find(params[:id])
+
+    if @student_member.update(status: "rejected")
+      student_id = @student_member.user_id
+      advisor_id = @student_member.advisor_group_member_id
+
+      if student_id.present? && advisor_id.present?
+        advisor_request = AdvisorRequest.find_by(
+          student_id: student_id,
+          advisor_group_member_id: advisor_id
+        )
+
+        advisor_request&.update(status: "rejected")
+      end
+
+      redirect_to students_my_student_group_path, notice: "Request rejected successfully."
+    else
+      redirect_to students_my_student_group_path, alert: "เกิดข้อผิดพลาดในการปฏิเสธคำขอ"
+    end
   end
 end

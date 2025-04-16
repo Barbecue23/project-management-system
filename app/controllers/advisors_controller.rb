@@ -6,9 +6,32 @@ class AdvisorsController < ApplicationController
   .select("advisor_group_members.*, COUNT(student_group_members.id) AS student_count")
   .group("advisor_group_members.id")
   .page(params[:page]).per(5)
+  @seasons = Season.find_by(status: 1)
 
-  @advisor_requests = AdvisorRequest.where(status: [ "pending", "accepted" ], student_id: current_user.id).order(created_at: :desc).first
-  @student_group_members = StudentGroupMember.where(user_id: current_user.id, status: "accepted")
+  if @seasons.present? && @seasons.seasons_detail.present?
+    details = @seasons.seasons_detail
+    details = JSON.parse(details) if details.is_a?(String)
+
+    first_detail = details.first.values.first
+    last_detail = details.last.values.first
+
+    @season_range_text = "#{first_detail['year']}/#{first_detail['term']} - #{last_detail['year']}/#{last_detail['term']}"
+  else
+    @season_range_text = "ไม่มีข้อมูลฤดูกาล"
+  end
+
+  @student_group_member_record = StudentGroupMember.find_by(user_id: current_user.id)
+
+  @advisor_requests = AdvisorRequest
+  .where(status: [ "pending", "accepted" ], student_id: current_user.id)
+  .pluck(:advisor_group_member_id)
+
+  @student_group_members = StudentGroupMember
+    .where(user_id: current_user.id, status: "accepted")
+    .pluck(:advisor_group_member_id)
+
+  @season = Season.find_by(status: 1)
+  @max_student = @season&.max_student || 0
 
   puts "111: ", @advisor_requests.inspect
   puts "555: ", @student_group_members.inspect
@@ -188,19 +211,24 @@ class AdvisorsController < ApplicationController
 
   def accept_request
     @advisor_request = AdvisorRequest.find(params[:id])
+    season_id = params[:season_id]
+    year_term = params[:year_term]
+
     existing_request = StudentGroupMember.find_by(user_id: @advisor_request.student.id)
 
     if existing_request
       existing_request.update(
         status: "accepted",
-        advisor_group_member_id: @advisor_request.advisor_group_member_id
+        advisor_group_member_id: @advisor_request.advisor_group_member_id,
+        season_id: season_id,
+        year_term: year_term
       )
       success = true
     else
       @student_group_member = StudentGroupMember.new(
         user_id: @advisor_request.student.id,
-        season_id: 1,
-        year_term: "2567/3",
+        season_id: season_id,
+        year_term: year_term,
         advisor_group_member_id: @advisor_request.advisor_group_member_id,
         status: "accepted"
       )
