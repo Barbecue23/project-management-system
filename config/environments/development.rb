@@ -4,6 +4,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.hosts << "web"
   config.hosts << "localhost"
+
+  Rails.application.config.active_storage.resolve_model_to_route = :rails_storage_proxy
+
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
 
