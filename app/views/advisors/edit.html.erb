@@ -1,7 +1,7 @@
-<%= form_with(model: @advisor_group, url: advisor_update_path(@advisor_group), method: :patch, html: { class: "form" }) do |f| %>
+<%= form_with(model: @advisor_group, url: advisor_update_path(@advisor_group), method: :patch, html: { class: "form", id: "advisor_edit_form" }) do |f| %>
   <div class="form-group">
     <%= f.label :group_name, "ชื่อกลุ่ม", class: "form-label" %>
-    <%= f.text_field :group_name, class: "form-control" %>
+    <%= f.text_field :group_name, class: "form-control", id: "group_name" %>
   </div>
 
   <div class="form-group">
@@ -20,11 +20,11 @@
           <% User.where(role_id: Role.find_by(name: "อาจารย์")&.id).each do |user| %>
             <tr>
               <td>
-                <%= check_box_tag 'user_ids[]', user.id, @advisor_group_members&.include?(user.id), id: "user_#{user.id}" %>
+                <%= check_box_tag 'user_ids[]', user.id, @advisor_group_members&.include?(user.id), id: "user_#{user.id}", class: "user-checkbox" %>
               </td>
               <td><%= user.name %></td>
               <td><%= user.email %></td>
-               <td><%= user.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+              <td><%= user.created_at.strftime("%d/%m/%Y %H:%M") %></td>
             </tr>
           <% end %>
         </tbody>
@@ -33,6 +33,32 @@
   </div>
 
   <div class="form-actions">
-    <%= f.submit 'อัปเดตกลุ่ม', class: "btn-create" %>
+    <%= f.submit 'อัปเดตกลุ่ม', class: "btn-create btn-disabled", id: "submit_button" %>
   </div>
 <% end %>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const groupNameInput = document.getElementById("group_name");
+  const checkboxes = document.querySelectorAll(".user-checkbox");
+  const submitBtn = document.getElementById("submit_button");
+
+  function validateForm() {
+    const groupNameFilled = groupNameInput.value.trim() !== "";
+    const atLeastOneChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+    if (groupNameFilled && atLeastOneChecked) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("btn-disabled");
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.add("btn-disabled");
+    }
+  }
+
+  groupNameInput.addEventListener("input", validateForm);
+  checkboxes.forEach(cb => cb.addEventListener("change", validateForm));
+
+  validateForm(); // initial check
+});
+</script>
