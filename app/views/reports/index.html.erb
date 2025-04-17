@@ -1,12 +1,17 @@
 <div class="container">
   <h1 class="page-title">รูปแบบรายงาน</h1>
-  <% if current_user.role.name == "ผู้ดูแลระบบ" %>
-    <%= link_to "เพิ่ม", reports_new_path %>
-  <% end %>
+
   <!-- Tabs -->
   <div class="tabs">
-    <%= link_to "รายงาน", reports_index_path(tab: "reports"), class: "tab #{params[:tab] != 'projects' ? 'active' : ''}" %>
-    <%= link_to "โครงการที่ผ่านมา", reports_index_path(tab: "projects"), class: "tab #{params[:tab] == 'projects' ? 'active' : ''}" %>
+    <div class="tab-container">
+      <div class="menu-container">
+        <%= link_to "รายงาน", reports_index_path(tab: "reports"), class: "tab #{params[:tab] != 'projects' ? 'active' : ''}" %>
+        <%= link_to "โครงการที่ผ่านมา", reports_index_path(tab: "projects"), class: "tab #{params[:tab] == 'projects' ? 'active' : ''}" %>
+      </div>
+      <% if current_user.role.name == "ผู้ดูแลระบบ" %>
+        <%= link_to "เพิ่ม", reports_new_path ,class:"btn btn-primary" %>
+      <% end %>
+    </div>
   </div>
 
   <!-- Main Content -->
@@ -34,8 +39,8 @@
           <%= link_to "ดาวน์โหลด", rails_blob_path(report.file, disposition: "attachment"), class: "btn btn-primary" %>
           <% end %>
           <% if current_user.role.name == "ผู้ดูแลระบบ" %>
-            <%= link_to "แก้ไข", edit_report_path(report), class: "btn btn-warning" %>
-            <%= button_to "ลบ", delete_report_path(report), method: :delete, data: { confirm: "แน่ใจหรือไม่?" }, class: "btn btn-danger" %>
+            <%= link_to "แก้ไข", edit_report_path(report), class: "btn btn-edit" %>
+            <%= button_to "ลบ", delete_report_path(report), method: :delete, data: { confirm: "แน่ใจหรือไม่?" }, class: "btn btn-delete" %>
           <% end %>
         </div>
       </div>

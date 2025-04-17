@@ -58,6 +58,23 @@ body {
   color: #ffffff;
 }
 
+.btn-edit {
+  background-color: #FFC107; /* สีเหลืองสดใส */
+  color: #212529; /* สีข้อความเข้ม */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800; /* สีเหลืองเข้มเมื่อโฮเวอร์ */
+  color: #ffffff;
+}
+
+
 .btn-delete {
   background-color: #fcdede;
   color: #c62828;
