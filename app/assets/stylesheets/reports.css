@@ -20,6 +20,18 @@
   justify-content: space-between;
 }
 
+.create-tab{
+    text-decoration: none;
+    padding: 10px 15px;
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+
+    font-weight: 500;
+}
+.create-tab:hover{
+  border-bottom: 3px solid #0008ff;
+  color: #0008ff;
+}
 .tab {
   text-decoration: none;
   padding: 10px 15px;

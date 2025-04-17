@@ -9,7 +9,7 @@
         <%= link_to "โครงการที่ผ่านมา", reports_index_path(tab: "projects"), class: "tab #{params[:tab] == 'projects' ? 'active' : ''}" %>
       </div>
       <% if current_user.role.name == "ผู้ดูแลระบบ" %>
-        <%= link_to "เพิ่ม", reports_new_path ,class:"btn btn-primary" %>
+        <%= link_to "เพิ่ม", reports_new_path ,class:"create-tab" %>
       <% end %>
     </div>
   </div>
