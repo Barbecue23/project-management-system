@@ -3,13 +3,13 @@
   <!-- Header -->
   <div class="form-header">
     <h1 class="page-title">แก้ไข Seasons</h1>
-    <%= f.submit "อัปเดต", class: "btn-create" %>
+    <%= f.submit "อัปเดต", class: "btn btn-disabled", id: "season_submit" %>
   </div>
 
   <!-- Season Name -->
   <div class="form-group">
     <label>Seasons Name</label>
-    <%= f.text_field :season_name, class: "form-control" %>
+    <%= f.text_field :season_name, class: "form-control", id: "season_name" %>
   </div>
 
   <!-- Year / Term -->
@@ -24,19 +24,53 @@
       <label>รอบที่จะเริ่ม</label>
       <%= f.select :year, (((Time.current.year - 1) + 543)..((Time.current.year - 1) + 553)).to_a,
           { prompt: "เลือกปี พ.ศ.", selected: first_item["year"] },
-          name: 'season[year]', class: "form-control" %>
+          name: 'season[year]', class: "form-control", id: "season_year" %>
     </div>
 
     <div class="form-group">
       <label>เทอม</label>
       <%= f.select :term, [[1, 1], [2, 2], [3, 3]],
           { prompt: "เลือกเทอม", selected: first_item["term"] },
-          name: 'season[term]', class: "form-control" %>
+          name: 'season[term]', class: "form-control", id: "season_term" %>
     </div>
   </div>
+
   <div class="form-group">
-      <label>จำนวนเต็มที่รับนักศึกษา</label>
-      <%= f.text_field :max_student , class: "form-control"%>
+    <label>จำนวนเต็มที่รับนักศึกษา</label>
+    <%= f.text_field :max_student , class: "form-control", id: "max_student" %>
   </div>
-  
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const requiredFields = ["season_name", "season_year", "season_term", "max_student"];
+    const submitBtn = document.getElementById("season_submit");
+
+    function toggleSubmitButton() {
+      const allFilled = requiredFields.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim() !== "";
+      });
+
+      if (allFilled) {
+        submitBtn.classList.remove("btn-disabled");
+        submitBtn.classList.add("btn-create");
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.classList.remove("btn-create");
+        submitBtn.classList.add("btn-disabled");
+        submitBtn.disabled = true;
+      }
+    }
+
+    requiredFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", toggleSubmitButton);
+        el.addEventListener("change", toggleSubmitButton);
+      }
+    });
+
+    toggleSubmitButton(); // initial run
+  });
+</script>
