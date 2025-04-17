@@ -1,13 +1,18 @@
 class NewsController < ApplicationController
   def index
     if current_user
-      @news = News.includes(:banner_image_attachment)
+      @news = News.includes(:banner_image_attachment, :news_groups)
                   .where("publish_date <= ? OR created_by = ?", Date.today, current_user.name)
                   .order(publish_date: :desc)
+
+      @user_group_ids = AdvisorGroupMember.where(user_id: current_user.id).pluck(:advisor_group_id)
+
     else
-      @news = News.includes(:banner_image_attachment)
+      @news = News.includes(:banner_image_attachment, :news_groups)
                   .where("publish_date <= ?", Date.today)
                   .order(publish_date: :desc)
+
+      @user_group_ids = []
     end
   end
 
