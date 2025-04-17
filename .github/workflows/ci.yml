@@ -3,7 +3,7 @@ name: CI and Auto Deploy
 on:
   pull_request:
   push:
-    branches: [ uat ]
+    branches: [uat]
 
 env:
   IMAGE_NAME: barbecue23/project-management-system
@@ -110,3 +110,56 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.IMAGE_NAME }}_uat:latest
+          # tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
+
+  # 🚀 Auto Deploy
+  # deploy:
+  #   runs-on: self-hosted
+  #   needs: build_and_push
+  #   env:
+  #     BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: Pull latest Docker image
+  #       run: |
+  #         cd /home/nc-user/Project/Dev
+  #         docker-compose -f docker-compose.dev.yml pull
+
+  #     - name: Restart containers with new image
+  #       run: |
+  #         cd /home/nc-user/Project/Dev
+  #         docker-compose -f docker-compose.dev.yml down
+  #         docker-compose -f docker-compose.dev.yml up -d
+
+  # 🔔 Notify on Success or Failure
+  # notify:
+  #   name: Discord Notification
+  #   runs-on: ubuntu-latest
+  #   needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]
+  #   if: always()
+  #   steps:
+  #     - name: Notify on Failure
+  #       if: failure()
+  #       uses: nobrayner/discord-webhook@v1
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         discord-webhook: ${{ secrets.DISCORD_WEBHOOK }}
+  #         message: |
+  #           ❌ A job failed on `${{ github.ref }}` by `${{ github.actor }}`.
+  #           Please check the logs.
+  #         include-details: 'true'
+
+  #     - name: Notify on Success
+  #       if: success()
+  #       uses: nobrayner/discord-webhook@v1
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         discord-webhook: ${{ secrets.DISCORD_WEBHOOK }}
+  #         message: |
+  #           ✅ All jobs succeeded on `${{ github.ref }}` by `${{ github.actor }}`.
+  #         include-details: 'true'
+
