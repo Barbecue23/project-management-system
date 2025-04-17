@@ -134,7 +134,7 @@ jobs:
           docker-compose -f docker-compose.dev.yml down
           docker-compose -f docker-compose.dev.yml up -d
 
-  🔔 Notify on Success or Failure
+  # 🔔 Notify on Success or Failure
   notify:
     name: Discord Notification
     runs-on: ubuntu-latest
