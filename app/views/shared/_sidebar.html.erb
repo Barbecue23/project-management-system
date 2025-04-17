@@ -103,8 +103,8 @@
         <p class="user-name"><%= current_user.name %></p>
         <p class="user-role"><%= current_user.role&.name || "-" %></p>
       </div>
-      <%= link_to "ออกจากระบบ", destroy_user_session_path, method: :delete, class: "profile-link" %>
-        <%= image_tag "arrow-log-out.svg", class: "icon" %>
+      <%= link_to destroy_user_session_path, method: :delete, class: "profile-link" do %>
+        <%= image_tag "arrow-log-out.svg" %>
       <% end %>
     </div>
   <% end %>
