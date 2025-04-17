@@ -29,7 +29,7 @@
         </div>
     <% end %>
 
-    <% if @user.role.name == 'อาจารย์' || @user.role.name == 'ผู้ดูแลระบบ' || @user.role.name == 'ผู้ประสารงาน'%>
+   <% if @user.role&.name.in?(['อาจารย์', 'ผู้ดูแลระบบ', 'ผู้ประสารงาน']) %>
     <div class="form-group">
       <%= f.label :expertise, "เชี่ยวชาญ" %>
       <%= f.text_area :expertise, class: "form-control" %>
