@@ -7,7 +7,7 @@
 }
 
 /* Tabs */
-.tabs {
+.tabs-reports {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -140,7 +140,7 @@
     padding: 16px;
   }
 
-  .tabs {
+  .tabs-reports {
     flex-direction: column;
     gap: 10px;
     border-bottom: none;

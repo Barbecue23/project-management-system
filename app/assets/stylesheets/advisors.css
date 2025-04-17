@@ -12,12 +12,13 @@
   font-weight: bold;
 }
 
-.tabs-advisors {
+.tabs-reports-advisors {
   display: flex;
   flex-direction: row;
   gap: 20px;
   border-bottom: 2px solid #ddd;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
 /* Responsive container */
