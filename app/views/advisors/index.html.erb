@@ -66,39 +66,41 @@
                 <% end %>
               </div>
             </td>
-            <td class="text-center">
-              <% student_count = advisor.try(:student_count).to_i %>
-              <% is_full = student_count >= @max_student %>
-              <% already_requested = @advisor_requests.include?(advisor.id) %>
-              <% already_member = @student_group_members.include?(advisor.id) %>
-              <% has_chosen_someone = @advisor_requests.any? || @student_group_members.any? %>
+            <% if current_user.role.name != "ผู้ดูแลระบบ" && current_user.role.name != "อาจารย์" && current_user.role.name != "ผู้ประสารงาน"%>
+              <td class="text-center">
+                <% student_count = advisor.try(:student_count).to_i %>
+                <% is_full = student_count >= @max_student %>
+                <% already_requested = @advisor_requests.include?(advisor.id) %>
+                <% already_member = @student_group_members.include?(advisor.id) %>
+                <% has_chosen_someone = @advisor_requests.any? || @student_group_members.any? %>
 
-              <% if already_member %>
-                <span class="text-success">อยู่ในกลุ่มนี้แล้ว</span>
+                <% if already_member %>
+                  <span class="text-success">อยู่ในกลุ่มนี้แล้ว</span>
 
-              <% elsif already_requested %>
-                <span class="text-gray-500">รอการตอบรับ</span>
+                <% elsif already_requested %>
+                  <span class="text-gray-500">รอการตอบรับ</span>
 
-              <% elsif is_full %>
-                <span class="text-danger">-</span>
+                <% elsif is_full %>
+                  <span class="text-danger">-</span>
 
-              <% elsif has_chosen_someone %>
-                <!-- เคยเลือกอาจารย์ไปแล้ว แต่ไม่ใช่คนนี้ -->
-                <span class="text-muted">ไม่สามารถเลือกได้</span>
+                <% elsif has_chosen_someone %>
+                  <!-- เคยเลือกอาจารย์ไปแล้ว แต่ไม่ใช่คนนี้ -->
+                  <span class="text-muted">ไม่สามารถเลือกได้</span>
 
-              <% else %>
-                <!-- ยังไม่เคยเลือกใคร และยังเลือกคนนี้ได้ -->
-                <button
-                  type="button"
-                  data-advisor-id="<%= advisor.id %>"
-                  data-advisor-name="<%= advisor.user.name %>"
-                  onclick="openAdvisorModal(this)"
-                  class="btn btn-primary"
-                >
-                  เลือก
-                </button>
-              <% end %>
-            </td>
+                <% else %>
+                  <!-- ยังไม่เคยเลือกใคร และยังเลือกคนนี้ได้ -->
+                  <button
+                    type="button"
+                    data-advisor-id="<%= advisor.id %>"
+                    data-advisor-name="<%= advisor.user.name %>"
+                    onclick="openAdvisorModal(this)"
+                    class="btn btn-primary"
+                  >
+                    เลือก
+                  </button>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
