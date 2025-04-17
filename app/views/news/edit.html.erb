@@ -3,28 +3,28 @@
   <!-- Header Section -->
   <div class="form-header">
     <h1 class="page-title">อัพเดทข่าวสาร</h1>
-    <%= form.submit "+อัพเดทข่าวสาร", class: "btn btn-disabled", id: "submit-button" %>
+    <%= form.submit "+ อัพเดทข่าวสาร", class: "btn btn-disabled", id: "submit-button" %>
   </div>
 
   <!-- Title -->
   <div class="form-group">
-    <label>Title</label>
+    <label>หัวข้อ</label>
     <%= form.text_field :title, class: "form-control", id: "news_title", placeholder: "Enter news title" %>
   </div>
 
   <!-- Content -->
   <div class="form-group">
-    <label>Content</label>
+    <label>รายละเอียด</label>
     <%= form.text_area :content, class: "form-control textarea", id: "news_content", placeholder: "Enter news content" %>
   </div>
 
   <!-- Category, Publish Date -->
   <div class="form-row">
     <div class="form-group">
-      <label>Category</label>
+      <label>กลุ่ม</label>
       <% selected_category =
           if @news.is_public?
-            "All"
+            "ทั้งหมด"
           else
             @news.news_groups.joins(:advisor_group).pluck("advisor_groups.group_name").first
           end
@@ -39,13 +39,13 @@
       %>
 
       <%= select_tag :category,
-          options_for_select(["All"] + available_groups, selected_category),
-          prompt: "Select", class: "form-control select-dropdown", id: "category"
+          options_for_select(["ทั้งหมด"] + available_groups, selected_category),
+          prompt: "เลือก", class: "form-control select-dropdown", id: "category"
       %>
 
     </div>
     <div class="form-group">
-      <label>Publish Date</label>
+      <label>วันที่เผยแพร่ (ค.ศ.)</label>
       <%= form.date_field :publish_date, class: "form-control date-picker", id: "news_publish_date" %>
     </div>
   </div>
