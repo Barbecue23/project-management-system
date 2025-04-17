@@ -21,12 +21,12 @@
         <h3><%= current_user.name %></h3>
         <h3><%= current_user.student_id %></h3>
 
-        <%= link_to "Edit Account", edit_user_registration_path, class: "btn btn-primary" %><br>
+        <%= link_to "Edit Account", edit_user_path(current_user), class: "btn btn-primary" %><br>
         <%= link_to "ออกจากระบบ", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
       <% else %>
       <p class="login-subtext">Please login with your email and password</p>
         <div class="auth-links">
-<%= link_to "Sign in with SU", user_azure_oauth2_omniauth_authorize_path, class: "btn btn-primary" %>
+        <%= link_to "Sign in with SU", user_azure_oauth2_omniauth_authorize_path, class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
