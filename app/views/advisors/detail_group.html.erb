@@ -14,10 +14,13 @@
   </div>
 
   <!-- Tabs -->
+  <div class="tabs-scroll-wrapper">
+
   <div class="tabs">
-    <% @advisor_group.each do |group| %>
-      <%= link_to group.group_name, advisors_group_overview_path(group_id: group.id), class: "tab #{'active' if group == @selected_group}" %>
-    <% end %>
+      <% @advisor_group.each do |group| %>
+        <%= link_to group.group_name, advisors_group_overview_path(group_id: group.id), class: "tab #{'active' if group == @selected_group}" %>
+      <% end %>
+    </div>
   </div>
 
   <% if @selected_group %>
