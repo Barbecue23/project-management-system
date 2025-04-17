@@ -2,7 +2,10 @@
   <!-- Header -->
   <div class="form-header">
     <h1 class="page-title">สิทธิ์การใช้งาน (Roles)</h1>
-    <%= link_to '+ เพิ่ม Role ใหม่', new_role_path, class: "btn-create" %>
+    <div style="display: flex; gap: 10px;">
+      <%= link_to '+ เพิ่ม User ใหม่', users_add_user_path, class: "btn-create" %>
+      <%= link_to '+ เพิ่ม Role ใหม่', new_role_path, class: "btn-create" %>
+    </div>
   </div>
 
   <!-- Table -->
