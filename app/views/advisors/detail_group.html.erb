@@ -8,7 +8,7 @@
       จำนวนที่นักศึกษา: <%= @student_count %> รอบ <%= @current_season&.season_name || "ไม่มีรอบ" %>
     </h2>
 
-    <% if @selected_group %>
+    <% if @selected_group && ["ผู้ดูแลระบบ", "ผู้ประสานงาน"].include?(current_user.role.name) %>
       <%= link_to "แก้ไข", advisors_edit_path(id: @selected_group.id), class: "btn btn-warning" %>
     <% end %>
   </div>

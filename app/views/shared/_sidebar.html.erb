@@ -24,7 +24,7 @@
               </button>
               <ul class="submenu">
                 <li><%= link_to "ข่าวสารทั้งหมด", "/news/index", class: "nav-link #{'active' if current_path == '/news/index'}" %></li>
-                <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
+                <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์"].include?(role_name) %>
                   <li><%= link_to "สร้างข่าวสาร", "/news/new", class: "nav-link #{'active' if current_path == '/news/new'}" %></li>
                 <% end %>
               </ul>
@@ -42,9 +42,9 @@
                 <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
                   <li><%= link_to "ดูทั้งหมด", "/advisors/index", class: "nav-link #{'active' if current_path == '/advisors/index'}" %></li>
                 <% end %>
-                <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
+                <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์"].include?(role_name) %>
                   <li><%= link_to "สมาชิก", "/advisors/detail_group", class: "nav-link #{'active' if current_path == '/advisors/detail_group'}" %></li>
-                <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
+                <% if ["ผู้ดูแลระบบ"].include?(role_name) %>
                     <li><%= link_to "สร้างกลุ่ม", "/advisors/new", class: "nav-link #{'active' if current_path == '/advisors/new'}" %></li>
                   <% end %>
                 <% end %>
@@ -61,15 +61,15 @@
             </li>
           <% end %>
 
-        <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
+        <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์"].include?(role_name) %>
             <li class="nav-item <%= 'active' if current_path == '/students/index' %>">
               <%= link_to "/students/index", class: "nav-link" do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" height="20" width="20" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M160 368c26.5 0 48 21.5 48 48l0 16 72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6L448 368c8.8 0 16-7.2 16-16l0-288c0-8.8-7.2-16-16-16L64 48c-8.8 0-16 7.2-16 16l0 288c0 8.8 7.2 16 16 16l96 0zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3l0-21.3 0-6.4 0-.3 0-4 0-48-48 0-48 0c-35.3 0-64-28.7-64-64L0 64C0 28.7 28.7 0 64 0L448 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64l-138.7 0L208 492z"/></svg>                
-              <span>คำร้องขอจากนักศึกษา</span>
+              <span>คำร้องจากนักศึกษา</span>
               <% end %>
             </li>
           <% end %>
-        <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
+        <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์"].include?(role_name) %>
             <li class="nav-item <%= 'active' if current_path == '/students/my_student_group' %>">
               <%= link_to "/students/my_student_group", class: "nav-link" do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" height="20" width="20" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M160 368c26.5 0 48 21.5 48 48l0 16 72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6L448 368c8.8 0 16-7.2 16-16l0-288c0-8.8-7.2-16-16-16L64 48c-8.8 0-16 7.2-16 16l0 288c0 8.8 7.2 16 16 16l96 0zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3l0-21.3 0-6.4 0-.3 0-4 0-48-48 0-48 0c-35.3 0-64-28.7-64-64L0 64C0 28.7 28.7 0 64 0L448 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64l-138.7 0L208 492z"/></svg>                
@@ -86,7 +86,7 @@
             </li>
           <% end %>
 
-        <% if ["ผู้ดูแลระบบ", "ผู้ประสารงาน", "อาจารย์","นักศึกษา"].include?(role_name) %>
+        <% if ["ผู้ดูแลระบบ"].include?(role_name) %>
             <li class="nav-item <%= 'active' if current_path.start_with?('/seasons') %>">
               <%= link_to "/seasons", class: "nav-link" do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon"height="20" width="20" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/></svg>                <span>seasons</span>
