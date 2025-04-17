@@ -41,7 +41,7 @@
     </div>
     <% else %>
     <div class="form-group">
-      <%= f.label :student_id, "รหัศรหัสนักศึกษา" %>
+      <%= f.label :student_id, "รหัสนักศึกษา" %>
       <%= f.text_field :student_id, class: "form-control" %>
       <% if @user.errors[:student_id].any? %>
         <div class="text-red-500 text-sm mt-1">
