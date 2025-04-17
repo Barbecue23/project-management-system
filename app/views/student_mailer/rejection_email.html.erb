@@ -1,8 +1,53 @@
 <html>
+<head>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
 <body>
-  <h1>Rejection Notice ระบบ Project Management System</h1>
-  <p>ชื่อ <%= @student.name %> รหัสนักศึกษา <%= @student.student_id %></p>
-  <p>คุณได้โดนปฎิเสธการเป็น ที่ปรึกษากับอาจารย์ <%= @advisor.name%></p>
-  <p>หากมีข้อสงสัย กรุณาติดต่ออาจารย์โดยตรง</p>
+  <div class="container">
+    <h1>การแจ้งเตือนของระบบ Project Management System</h1>
+    <p>คุณได้โดนปฏิเสธการเป็นที่ปรึกษา</p>
+    <p>ชื่อ <%= @student.name %><br>
+      รหัสนักศึกษา <%= @student.student_id %></p>
+    <p>คุณได้โดนปฏิเสธการเป็นที่ปรึกษากับอาจารย์ <%= @advisor.name %></p>
+    <p>หากมีข้อสงสัย กรุณาติดต่ออาจารย์โดยตรง</p>
+
+    <div class="footer">
+      <p>อีเมลนี้ถูกส่งโดยระบบอัตโนมัติ กรุณาอย่าตอบกลับ</p>
+    </div>
+  </div>
 </body>
 </html>
