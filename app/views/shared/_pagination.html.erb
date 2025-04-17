@@ -1,0 +1,25 @@
+<% if records.any? %>
+  <div class="pagination-container">
+    <div class="pagination-text">
+      Showing <%= records.offset_value + 1 %> to <%= [records.offset_value + records.length, records.total_count].min %> of <%= records.total_count %> <%= label %>
+    </div>
+    
+    <nav class="pagination-nav">
+      <%= link_to url_for(page: records.prev_page, tab: params[:tab]), class: "pagination-link #{'pagination-disabled' if records.first_page?}", disabled: records.first_page? do %>
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      <% end %>
+
+      <span class="px-4 py-2 text-gray-700">
+        Page <%= records.current_page %> of <%= records.total_pages %>
+      </span>
+
+      <%= link_to url_for(page: records.next_page, tab: params[:tab]), class: "pagination-link #{'pagination-disabled' if records.last_page?}", disabled: records.last_page? do %>
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+      <% end %>
+    </nav>
+  </div>
+<% end %>

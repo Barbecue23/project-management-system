@@ -3,41 +3,64 @@ Rails.application.routes.draw do
 
   resources :roles, only: [ :edit, :update, :index, :new, :create ]
 
+  resources :users, only: [ :edit, :update ]
+
+  # GET
   get "reports/index"
+  get "reports/select_type", to: "reports#select_type"
+  get "reports/new", to: "reports#new"
+  get "reports/:id/edit", to: "reports#edit", as: "edit_report"
+  get "users/add_user", to: "users#add_user"
   get "students/index"
+  get "students/my_student_group", to: "students#my_student_group"
   get "advisors/index"
-  get "advisors/new", to: "advisors#new"  # Route to show the create advisor page
-  post "advisors/create", to: "advisors#create"  # Route to handle form submission
-  get "advisors/detail_group", to: "advisors#detail_group"  # Route to show the detail advisor group page
-  post "advisors/student_requests", to: "advisors#student_requests"  # Route to handle form submission
+  get "advisors/new", to: "advisors#new"
+  get "advisors/detail_group", to: "advisors#detail_group"
   get "advisors/requests"
-  post "advisors/accept_request", to: "advisors#accept_request"
-  post "advisors/reject_request", to: "advisors#reject_request"
   get "advisors/edit"
   get "advisors/detail_group", to: "advisors#detail_group", as: "advisors_group_overview"
-  patch "advisors/:id", to: "advisors#update", as: "advisor_update"
   get "home/index"
   get "news/index"
-  get "news/new", to: "news#new"  # Route to show the create news page
-  post "news/create", to: "news#create"  # Route to handle form submission
-  # root "news#index"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get "news/new", to: "news#new"
+  get "/news/:id", to: "news#show", as: "news_show"
+  get "news/:id/edit", to: "news#edit", as: "news_edit"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # POST
+  post "students/student_requests", to: "students#student_requests"
+  post "advisors/create", to: "advisors#create"
+  post "advisors/accept_request", to: "advisors#accept_request"
+  post "advisors/reject_request", to: "advisors#reject_request"
+  post "news/create", to: "news#create"
+  post "users/create_user", to: "users#create_user"
+  post "reports/create", to: "reports#create"
+
+  # DELETE
+  delete "students/:id", to: "students#destroy", as: "delete_student_request"
+  delete "news/attachments/:id", to: "news#delete_attachment", as: "delete_news_attachment"
+  delete "news/:id", to: "news#destroy", as: :delete_news
+  delete "reports/:id", to: "reports#destroy", as: :delete_report
+
+  # PATCH
+  patch "advisors/:id", to: "advisors#update", as: "advisor_update"
+  patch "news/:id", to: "news#update", as: "news_update"
+  patch "reports/:id", to: "reports#update", as: "report_update"
+  patch "seasons/:id/update_status", to: "seasons#update_status", as: "season_update_status"
+
+
+  # health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # root
   root to: "home#index"
 
   devise_for :users, controllers: {
-    registrations: "users/registrations",
-    sessions: "users/sessions",
     omniauth_callbacks: "users/omniauth_callbacks"
   }
+
+  # ใส่ด้านนอก devise_for
+  get "/users/auth/failure", to: "users/omniauth_callbacks#failure"
+
+  direct :rails_blob do |blob|
+    route_for(:rails_blob, blob)
+  end
 end

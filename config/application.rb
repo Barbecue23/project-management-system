@@ -26,5 +26,13 @@ module ProjectMs
     config.assets.enabled = true
     config.assets.paths << Rails.root.join("app", "assets", "stylesheets")
     config.assets.paths << Rails.root.join("app", "assets", "javascripts")
+
+    config.time_zone = "Bangkok"
+    config.active_record.default_timezone = :local
+
+    Rails.application.config.session_store :cookie_store,
+      key: "_your_app_session",
+      same_site: :lax,             # 👈 ช่วยให้ cookie ทำงานใน dev/docker
+      secure: false
   end
 end

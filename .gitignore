@@ -9,6 +9,13 @@
 
 # Ignore all environment files.
 /.env*
+/Gemfile.lock
+/package-lock.json
+/vendor
+/init-db.sh
+/Rakefile
+/Procfile.dev
+/.kamal
 
 # Ignore all logfiles and tempfiles.
 /log/*

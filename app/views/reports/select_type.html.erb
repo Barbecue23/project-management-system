@@ -1,0 +1,38 @@
+<div class="select-type-container">
+  <h1 class="page-title">เลือกประเภทของรายงาน</h1>
+
+  <%= form_with url: reports_new_path, method: :get, local: true, html: { class: "select-type-form" } do |form| %>
+<div class="form-group custom-select-group">
+  <%= form.label :record_type, "ประเภท", class: "form-label" %>
+  <div class="custom-select-wrapper">
+    <%= form.select :record_type,
+                    Record.record_types.keys.map { |t| [t.humanize, t] },
+                    { prompt: "เลือกประเภท" },
+                    { class: "form-select", id: "record_type" } %>
+    <span class="select-icon">▼</span>
+  </div>
+</div>
+
+    <%= form.submit "ถัดไป", id: "next_button", class: "btn btn-disabled" %>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("record_type");
+    const button = document.getElementById("next_button");
+
+    function toggleButtonState() {
+      if (select.value) {
+        button.classList.remove("btn-disabled");
+        button.classList.add("btn-primary");
+      } else {
+        button.classList.remove("btn-primary");
+        button.classList.add("btn-disabled");
+      }
+    }
+
+    select.addEventListener("change", toggleButtonState);
+    toggleButtonState(); // initial check
+  });
+</script>

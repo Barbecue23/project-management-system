@@ -263,16 +263,26 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html, :turbo_stream]
+  config.navigational_formats = [ "*/*", :html, :turbo_stream ]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
-  # ==> OmniAuth
-  # Add a new OmniAuth provider. Check the wiki for more information on setting
-  # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  config.omniauth :azure_oauth2, client_id: ENV["AZURE_CLIENT_ID"], client_secret: ENV["AZURE_CLIENT_SECRET"]
+    # ==> OmniAuth
+    # Add a new OmniAuth provider. Check the wiki for more information on setting
+    # up on your models and hooks.
+    # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+
+    config.omniauth :azure_oauth2,
+      client_id: ENV["AZURE_CLIENT_ID"],
+      client_secret: ENV["AZURE_CLIENT_SECRET"],
+      tenant_id: "common",
+      scope: "openid profile email"
+
+      OmniAuth.config.allowed_request_methods = [ :get ]
+
+
+
 
 
   # ==> Warden configuration
@@ -312,4 +322,13 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  config.sign_out_via = [ :get, :delete ]
+  OmniAuth.config.logger = Rails.logger
+
+  # OmniAuth.config.on_failure = Proc.new { |env|
+  #   message = env["omniauth.error.type"]
+  #   strategy = env["omniauth.error.strategy"]
+  #   Rails.logger.error "OmniAuth failure: #{message}, Strategy: #{strategy}"
+  #   OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+  # }
 end

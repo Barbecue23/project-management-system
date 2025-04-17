@@ -1,17 +1,17 @@
-name: CI
+name: CI and Auto Deploy
 
 on:
   pull_request:
   push:
     branches: [ main ]
 
-env: 
+env:
   IMAGE_NAME: barbecue23/project-management-system
 
 jobs:
+  # 🔍 Scan Ruby for vulnerabilities
   scan_ruby:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,12 +22,15 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+      - name: Install latest Brakeman
+        run: gem install brakeman
 
+      - name: Scan for common Rails security vulnerabilities
+        run: brakeman --no-pager
+
+  # 🔍 Scan JS for vulnerabilities
   scan_js:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,9 +41,10 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for security vulnerabilities in JavaScript dependencies
+      - name: Scan JavaScript dependencies
         run: bin/importmap audit
 
+  # ✅ Lint code
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -53,9 +57,10 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Lint code for consistent style
+      - name: RuboCop Lint
         run: bin/rubocop -f github
 
+  # ✅ Run tests
   test:
     runs-on: ubuntu-latest
     steps:
@@ -70,7 +75,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Set up Ruby and dependencies
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.1
@@ -84,24 +89,10 @@ jobs:
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
 
-      # - name: Set up database schema
-      #   run: make migrate
-
-      # - name: Run tests and generate coverage report
-      #   run: make test
-
-      # - name: Check code coverage
-      #   run: |
-      #     COVERAGE=$(jq '.coverage_percent' coverage/coverage.json)
-      #     if (( $(echo "$COVERAGE < 40.0" | bc -l) )); then
-      #       echo "Code coverage ($COVERAGE%) is below the required threshold of 40%"
-      #       exit 1
-      #     fi  
-
-  build_and_push:  # ✅ อยู่ใน jobs ถูกต้องแล้ว
+  # 🐳 Build & Push Docker Image
+  build_and_push:
     runs-on: ubuntu-latest
-    needs: test  # ✅ ทำงานหลังจาก job `test` เสร็จแล้ว
-
+    needs: [test, scan_js, scan_ruby, lint]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -119,3 +110,56 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.IMAGE_NAME }}_prod:latest
+          # tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
+
+  # 🚀 Auto Deploy
+  # deploy:
+  #   runs-on: self-hosted
+  #   needs: build_and_push
+  #   env:
+  #     BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: Pull latest Docker image
+  #       run: |
+  #         cd /home/nc-user/Project/Dev
+  #         docker-compose -f docker-compose.dev.yml pull
+
+  #     - name: Restart containers with new image
+  #       run: |
+  #         cd /home/nc-user/Project/Dev
+  #         docker-compose -f docker-compose.dev.yml down
+  #         docker-compose -f docker-compose.dev.yml up -d
+
+  # 🔔 Notify on Success or Failure
+  # notify:
+  #   name: Discord Notification
+  #   runs-on: ubuntu-latest
+  #   needs: [scan_ruby, scan_js, lint, test, build_and_push, deploy]
+  #   if: always()
+  #   steps:
+  #     - name: Notify on Failure
+  #       if: failure()
+  #       uses: nobrayner/discord-webhook@v1
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         discord-webhook: ${{ secrets.DISCORD_WEBHOOK }}
+  #         message: |
+  #           ❌ A job failed on `${{ github.ref }}` by `${{ github.actor }}`.
+  #           Please check the logs.
+  #         include-details: 'true'
+
+  #     - name: Notify on Success
+  #       if: success()
+  #       uses: nobrayner/discord-webhook@v1
+  #       with:
+  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+  #         discord-webhook: ${{ secrets.DISCORD_WEBHOOK }}
+  #         message: |
+  #           ✅ All jobs succeeded on `${{ github.ref }}` by `${{ github.actor }}`.
+  #         include-details: 'true'
+

@@ -1,0 +1,73 @@
+<% perm_service = PermissionService.new(current_user) %>
+
+<div class="container">
+  <div class="news-header" style="display: flex; align-items: center; justify-content: space-between;">
+    <h1 class="news-title"><%= @news.title %></h1>
+
+
+    <div class="news-actions" style="display: flex; gap: 0.5rem;">
+        <%= link_to 'กลับ', news_index_path%>
+        <% if @news.created_by == current_user.name  && perm_service.can_edit?("news")%>
+          <%= link_to 'แก้ไข' , news_edit_path%>
+        <% end %>
+        <% if @news.created_by == current_user.name  && perm_service.can_delete?("news")%>
+          <%= button_to 'ลบ', delete_news_path(@news), method: :delete, data: { confirm: "คุณแน่ใจว่าต้องการลบข่าวนี้?" } %>
+        <% end %>
+    </div>
+  </div>
+
+  <% if @news.banner_image.attached? %>
+    <div class="news-banner">
+      <%= image_tag url_for(@news.banner_image), class: "banner-image" %>
+    </div>
+  <% end %>
+
+  <p class="news-meta">
+    <%= @news.publish_date.strftime("%d %B %Y") %> | โดย <%= @news.created_by %>
+  </p>
+
+  <div class="news-content">
+    <%= simple_format(@news.content) %>
+  </div>
+
+  <!-- ส่วน gallery -->
+  <% if @news.more_images.attached? %>
+    <div class="news-gallery">
+      <% @news.more_images.each do |img| %>
+        <%= image_tag img, class: "gallery-image", data: { full: url_for(img) } %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-hidden">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-image" class="lightbox-content" />
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("lightbox-modal");
+  const modalImg = document.getElementById("lightbox-image");
+  const closeBtn = document.querySelector(".lightbox-close");
+
+  document.querySelectorAll(".gallery-image").forEach(img => {
+    img.addEventListener("click", function () {
+      modal.style.display = "block";
+      modalImg.src = this.dataset.full;
+    });
+  });
+
+  closeBtn.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  modal.onclick = function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+});
+</script>

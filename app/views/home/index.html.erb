@@ -1,14 +1,35 @@
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
 
-<div>
-  <h1 class="font-bold text-4xl">Home#index</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+<div class="login-wrapper">
+  <div class="login-container">
+    
+    <!-- Left illustration -->
+    <div class="login-illustration">
+    <%= image_tag "logo.svg", class: "login-logo" %>
+    </div>
 
-  <% if current_user %>
-  <h2> <%= current_user.email%> </h2>
-  <%= link_to "Edit Account", edit_user_registration_path %> 
-=end%>
-<%else%>
-  <%= link_to "Signin", new_user_session_path %>
-  <%= link_to "Create Account", new_user_registration_path %>
-<%end%>
+    <!-- Right form -->
+    <div class="login-form">
+      <h2 class="login-title">Welcome Back :)</h2>
+
+      <% if current_user %>
+        <h3><%= current_user.email %></h3>
+        <h3><%= current_user.name %></h3>
+        <h3><%= current_user.student_id %></h3>
+
+        <%= link_to "Edit Account", edit_user_registration_path, class: "btn btn-primary" %><br>
+        <%= link_to "ออกจากระบบ", destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
+      <% else %>
+      <p class="login-subtext">Please login with your email and password</p>
+        <div class="auth-links">
+<%= link_to "Sign in with SU", user_azure_oauth2_omniauth_authorize_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
 </div>

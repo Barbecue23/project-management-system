@@ -1,30 +1,26 @@
-# frozen_string_literal: true
-
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  # You should configure your model like this:
-  # devise :omniauthable, omniauth_providers: [:twitter]
+  def azure_oauth2
+    auth = request.env["omniauth.auth"]
 
-  # You should also create an action method in this controller like this:
-  # def twitter
-  # end
+    begin
+      user = User.from_omniauth(auth)
+    rescue => e
+      redirect_to root_path, alert: "Login failed: #{e.message}" and return
+    end
 
-  # More info at:
-  # https://github.com/heartcombo/devise#omniauth
+    if user.persisted?
+      sign_in_and_redirect user
+    else
+      redirect_to root_path, alert: "Login failed: #{user.errors.full_messages.join(", ")}"
+    end
+  end
 
-  # GET|POST /resource/auth/twitter
-  # def passthru
-  #   super
-  # end
 
-  # GET|POST /users/auth/twitter/callback
-  # def failure
-  #   super
-  # end
+  def failure
+    error_type = request.env["omniauth.error.type"]
+    error_message = request.env["omniauth.error"]&.message
 
-  # protected
-
-  # The path used when OmniAuth fails
-  # def after_omniauth_failure_path_for(scope)
-  #   super(scope)
-  # end
+    flash[:alert] = "ยืนยันตัวตนล้มเหลว: #{error_type} - #{error_message}"
+    redirect_to root_path
+  end
 end

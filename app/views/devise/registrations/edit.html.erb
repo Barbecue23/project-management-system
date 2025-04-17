@@ -1,43 +1,67 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="edit-account-wrapper">
+  <div class="edit-account">
+  <div class="edit-account-container">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <!-- ฝั่งซ้าย: แก้ไขบัญชี -->
+    <div class="account-section">
+      <h2 class="section-title">แก้ไขบัญชีผู้ใช้</h2>
+      <p class="section-subtext">กรอกข้อมูลเพื่ออัปเดตบัญชีของคุณ</p>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form" }) do |f| %>
+        <div class="form-group">
+          <%= f.label :email, "Email", class: "form-label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+          <% if resource.errors[:email].any? %>
+            <div class="field-error"><%= resource.errors[:email].first %></div>
+          <% end %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div class="info-text">กำลังรอยืนยัน: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :password, "รหัสผ่านใหม่", class: "form-label" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+          <% if @minimum_password_length %>
+            <small>(<%= @minimum_password_length %> ตัวอักษรขึ้นไป)</small>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation, "ยืนยันรหัสผ่าน", class: "form-label" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :current_password, "รหัสผ่านปัจจุบัน", class: "form-label" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+          <% if resource.errors[:current_password].any? %>
+            <div class="field-error"><%= resource.errors[:current_password].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "อัปเดตบัญชี", class: "btn btn-primary full-width" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- ฝั่งขวา: ลบบัญชี -->
+    <div class="account-section danger-zone">
+      <h2 class="section-title text-red">ลบบัญชีผู้ใช้</h2>
+      <p class="section-subtext danger-text">หากคุณไม่ต้องการใช้บัญชีนี้อีกต่อไป การลบบัญชีจะไม่สามารถกู้คืนได้</p>
+
+      <%= button_to "ลบบัญชี", registration_path(resource_name),
+          method: :delete,
+          data: { confirm: "คุณแน่ใจหรือไม่ว่าต้องการลบบัญชี?", turbo_confirm: "แน่ใจใช่ไหม?" },
+          class: "btn btn-delete full-width" %>
+
+
+    </div>
+    </div>
+          <div class="auth-links" style="margin-top: 1.5rem;">
+        <%= link_to "กลับ", root_path, class: "btn btn-secondary full-width" %>
+      </div>
   </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>

@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_31_135157) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_15_184407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "advisor_group_members", force: :cascade do |t|
     t.bigint "advisor_group_id", null: false
@@ -88,6 +116,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_31_135157) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "records", force: :cascade do |t|
+    t.string "title"
+    t.string "student_name"
+    t.string "year"
+    t.string "category"
+    t.string "record_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "created_by"
@@ -98,22 +136,25 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_31_135157) do
 
   create_table "seasons", force: :cascade do |t|
     t.jsonb "seasons_detail", default: {}, null: false
-    t.date "start_date"
-    t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "season_name"
+    t.integer "status", default: 0, null: false
+    t.integer "max_student"
+    t.index ["status"], name: "index_seasons_on_status"
   end
 
   create_table "student_group_members", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "season_id", null: false
-    t.integer "year_term", null: false
+    t.string "year_term", null: false
     t.bigint "advisor_group_member_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "accepted", null: false
     t.index ["advisor_group_member_id"], name: "index_student_group_members_on_advisor_group_member_id"
     t.index ["season_id"], name: "index_student_group_members_on_season_id"
+    t.index ["status"], name: "index_student_group_members_on_status"
     t.index ["user_id"], name: "index_student_group_members_on_user_id"
   end
 
@@ -131,11 +172,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_31_135157) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "advisor_group_members", "advisor_groups"
   add_foreign_key "advisor_group_members", "users"
   add_foreign_key "advisor_requests", "advisor_group_members"

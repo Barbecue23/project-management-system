@@ -1,0 +1,89 @@
+<%= form_with model: @record, url: reports_create_path, local: true, html: { class: "report-form" } do |form| %>
+  <div class="form-group">
+    <label>ประเภท:</label>
+    <strong><%= @record.record_type.humanize %></strong>
+    <%= form.hidden_field :record_type, id: "record_record_type" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :title, "ชื่อเรื่อง" %>
+    <%= form.text_field :title, class: "form-control", id: "record_title" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :file, "แนบไฟล์" %>
+    <%= form.file_field :file, id: "file_upload", class: "form-control" %>
+  </div>
+
+  <% if @record.record_type != "project" %>
+    <div class="form-group">
+      <%= form.label :category, "รายละเอียด" %>
+      <%= form.text_area :category, class: "form-control", id: "record_category" %>
+    </div>
+  <% end %>
+
+  <% if @record.record_type == "project" %>
+    <div class="form-group">
+      <%= form.label :student_name, "ชื่อนักศึกษา" %>
+      <%= form.text_field :student_name, class: "form-control", id: "record_student_name" %>
+    </div>
+    <div class="form-group">
+      <%= form.label :year, "ปี" %>
+      <%= form.text_field :year, class: "form-control", id: "record_year" %>
+    </div>
+    <div class="form-group">
+      <%= form.label :category, "หมวดหมู่" %>
+      <%= form.text_field :category, class: "form-control", id: "record_category" %>
+    </div>
+  <% end %>
+
+  <%= form.submit "ส่งแบบฟอร์ม", id: "report_submit", class: "btn btn-disable" %>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".report-form");
+    const submitBtn = document.getElementById("report_submit");
+
+    function checkValid() {
+      const isProject = document.getElementById("record_record_type")?.value === "project";
+
+      const requiredFields = [
+        document.getElementById("record_title"),
+        document.getElementById("record_category"),
+        document.getElementById("file_upload")
+      ];
+
+      if (isProject) {
+        requiredFields.push(
+          document.getElementById("record_student_name"),
+          document.getElementById("record_year")
+        );
+      }
+
+      const allFilled = requiredFields.every(el => {
+        if (!el) return false;
+        if (el.type === "file") return el.files.length > 0;
+        return el.value.trim() !== "";
+      });
+
+      if (allFilled) {
+        submitBtn.classList.remove("btn-disable");
+        submitBtn.classList.add("btn-primary");
+      } else {
+        submitBtn.classList.remove("btn-primary");
+        submitBtn.classList.add("btn-disable");
+      }
+    }
+
+    const inputs = form.querySelectorAll("input, textarea");
+    inputs.forEach(el => {
+      el.addEventListener("input", checkValid);
+      el.addEventListener("change", checkValid);
+    });
+
+    checkValid(); // run on load
+  });
+</script>
+
+

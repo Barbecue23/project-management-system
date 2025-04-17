@@ -9,7 +9,7 @@
 #   end
 # db/seeds.rb
 
-Permissions.create!([
+Permission.create!([
   { name: "news", default_view: true, default_create: true, default_edit: true, default_delete: true, created_at: Time.zone.now, updated_at: Time.zone.now },
   { name: "advisor_group", default_view: true, default_create: true, default_edit: true, default_delete: true, created_at: Time.zone.now, updated_at: Time.zone.now },
   { name: "seasons", default_view: true, default_create: true, default_edit: true, default_delete: true, created_at: Time.zone.now, updated_at: Time.zone.now }
@@ -32,17 +32,4 @@ MapPermission.create!([
   { role_id: Role.find_by(name: "ผู้ประสารงาน").id, permission_id: Permission.find_by(name: "advisor_group").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
   { role_id: Role.find_by(name: "ผู้ประสารงาน").id, permission_id: Permission.find_by(name: "seasons").id, can_view: true, can_create: true, can_edit: true, can_delete: true, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now },
   { role_id: Role.find_by(name: "นักศึกษา").id, permission_id: Permission.find_by(name: "news").id, can_view: true, can_create: false, can_edit: false, can_delete: false, created_by: "system", updated_by: "system", created_at: Time.zone.now, updated_at: Time.zone.now }
-])
-
-User.create!([
-  {
-    name: "Admin",
-    student_id: "",
-    email: "Admin@admin.com",
-    faculty: "",
-    major: "",
-    role_id: Role.find_by(name: "ผู้ดูแลระบบ").id,
-    created_at: Time.zone.now,
-    updated_at: Time.zone.now
-  }
 ])

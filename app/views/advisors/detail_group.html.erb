@@ -1,5 +1,12 @@
 <h1><%= @selected_group&.group_name || "ไม่มีชื่อกลุ่ม" %></h1>
-
+<% if @current_season %>
+  <h1>จำนวนที่นักศึกษา: <%= @student_count %> รอบ <%= @current_season.season_name %></h1>
+<% else %>
+  <h1>จำนวนที่นักศึกษา: <%= @student_count %> รอบ ไม่มีรอบ</h1>
+<% end %>
+<% if @selected_group %>
+<%= link_to "แก้ไข", advisors_edit_path(id: @selected_group.id)%>
+<% end %>
 <!-- Tabs -->
 <div class="tabs">
   <% @advisor_group.each do |group| %>
@@ -12,7 +19,7 @@
   <%# <input type="text" placeholder="Search" class="search-bar" />
   <button class="filter-btn">🔍 Filters</button> %>
 </div>
-
+<% if @selected_group %>
 <!-- Table -->
 <div class="table-container">
   <table class="table">
@@ -27,12 +34,12 @@
       <% @advisors_in_group.each do |advisor| %>
         <tr>
           <td><%= advisor.name %></td>
-          <td><%= advisor.created_at.strftime("%d/%m/%Y") %></td>
-          <td>
-            <button class="btn btn-delete">ลบ</button>
-          </td>
+          <td><%= advisor.updated_at.strftime("%d/%m/%Y") %></td>
+          <% max_students = @current_season&.max_student || 0 %>
+          <td><%= @student_counts_by_advisor[advisor.id] || 0 %> / <%= max_students %> คน</td>
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
+<% end %>

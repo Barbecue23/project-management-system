@@ -1,18 +1,8 @@
 <div class="container">
   <h1 class="page-title">อาจารย์ที่ปรึกษาโครงการ</h1>
 
-  <div class="search-container">
-    <div class="search-wrapper">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#7a7a7a" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-      <input type="text" placeholder="Search" class="search-input">
-    </div>
-    
-    <%= button("Filters", type: :secondary , icon: raw(
-      '<svg style="width: 1rem; height: 1rem; margin-right: 0.75rem; xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" 
-        stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 
-        01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-      </svg>'))  %>
+<h2>รอบเปิดรับ <%= @season_range_text %></h2>
+
   </div>
 
   <div class="table-container">
@@ -45,45 +35,126 @@
             <td>
               <div><%= advisor.user.email %></div>
             </td>
-            <td >
-            <div class="student-status">
+            <td>
+              <div class="student-status">
+                <% if @season %>
+                  <% max_icons = @season.max_student || 0 %>
+                  <% student_count = advisor.student_group_members.where(status: 'accepted', season_id: @season.id).count %>
+                <% else %>
+                  <% max_icons = 0 %>
+                  <% student_count = 0 %>
+                <% end %>  <!-- ตรวจสอบเฉพาะสถานะ "accepted" -->
+                <% filled_icons = [student_count, max_icons].min %>  <!-- คำนวณจำนวนสมาชิกที่เต็ม -->
+                <% empty_icons = max_icons - filled_icons %>
+
+                <% filled_icons.times do %>
+                  <span class="flex items-center justify-center mr-1">
+                    <!-- ไอคอนสีเข้ม (มีนักศึกษา) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 448 512">
+                      <path fill="#464e5f" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/>
+                    </svg>
+                  </span>
+                <% end %>
+
+                <% empty_icons.times do %>
+                  <span class="flex items-center justify-center mr-1">
+                    <!-- ไอคอนสีจาง (ที่ว่าง) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 448 512">
+                      <path fill="#d1d5db" d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z"/>
+                    </svg>
+                  </span>
+                <% end %>
+              </div>
             </td>
-            <td class="text-center">
-              <%= button_to "เลือก", advisors_student_requests_path(advisor_group_member_id: advisor.id), method: :post, class: "btn btn-primary" %>
-            </td>
+            <% if current_user.role.name != "ผู้ดูแลระบบ" && current_user.role.name != "อาจารย์" && current_user.role.name != "ผู้ประสารงาน"%>
+              <td class="text-center">
+                <% student_count = advisor.try(:student_count).to_i %>
+                <% is_full = student_count >= @max_student %>
+                <% already_requested = @advisor_requests.include?(advisor.id) %>
+                <% already_member = @student_group_members.include?(advisor.id) %>
+                <% has_chosen_someone = @advisor_requests.any? || @student_group_members.any? %>
+
+                <% if already_member %>
+                  <span class="text-success">อยู่ในกลุ่มนี้แล้ว</span>
+
+                <% elsif already_requested %>
+                  <span class="text-gray-500">รอการตอบรับ</span>
+
+                <% elsif is_full %>
+                  <span class="text-danger">-</span>
+
+                <% elsif has_chosen_someone %>
+                  <!-- เคยเลือกอาจารย์ไปแล้ว แต่ไม่ใช่คนนี้ -->
+                  <span class="text-muted">ไม่สามารถเลือกได้</span>
+
+                <% else %>
+                  <!-- ยังไม่เคยเลือกใคร และยังเลือกคนนี้ได้ -->
+                  <button
+                    type="button"
+                    data-advisor-id="<%= advisor.id %>"
+                    data-advisor-name="<%= advisor.user.name %>"
+                    onclick="openAdvisorModal(this)"
+                    class="btn btn-primary"
+                  >
+                    เลือก
+                  </button>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
     </table>
   </div>
-
-  <%
-=begin%>
- <% if @advisors.total_pages > 1 %>
-    <div class="pagination-container">
-      <div class="pagination-text">
-        Showing <%= @advisors.offset_value + 1 %> to <%= [@advisors.offset_value + @advisors.length, @advisors.total_count].min %> of <%= @advisors.total_count %> advisors
-      </div>
-      
-      <nav class="pagination-nav">
-        <%= link_to url_for(page: @advisors.prev_page), class: "pagination-link #{'pagination-disabled' if @advisors.first_page?}", disabled: @advisors.first_page? do %>
-          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
-        <% end %>
-
-        <span class="px-4 py-2 text-gray-700">
-          Page <%= @advisors.current_page %> of <%= @advisors.total_pages %>
-        </span>
-
-        <%= link_to url_for(page: @advisors.next_page), class: "pagination-link #{'pagination-disabled' if @advisors.last_page?}", disabled: @advisors.last_page? do %>
-          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-          </svg>
-        <% end %>
-      </nav>
-    </div>
-  <% end %> 
-<%
-=end%>
+  
 </div>
+<div id="advisor-modal" >
+  <div class="modal-box">
+    <h2 class="modal-title">เลือกอาจารย์</h2>
+    <p class="modal-subtext">
+      คุณกำลังจะเลือก <span id="modal-advisor-name" class="font-semibold text-primary"></span>
+    </p>
+
+    <form id="advisor-form" action="<%= students_student_requests_path %>" method="post" class="modal-form">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <%= hidden_field_tag :advisor_group_member_id, "", id: "modal-advisor-id" %>
+
+      <div class="form-group">
+        <label for="year_term" class="form-label">ปี/เทอม</label>
+        <input type="text" name="year_term" placeholder="เช่น 2/2567" required class="form-control" />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" onclick="closeAdvisorModal()" class="btn btn-secondary">ยกเลิก</button>
+        <button type="submit" class="btn btn-primary">ยืนยัน</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<script>
+  function openAdvisorModal(button) {
+    const modal = document.getElementById("advisor-modal");
+    const advisorId = button.dataset.advisorId;
+    const advisorName = button.dataset.advisorName;
+
+    document.getElementById("modal-advisor-id").value = advisorId;
+    document.getElementById("modal-advisor-name").innerText = advisorName;
+
+    modal.classList.add("show");
+  }
+
+  function closeAdvisorModal() {
+    document.getElementById("advisor-modal").classList.remove("show");
+  }
+
+  // แสดง alert หลังจาก submit แล้ว redirect กลับมา
+    document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("advisor_chosen") === "true") {
+      alert("คุณได้เลือกอาจารย์เรียบร้อยแล้ว กรุณาติดต่ออาจารย์ด้วยนะครับ 🙏");
+    }
+  });
+</script>
