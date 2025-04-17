@@ -65,7 +65,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
+# Use RSpec for testing [https://rspec.info/]
+gem "rspec-rails"
 # Use PostgreSQL as the database for Active Record
 gem "pg", "~> 1.5"
 
