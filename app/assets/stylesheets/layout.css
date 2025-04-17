@@ -8,8 +8,9 @@
   
   /* Main Content */
   .main-content {
+    margin: 0;
+    padding: 0;
     flex: 1;
-    padding-inline: 16px;
     overflow-y: auto;
   }
   
