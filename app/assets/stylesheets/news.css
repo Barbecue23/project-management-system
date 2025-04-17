@@ -370,14 +370,40 @@
 }
 
 .news-banner {
-  margin: 20px 0;
+  width: 100%;
+  height: 30rem;
+  overflow: hidden;
 }
 
 .banner-image {
+  margin-top: 20px;
   width: 100%;
-  height: 30rem;
+  height: 100%;
+  object-fit: cover;
   border-radius: 8px;
+  display: block;
 }
+
+/* Responsive: ลดความสูงลงในจอขนาดเล็ก */
+@media (max-width: 1024px) {
+  .news-banner {
+    height: 20rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .news-banner {
+    height: 15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .news-banner {
+    height: 10rem;
+  }
+}
+
+
 
 .news-meta {
   color: #6c757d;
@@ -443,6 +469,7 @@
   .news-header {
     flex-direction: column;
     align-items: flex-start;
+    height: 15rem;
   }
 
   .news-actions {

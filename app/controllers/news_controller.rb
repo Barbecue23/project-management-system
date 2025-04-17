@@ -34,7 +34,7 @@ class NewsController < ApplicationController
   end
 
   def create
-    is_public = params[:category] == "All"
+    is_public = params[:category] == "ทั้งหมด"
 
     @news = News.new(news_params.merge(is_public: is_public, created_by: current_user.name))
 
@@ -65,8 +65,8 @@ class NewsController < ApplicationController
 
   def update
     @news = News.find(params[:id])
-    @news.category = @news.is_public? ? "All" : @news.news_groups.first&.advisor_group&.group_name
-    is_now_public = params[:category] == "All"
+    @news.category = @news.is_public? ? "ทั้งหมด" : @news.news_groups.first&.advisor_group&.group_name
+    is_now_public = params[:category] == "ทั้งหมด"
     was_public = @news.is_public?
 
     # เช็ค banner image ว่าแนบมาไหม
