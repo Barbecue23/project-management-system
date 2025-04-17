@@ -1,7 +1,7 @@
-<%= form_with(model: @advisor_group, url: advisors_create_path, method: :post, html: { class: "form" }) do |f| %>
+<%= form_with(model: @advisor_group, url: advisors_create_path, method: :post, html: { class: "form", id: "advisor_form" }) do |f| %>
   <div class="form-group">
     <%= f.label :group_name, "ชื่อกลุ่ม", class: "form-label" %>
-    <%= f.text_field :group_name, class: "form-control" %>
+    <%= f.text_field :group_name, class: "form-control", id: "group_name" %>
   </div>
 
   <div class="form-group">
@@ -17,22 +17,23 @@
           </tr>
         </thead>
         <tbody>
-        <% roles = Role.where(name: ["อาจารย์", "ผู้ประสารงาน", "ผู้ดูแลระบบ"]) %>
-        <% taken_owner_ids = AdvisorGroup.pluck(:owner_id).compact %>
+          <% roles = Role.where(name: ["อาจารย์", "ผู้ประสารงาน", "ผู้ดูแลระบบ"]) %>
+          <% taken_owner_ids = AdvisorGroup.pluck(:owner_id).compact %>
 
-        <% User.where(role_id: roles.pluck(:id)).where.not(id: taken_owner_ids).each do |user| %>
-          <tr>
-            <td>
-              <%= check_box_tag 'user_ids[]', user.id, false, id: "user_#{user.id}" %>
-            </td>
-            <td><%= user.name %></td>
-            <td><%= user.email %></td>
-            <td><%= user.created_at.strftime("%d/%m/%Y %H:%M") %></td>
-          </tr>
-        <% end %>
+          <% User.where(role_id: roles.pluck(:id)).where.not(id: taken_owner_ids).each do |user| %>
+            <tr>
+              <td>
+                <%= check_box_tag 'user_ids[]', user.id, false, id: "user_#{user.id}", class: "user-checkbox" %>
+              </td>
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td><%= user.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
-       <% if current_user.role.name == "ผู้ดูแลระบบ" %>
+
+      <% if current_user.role.name == "ผู้ดูแลระบบ" %>
         <% coordinator_roles = Role.where(name: ["ผู้ประสารงาน", "ผู้ดูแลระบบ"]).pluck(:id) %>
         <% available_owners = User.where(role_id: coordinator_roles).where.not(id: taken_owner_ids) %>
         <div class="form-group">
@@ -40,13 +41,44 @@
           <%= select_tag :owner_id,
                 options_from_collection_for_select(available_owners, :id, :name),
                 prompt: "เลือกอาจารย์ที่เป็นผู้ประสานงานของกลุ่ม",
-                class: "form-control" %>
+                class: "form-control", id: "owner_id" %>
         </div>
       <% end %>
     </div>
   </div>
 
   <div class="form-actions">
-    <%= f.submit 'สร้างกลุ่ม', class: "btn-create" %>
+    <%= f.submit 'สร้างกลุ่ม', class: "btn-create btn-disabled", id: "submit_button" %>
   </div>
 <% end %>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const groupNameInput = document.getElementById("group_name");
+  const checkboxes = document.querySelectorAll(".user-checkbox");
+  const ownerSelect = document.getElementById("owner_id");
+  const submitBtn = document.getElementById("submit_button");
+  const isAdmin = <%= current_user.role.name == "ผู้ดูแลระบบ" ? "true" : "false" %>;
+
+  function validateForm() {
+    const groupNameFilled = groupNameInput.value.trim() !== "";
+    const atLeastOneChecked = Array.from(checkboxes).some(cb => cb.checked);
+    const ownerSelected = !isAdmin || (ownerSelect && ownerSelect.value.trim() !== "");
+
+    if (groupNameFilled && atLeastOneChecked && ownerSelected) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("btn-disabled");
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.add("btn-disabled");
+    }
+  }
+
+  groupNameInput.addEventListener("input", validateForm);
+  checkboxes.forEach(cb => cb.addEventListener("change", validateForm));
+  if (ownerSelect) ownerSelect.addEventListener("change", validateForm);
+
+  validateForm(); // initial check
+});
+</script>
+
