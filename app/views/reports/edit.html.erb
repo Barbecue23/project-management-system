@@ -11,33 +11,79 @@
 
   <div class="form-group">
     <%= form.label :title, "ชื่อเรื่อง", class: "form-label" %>
-    <%= form.text_field :title, class: "form-control" %>
+    <%= form.text_field :title, class: "form-control", id: "report_title" %>
   </div>
 
   <div class="form-group">
     <%= form.label :student_name, "ชื่อนักศึกษา", class: "form-label" %>
-    <%= form.text_field :student_name, class: "form-control" %>
+    <%= form.text_field :student_name, class: "form-control", id: "report_student_name" %>
   </div>
 
   <div class="form-group">
     <%= form.label :year, "ปี", class: "form-label" %>
-    <%= form.text_field :year, class: "form-control" %>
+    <%= form.text_field :year, class: "form-control", id: "report_year" %>
   </div>
 
   <div class="form-group">
     <%= form.label :category, "หมวดหมู่", class: "form-label" %>
-    <%= form.text_field :category, class: "form-control" %>
+    <%= form.text_field :category, class: "form-control", id: "report_category" %>
   </div>
 
   <div class="form-group">
     <%= form.label :file, "แนบไฟล์", class: "form-label" %>
-    <%= form.file_field :file, class: "form-control" %>
+    <%= form.file_field :file, class: "form-control", id: "report_file" %>
     <% if @record.file.attached? %>
       <p class="file-note">ไฟล์เดิม: <%= link_to @record.file.filename, rails_blob_path(@record.file, disposition: "attachment"), class: "file-link" %></p>
     <% end %>
   </div>
 
   <div class="form-actions">
-    <%= form.submit "บันทึกการแก้ไข", class: "btn btn-primary" %>
+    <%= form.submit "บันทึกการแก้ไข", class: "btn btn-disabled", id: "report_submit" %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const requiredFields = [
+      "report_title",
+      "report_student_name",
+      "report_year",
+      "report_category",
+      "record_type",
+      "report_file"
+    ];
+
+    const submitBtn = document.getElementById("report_submit");
+
+    function toggleSubmitButton() {
+      const allFilled = requiredFields.every(id => {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        if (el.type === "file") {
+          return el.files.length > 0;
+        }
+        return el.value.trim() !== "";
+      });
+
+      if (allFilled) {
+        submitBtn.classList.remove("btn-disabled");
+        submitBtn.classList.add("btn-primary");
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.classList.remove("btn-primary");
+        submitBtn.classList.add("btn-disabled");
+        submitBtn.disabled = true;
+      }
+    }
+
+    requiredFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", toggleSubmitButton);
+        el.addEventListener("change", toggleSubmitButton);
+      }
+    });
+
+    toggleSubmitButton(); // check on page load
+  });
+</script>
