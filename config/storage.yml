@@ -8,12 +8,12 @@ local:
 
 minio:
   service: S3
-  access_key_id: "admin"
-  secret_access_key: "password123"
-  region: "us-east-1"
-  endpoint: "http://localhost:9000"
+  access_key_id: <%= ENV["ACCESS_KEY_ID"] %>
+  secret_access_key: <%= ENV["SECRET_ACCESS_KEY"] %>
+  region: us-east-1
+  endpoint: <%= ENV["ENDPOINT"] %>
+  bucket: <%= ENV["BUCKET_NAME"] %>
   force_path_style: true
-  bucket: "dev"
 
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
