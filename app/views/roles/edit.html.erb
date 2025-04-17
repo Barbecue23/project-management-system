@@ -7,7 +7,7 @@
   <%= form_with(model: @role, url: role_path(@role), method: :patch, local: true) do |f| %>
     <div class="form-group">
       <%= f.label :name, "ชื่อ Role", class: "form-label" %>
-      <%= f.text_field :name, value: @role.name, class: "form-control" %>
+      <%= f.text_field :name, value: @role.name, class: "form-control" , readonly: true%>
     </div>
 
     <div class="form-group">
@@ -43,16 +43,20 @@
           <strong><%= perm.name %></strong>
           <div class="checkbox-group">
             <% if perm.default_view %>
-              <%= check_box_tag "permissions[#{perm.id}][can_view]", true, map_perm&.can_view %> View
+              <%= check_box_tag "permissions[#{perm.id}][can_view]", true, map_perm&.can_view , disabled: true%> View
+              <%= hidden_field_tag "permissions[#{perm.id}][can_view]", map_perm&.can_view %>
             <% end %>
             <% if perm.default_create %>
-              <%= check_box_tag "permissions[#{perm.id}][can_create]", true, map_perm&.can_create %> Create
+              <%= check_box_tag "permissions[#{perm.id}][can_create]", true, map_perm&.can_create , disabled: true%> Create
+              <%= hidden_field_tag "permissions[#{perm.id}][can_create]", map_perm&.can_create %>
             <% end %>
             <% if perm.default_edit %>
-              <%= check_box_tag "permissions[#{perm.id}][can_edit]", true, map_perm&.can_edit %> Edit
+              <%= check_box_tag "permissions[#{perm.id}][can_edit]", true, map_perm&.can_edit , disabled: true%> Edit
+              <%= hidden_field_tag "permissions[#{perm.id}][can_edit]", map_perm&.can_edit %>
             <% end %>
             <% if perm.default_delete %>
-              <%= check_box_tag "permissions[#{perm.id}][can_delete]", true, map_perm&.can_delete %> Delete
+              <%= check_box_tag "permissions[#{perm.id}][can_delete]", true, map_perm&.can_delete , disabled: true%> Delete
+              <%= hidden_field_tag "permissions[#{perm.id}][can_delete]", map_perm&.can_delete %>
             <% end %>
           </div>
         </div>

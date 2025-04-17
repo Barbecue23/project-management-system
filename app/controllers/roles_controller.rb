@@ -33,23 +33,23 @@ class RolesController < ApplicationController
       @role.users = User.where(id: params[:user_ids])
 
       # อัปเดต Permissions
-      Permission.all.each do |permission|
-        perm_params = params[:permissions][permission.id.to_s] || {}
+      # Permission.all.each do |permission|
+      #   perm_params = params[:permissions][permission.id.to_s] || {}
 
-        map_perm = @role.map_permissions.find_or_initialize_by(permission_id: permission.id)
+      #   map_perm = @role.map_permissions.find_or_initialize_by(permission_id: permission.id)
 
-        if perm_params.blank?
-          # ถ้าไม่มี checkbox ถูกติ๊กเลย ลบออก
-          map_perm.destroy if map_perm.persisted?
-        else
-          # ถ้ามีอย่างน้อยหนึ่งอย่าง ติ๊กไว้ ให้ update หรือสร้าง
-          map_perm.can_view   = perm_params[:can_view].present?
-          map_perm.can_create = perm_params[:can_create].present?
-          map_perm.can_edit   = perm_params[:can_edit].present?
-          map_perm.can_delete = perm_params[:can_delete].present?
-          map_perm.save!
-        end
-      end
+      #   if perm_params.blank?
+      #     # ถ้าไม่มี checkbox ถูกติ๊กเลย ลบออก
+      #     map_perm.destroy if map_perm.persisted?
+      #   else
+      #     # ถ้ามีอย่างน้อยหนึ่งอย่าง ติ๊กไว้ ให้ update หรือสร้าง
+      #     map_perm.can_view   = perm_params[:can_view].present?
+      #     map_perm.can_create = perm_params[:can_create].present?
+      #     map_perm.can_edit   = perm_params[:can_edit].present?
+      #     map_perm.can_delete = perm_params[:can_delete].present?
+      #     map_perm.save!
+      #   end
+      # end
 
       flash[:notice] = "Role updated successfully."
       redirect_to roles_path
