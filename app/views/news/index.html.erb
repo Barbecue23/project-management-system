@@ -1,57 +1,70 @@
 <div class="container">
-    <h1 class="page-title">ข่าวสาร</h1>
+  <h1 class="page-title">ข่าวสาร</h1>
 
-    <!-- Featured News -->
-    <% featured_news = @news.first %>
+  <!-- Featured News -->
+  <% featured_news = @news.first %>
 
-    <% if featured_news.present? %>
+  <% if featured_news.present? %>
+    <% is_unpublished = featured_news.publish_date > Date.today %>
+    <% is_owner = current_user && featured_news.created_by == current_user.name %>
+
+    <% if !is_unpublished || is_owner %>
       <%= link_to news_show_path(featured_news.id), class: "featured-news-card-link" do %>
-      <div class="featured-news-card">
+        <div class="featured-news-card">
           <div class="image-placeholder">
-              <% if featured_news.banner_image.attached? %>
-                <%= image_tag featured_news.banner_image, class: "featured-news-image", alt: featured_news.title %>
-              <% else %>
-               <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>
-              <% end %>
+            <% if featured_news.banner_image.attached? %>
+              <%= image_tag featured_news.banner_image, class: "featured-news-image", alt: featured_news.title %>
+            <% else %>
+              <!-- SVG Placeholder -->
+            <% end %>
           </div>
           <div class="featured-news-content">
-              <h2 class="featured-news-title ellipsis-one-line"><%= featured_news.title %></h2>
-              <p class="featured-news-info ellipsis-multiline"><%= featured_news.content %></p>
-              <p class="featured-news-meta">
-                  <%= time_ago_in_words(featured_news.publish_date) %> ที่แล้ว | <%= featured_news.created_by %>
-              </p>
+            <h2 class="featured-news-title ellipsis-one-line"><%= featured_news.title %></h2>
+            <p class="featured-news-info ellipsis-multiline"><%= featured_news.content %></p>
+            <p class="featured-news-meta">
+              <%= time_ago_in_words(featured_news.publish_date) %> ที่แล้ว | <%= featured_news.created_by %>
+              <% if is_unpublished %>
+                <span class="unpublished-label">ยังไม่เผยแพร่</span>
+              <% end %>
+            </p>
           </div>
-      </div>
+        </div>
+      <% end %>
 
       <!-- Latest News -->
       <h2 class="latest-news-title">ข่าวสารล่าสุด</h2>
       <div class="latest-news">
-          <% @news.offset(1).each do |news| %>
+        <% @news.offset(1).each do |news| %>
+          <% is_unpublished = news.publish_date > Date.today %>
+          <% is_owner = current_user && news.created_by == current_user.name %>
+
+          <% if !is_unpublished || is_owner %>
             <%= link_to news_show_path(news.id), class: "news-card-link" do %>
               <div class="news-card">
-                  <div class="image-placeholder">
-                      <% if news.banner_image.attached? %>
-                        <%= image_tag news.banner_image, class: "news-image", alt: news.title %>
-                      <% else %>
-                      <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                          <path d="..." />
-                      </svg>
-                      <% end %>
-                  </div>
-                  <div class="news-content">
-                      <h3 class="news-title ellipsis-one-line"><%= news.title %></h3>
-                      <p class="news-info ellipsis-one-line"><%= news.content %></p>
-                      <p class="news-meta">
-                          <%= time_ago_in_words(news.publish_date) %> ที่แล้ว | <%= news.created_by %>
-                      </p>
-                  </div>
+                <div class="image-placeholder">
+                  <% if news.banner_image.attached? %>
+                    <%= image_tag news.banner_image, class: "news-image", alt: news.title %>
+                  <% else %>
+                    <!-- SVG Placeholder -->
+                  <% end %>
+                </div>
+                <div class="news-content">
+                  <h3 class="news-title ellipsis-one-line"><%= news.title %></h3>
+                  <p class="news-info ellipsis-one-line"><%= news.content %></p>
+                  <p class="news-meta">
+                    <%= time_ago_in_words(news.publish_date) %> ที่แล้ว | <%= news.created_by %>
+                    <% if is_unpublished %>
+                      <span class="unpublished-label">ยังไม่เผยแพร่</span>
+                    <% end %>
+                  </p>
+                </div>
               </div>
             <% end %>
           <% end %>
-
+        <% end %>
       </div>
     <% end %>
-    <% else %>
-      <p style="color: #999;">ไม่มีข่าวเด่นในขณะนี้</p>
-    <% end %>
+  <% else %>
+    <p style="color: #999;">ไม่มีข่าวเด่นในขณะนี้</p>
+  <% end %>
 </div>

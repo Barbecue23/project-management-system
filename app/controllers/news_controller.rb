@@ -1,6 +1,14 @@
 class NewsController < ApplicationController
   def index
-    @news = News.includes(:banner_image_attachment).order(publish_date: :desc)
+    if current_user
+      @news = News.includes(:banner_image_attachment)
+                  .where("publish_date <= ? OR created_by = ?", Date.today, current_user.name)
+                  .order(publish_date: :desc)
+    else
+      @news = News.includes(:banner_image_attachment)
+                  .where("publish_date <= ?", Date.today)
+                  .order(publish_date: :desc)
+    end
   end
 
   def show
