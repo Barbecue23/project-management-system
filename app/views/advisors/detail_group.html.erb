@@ -1,45 +1,47 @@
-<h1><%= @selected_group&.group_name || "ไม่มีชื่อกลุ่ม" %></h1>
-<% if @current_season %>
-  <h1>จำนวนที่นักศึกษา: <%= @student_count %> รอบ <%= @current_season.season_name %></h1>
-<% else %>
-  <h1>จำนวนที่นักศึกษา: <%= @student_count %> รอบ ไม่มีรอบ</h1>
-<% end %>
-<% if @selected_group %>
-<%= link_to "แก้ไข", advisors_edit_path(id: @selected_group.id)%>
-<% end %>
-<!-- Tabs -->
-<div class="tabs">
-  <% @advisor_group.each do |group| %>
-    <%= link_to group.group_name, advisors_group_overview_path(group_id: group.id), class: "tab #{'active' if group == @selected_group}" %>
+<div class="advisor-group-container">
+  <h1 class="group-title">
+    <%= @selected_group&.group_name || "ไม่มีชื่อกลุ่ม" %>
+  </h1>
+
+  <div class="student-header-row">
+    <h2 class="student-count">
+      จำนวนที่นักศึกษา: <%= @student_count %> รอบ <%= @current_season&.season_name || "ไม่มีรอบ" %>
+    </h2>
+
+    <% if @selected_group %>
+      <%= link_to "แก้ไข", advisors_edit_path(id: @selected_group.id), class: "btn btn-warning" %>
+    <% end %>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <% @advisor_group.each do |group| %>
+      <%= link_to group.group_name, advisors_group_overview_path(group_id: group.id), class: "tab #{'active' if group == @selected_group}" %>
+    <% end %>
+  </div>
+
+  <% if @selected_group %>
+    <!-- Table -->
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ชื่อ-สกุล</th>
+            <th>วันที่อัพโหลด</th>
+            <th>จำนวนนักศึกษา</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @advisors_in_group.each do |advisor| %>
+            <tr>
+              <td><%= advisor.name %></td>
+              <td><%= advisor.updated_at.strftime("%d/%m/%Y") %></td>
+              <% max_students = @current_season&.max_student || 0 %>
+              <td><%= @student_counts_by_advisor[advisor.id] || 0 %> / <%= max_students %> คน</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% end %>
 </div>
-
-<!-- Search + Filters -->
-<div class="actions">
-  <%# <input type="text" placeholder="Search" class="search-bar" />
-  <button class="filter-btn">🔍 Filters</button> %>
-</div>
-<% if @selected_group %>
-<!-- Table -->
-<div class="table-container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ชื่อ-สกุล</th>
-        <th>วันที่อัปโหลด</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @advisors_in_group.each do |advisor| %>
-        <tr>
-          <td><%= advisor.name %></td>
-          <td><%= advisor.updated_at.strftime("%d/%m/%Y") %></td>
-          <% max_students = @current_season&.max_student || 0 %>
-          <td><%= @student_counts_by_advisor[advisor.id] || 0 %> / <%= max_students %> คน</td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<% end %>
