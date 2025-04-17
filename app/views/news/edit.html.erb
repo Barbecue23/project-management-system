@@ -22,9 +22,27 @@
   <div class="form-row">
     <div class="form-group">
       <label>Category</label>
-      <%= select_tag :category, options_for_select(["All"] + AdvisorGroup.pluck(:group_name), params[:category]), {
-  prompt: "Select", class: "form-control select-dropdown", id: "category"
-} %>   
+      <% selected_category =
+          if @news.is_public?
+            "All"
+          else
+            @news.news_groups.joins(:advisor_group).pluck("advisor_groups.group_name").first
+          end
+      %>
+
+      <% available_groups =
+          if current_user.role.name == 'ผู้ดูแลระบบ'
+            AdvisorGroup.pluck(:group_name)
+          else
+            AdvisorGroup.joins(:advisor_group_members).where(advisor_group_members: { user_id: current_user.id }).pluck(:group_name)
+          end
+      %>
+
+      <%= select_tag :category,
+          options_for_select(["All"] + available_groups, selected_category),
+          prompt: "Select", class: "form-control select-dropdown", id: "category"
+      %>
+
     </div>
     <div class="form-group">
       <label>Publish Date</label>

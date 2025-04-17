@@ -1,20 +1,28 @@
 class NewsController < ApplicationController
   def index
     if current_user
-      @news = News.includes(:banner_image_attachment, :news_groups)
-                  .where("publish_date <= ? OR created_by = ?", Date.today, current_user.name)
-                  .order(publish_date: :desc)
-
       @user_group_ids = AdvisorGroupMember.where(user_id: current_user.id).pluck(:advisor_group_id)
 
+      @news = News.includes(:banner_image_attachment, :news_groups)
+                  .order(publish_date: :desc)
+                  .select { |news|
+                    is_owner = news.created_by == current_user.name
+                    is_published = news.publish_date <= Date.today
+                    is_public = news.is_public
+                    news_group_ids = news.news_groups.map(&:advisor_group_id)
+                    is_in_group = (news_group_ids & @user_group_ids).any?
+
+                    is_owner || (is_published && (is_public || is_in_group))
+                  }
     else
       @news = News.includes(:banner_image_attachment, :news_groups)
-                  .where("publish_date <= ?", Date.today)
+                  .where("publish_date <= ? AND is_public = true", Date.today)
                   .order(publish_date: :desc)
 
       @user_group_ids = []
     end
   end
+
 
   def show
     @news = News.find(params[:id])
@@ -57,6 +65,7 @@ class NewsController < ApplicationController
 
   def update
     @news = News.find(params[:id])
+    @news.category = @news.is_public? ? "All" : @news.news_groups.first&.advisor_group&.group_name
     is_now_public = params[:category] == "All"
     was_public = @news.is_public?
 

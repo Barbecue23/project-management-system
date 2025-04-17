@@ -1,23 +1,22 @@
 <div class="container">
   <h1 class="page-title">ข่าวสาร</h1>
-
-  <!-- Featured News -->
   <% featured_news = @news.first %>
 
   <% if featured_news.present? %>
     <% is_unpublished = featured_news.publish_date > Date.today %>
     <% is_owner = current_user && featured_news.created_by == current_user.name %>
+    <% is_public = featured_news.is_public %>
+    <% group_ids = featured_news.news_groups.map(&:advisor_group_id) %>
+    <% is_in_group = @user_group_ids.any? { |gid| group_ids.include?(gid) } %>
 
-    <% if !is_unpublished || is_owner %>
+    <% if is_owner || (!is_unpublished && (is_public || is_in_group)) %>
       <%= link_to news_show_path(featured_news.id), class: "featured-news-card-link" do %>
         <div class="featured-news-card">
           <div class="image-placeholder">
             <% if featured_news.banner_image.attached? %>
               <%= image_tag featured_news.banner_image, class: "featured-news-image", alt: featured_news.title %>
             <% else %>
-             <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                          <path d="..." />
-                      </svg>
+              <svg class="loading-icon" ...></svg>
             <% end %>
           </div>
           <div class="featured-news-content">
@@ -27,6 +26,8 @@
               <%= time_ago_in_words(featured_news.publish_date) %> ที่แล้ว | <%= featured_news.created_by %>
               <% if is_unpublished %>
                 <span class="unpublished-label">ยังไม่เผยแพร่</span>
+              <% elsif !is_public %>
+                <span class="group-label">ข่าวกลุ่ม</span>
               <% end %>
             </p>
           </div>
@@ -36,20 +37,21 @@
       <!-- Latest News -->
       <h2 class="latest-news-title">ข่าวสารล่าสุด</h2>
       <div class="latest-news">
-        <% @news.offset(1).each do |news| %>
+        <% @news.drop(1).each do |news| %>
           <% is_unpublished = news.publish_date > Date.today %>
           <% is_owner = current_user && news.created_by == current_user.name %>
+          <% is_public = news.is_public %>
+          <% group_ids = news.news_groups.map(&:advisor_group_id) %>
+          <% is_in_group = @user_group_ids.any? { |gid| group_ids.include?(gid) } %>
 
-          <% if !is_unpublished || is_owner %>
+          <% if is_owner || (!is_unpublished && (is_public || is_in_group)) %>
             <%= link_to news_show_path(news.id), class: "news-card-link" do %>
               <div class="news-card">
                 <div class="image-placeholder">
                   <% if news.banner_image.attached? %>
                     <%= image_tag news.banner_image, class: "news-image", alt: news.title %>
                   <% else %>
-                   <svg class="loading-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                          <path d="..." />
-                      </svg>
+                    <svg class="loading-icon" ...></svg>
                   <% end %>
                 </div>
                 <div class="news-content">
@@ -59,6 +61,8 @@
                     <%= time_ago_in_words(news.publish_date) %> ที่แล้ว | <%= news.created_by %>
                     <% if is_unpublished %>
                       <span class="unpublished-label">ยังไม่เผยแพร่</span>
+                    <% elsif !is_public %>
+                      <span class="group-label">ข่าวกลุ่ม</span>
                     <% end %>
                   </p>
                 </div>
