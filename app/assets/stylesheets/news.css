@@ -25,7 +25,7 @@
 }
 
 .featured-news-content {
-  padding: 16px;
+  padding: 1rem;
 }
 
 .featured-news-title {
@@ -330,7 +330,7 @@
 }
 
 .news-title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
   flex-grow: 1;
@@ -375,7 +375,7 @@
 
 .banner-image {
   width: 100%;
-  height: auto;
+  height: 30rem;
   border-radius: 8px;
 }
 

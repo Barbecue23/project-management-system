@@ -20,14 +20,10 @@
       <%= image_tag url_for(@news.banner_image), class: "banner-image" %>
     </div>
   <% end %>
-
+  
   <p class="news-meta">
     <%= @news.publish_date.strftime("%d %B %Y") %> | โดย <%= @news.created_by %>
   </p>
-
-  <div class="news-content">
-    <%= simple_format(@news.content) %>
-  </div>
 
   <% if @news.more_images.attached? %>
     <div class="news-gallery">
@@ -36,6 +32,11 @@
       <% end %>
     </div>
   <% end %>
+
+  <div class="news-content">
+    <%= simple_format(@news.content) %>
+  </div>
+
 
   <div id="lightbox-modal" class="lightbox-hidden">
     <span class="lightbox-close">&times;</span>
