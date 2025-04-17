@@ -57,7 +57,8 @@
           <div class="upload-box small">
             <span class="upload-icon">+</span>
             <span class="upload-text">Upload multiple images</span>
-            <%= form.file_field :more_images, multiple: true, direct_upload: true, name: "news[more_images][]", id: "more_images_input" %>
+            <%= form.file_field :more_images, multiple: true, direct_upload: true,
+            name: "news[more_images][]", id: "more_images_input" %>
           </div>
           <div class="gallery-preview" id="gallery_preview">
             <% @news.more_images.each do |image| %>
