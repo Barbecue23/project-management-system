@@ -175,7 +175,7 @@
 .modal {
   position: fixed;
   z-index: 9999;
-  padding-top: 100px;
+  padding-top: 10px;
   left: 0;
   top: 0;
   width: 100%;
@@ -325,6 +325,13 @@ label {
   .report-form {
     padding: 16px;
   }
+
+  .modal-content img,
+  .modal-content video,
+  .modal-content iframe {
+    border: 2px solid red !important;
+  }
+
 }
 
 
@@ -401,6 +408,20 @@ label {
   font-size: 14px;
 }
 
+
+.modal-content {
+  width: 95%;
+  max-width: 100vw;
+  max-height: 95vh;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+#modalBody {
+  width: 100%;
+  height: 95vh;
+}
 
 
 

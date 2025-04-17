@@ -64,13 +64,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const type = button.dataset.type;
       const url = button.dataset.url;
       modalBody.innerHTML = ""; // clear
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       if (type === "image") {
         modalBody.innerHTML = `<img src="${url}" class="img-fluid" />`;
       } else if (type === "video") {
         modalBody.innerHTML = `<video src="${url}" controls style="width: 100%;"></video>`;
       } else if (type === "pdf") {
-        modalBody.innerHTML = `<iframe src="${url}" width="100%" height="600px"></iframe>`;
+        if (isMobile) {
+          window.open(url, "_blank");
+          return;
+        } else {
+          modalBody.innerHTML = `
+            <embed src="${url}" type="application/pdf" width="100%" height="100%" style="display:block;" />`;  
+        }
       }
 
       modal.style.display = "block";
