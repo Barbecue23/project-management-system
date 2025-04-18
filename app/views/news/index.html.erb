@@ -57,14 +57,21 @@
                 <div class="news-content">
                   <h3 class="news-title ellipsis-one-line"><%= news.title %></h3>
                   <p class="news-info ellipsis-one-line"><%= news.content %></p>
-                  <p class="news-meta">
-                    <%= time_ago_in_words(news.publish_date) %> ที่แล้ว | <%= news.created_by %>
+                <div class="news-meta">
+                  <div class="news-author">
+                    <p style="margin:0;">ผู้เขียน</p>
+                    <%= news.created_by %>
+                  </div>
+                  <div class="news-date">
+                    <%= time_ago_in_words(news.publish_date) %> ที่แล้ว
                     <% if is_unpublished %>
                       <span class="unpublished-label">ยังไม่เผยแพร่</span>
                     <% elsif !is_public %>
                       <span class="group-label">ข่าวกลุ่ม</span>
                     <% end %>
-                  </p>
+                  </div>
+                </div>
+
                 </div>
               </div>
             <% end %>
