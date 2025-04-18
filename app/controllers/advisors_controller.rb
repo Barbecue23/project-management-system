@@ -5,7 +5,7 @@ class AdvisorsController < ApplicationController
   .left_joins(:student_group_members)
   .select("advisor_group_members.*, COUNT(student_group_members.id) AS student_count")
   .group("advisor_group_members.id")
-  .page(params[:page]).per(5)
+  # .page(params[:page]).per(5)
   @seasons = Season.find_by(status: 1)
 
   if @seasons.present? && @seasons.seasons_detail.present?
