@@ -40,14 +40,12 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const groupNameInput = document.getElementById("group_name");
-  const checkboxes = document.querySelectorAll(".user-checkbox");
   const submitBtn = document.getElementById("submit_button");
 
   function validateForm() {
     const groupNameFilled = groupNameInput.value.trim() !== "";
-    const atLeastOneChecked = Array.from(checkboxes).some(cb => cb.checked);
 
-    if (groupNameFilled && atLeastOneChecked) {
+    if (groupNameFilled) {
       submitBtn.disabled = false;
       submitBtn.classList.remove("btn-disabled");
     } else {
@@ -57,8 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   groupNameInput.addEventListener("input", validateForm);
-  checkboxes.forEach(cb => cb.addEventListener("change", validateForm));
-
   validateForm(); // initial check
 });
 </script>
+
