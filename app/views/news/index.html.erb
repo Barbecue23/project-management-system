@@ -59,8 +59,8 @@
                   <p class="news-info ellipsis-one-line"><%= news.content %></p>
                 <div class="news-meta">
                   <div class="news-author">
-                    <p style="margin:0;">ผู้เขียน</p>
-                    <%= news.created_by %>
+                    <p style="margin:0;">ผู้เผยแพร่</p>
+                    <p class="ellipsis-one-line"><%= news.created_by %></p>
                   </div>
                   <div class="news-date">
                     <%= time_ago_in_words(news.publish_date) %> ที่แล้ว

@@ -104,7 +104,12 @@
   text-align: right;
 }
 
-
+.ellipsis-one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin:0;
+}
 
 /* Image Placeholder */
 .image-placeholder {
