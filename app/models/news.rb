@@ -4,4 +4,6 @@ class News < ApplicationRecord
 
     has_many :news_groups
     has_many :advisor_groups, through: :news_groups
+
+    attr_accessor :category
 end

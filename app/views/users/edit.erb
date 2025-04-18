@@ -1,6 +1,12 @@
 <div class="form">
   <div class="form-header">
-    <h1 class="page-title">เพิ่มอาจารย์</h1>
+    <% if !@user.role_id %>
+      <h1 class="page-title">นักศึกษา</h1>
+    <% elsif @user.role.name == 'อาจารย์' || @user.role.name == 'ผู้ดูแลระบบ' || @user.role.name == 'ผู้ประสารงาน'%>
+      <h1 class="page-title">แก้ไขข้อมูลอาจารย์</h1>
+    <% else %>
+      <h1 class="page-title">แก้ไขข้อมูลนักศึกษา</h1>
+    <% end %>
   </div>
 
     <%= form_with(model: @user, url: user_path, method: :patch, local: true) do |f| %>
@@ -23,8 +29,19 @@
         </div>
     <% end %>
 
+    <% if @user.role&.name.in?(['อาจารย์', 'ผู้ดูแลระบบ', 'ผู้ประสารงาน']) %>
+      <div class="form-group">
+        <%= f.label :expertise, "เชี่ยวชาญ" %>
+        <%= f.text_area :expertise, class: "form-control" %>
+        <% if @user.errors[:expertise].any? %>
+          <div class="text-red-500 text-sm mt-1">
+              <%= @user.errors[:expertise].first %>
+          </div>
+          <% end %>
+      </div>
+    <% else %>
     <div class="form-group">
-      <%= f.label :student_id, "รหัศรหัสนักศึกษา" %>
+      <%= f.label :student_id, "รหัสนักศึกษา" %>
       <%= f.text_field :student_id, class: "form-control" %>
       <% if @user.errors[:student_id].any? %>
         <div class="text-red-500 text-sm mt-1">
@@ -32,10 +49,13 @@
         </div>
         <% end %>
     </div>
-    <%= f.hidden_field :role_id, value: Role.find_by(name: "นักศึกษา")&.id %>
+    <% end %>
+    <% if !@user.role_id %>
+      <%= f.hidden_field :role_id, value: Role.find_by(name: "นักศึกษา")&.id %>
+    <% end%>
     </div>
      <div class="form-actions">
-      <%= f.submit "เสร็จสิน", class: "btn-create" %>
+      <%= f.submit "เสร็จสิ้น", class: "btn-create" %>
     </div>
     <% end %>
 </div>

@@ -1,3 +1,26 @@
+.student-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.student-count {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.tabs-reports-advisors {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
 /* Responsive container */
 .container {
   max-width: 1200px;
@@ -102,6 +125,7 @@
   justify-content: flex-end;
   gap: 10px;
 }
+
 
 /* Responsive fix for small screens */
 @media (max-width: 768px) {
