@@ -88,9 +88,27 @@
 }
 
 .news-meta {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  margin-top: 0.5rem;
+  color: #777;
+  position: relative;
+}
+
+.news-author {
+  text-align: left;
+}
+
+.news-date {
+  text-align: right;
+}
+
+.ellipsis-one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin:0;
 }
 
 /* Image Placeholder */
